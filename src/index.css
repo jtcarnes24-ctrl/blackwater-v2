@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Barlow+Condensed:wght@900&display=swap');
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #080808;
+  --cream: #f2ede4;
+  --white: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #333;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile responsive layout helpers */
+.method-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  flex: 1;
+  align-items: center;
+}
+
+.ai-layout {
+  display: flex;
+  flex: 1;
+  gap: 4rem;
+  align-items: center;
+}
+
+.ai-robot {
+  flex: 1;
+  min-height: 500px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .method-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .ai-layout {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .ai-robot {
+    min-height: 300px;
+    width: 100%;
+  }
+
+  .flow-art-container {
+    padding: clamp(1.5rem, 6vw, 3rem) clamp(1rem, 5vw, 2rem) !important;
+  }
+}
