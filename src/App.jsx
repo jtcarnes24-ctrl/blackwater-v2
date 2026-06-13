@@ -3,7 +3,9 @@ import { HeroSection } from './components/HeroSection'
 import { FlowGroup1 } from './components/FlowGroup1'
 import { ServicesSection } from './components/ServicesSection'
 import { ResultsSection } from './components/ResultsSection'
+import { ProofSection } from './components/ProofSection'
 import { FlowGroup2 } from './components/FlowGroup2'
+import { FounderSection } from './components/FounderSection'
 import { ContactSection } from './components/ContactSection'
 
 function App() {
@@ -15,7 +17,9 @@ function App() {
         <FlowGroup1 />
         <ServicesSection />
         <ResultsSection />
+        <ProofSection />
         <FlowGroup2 />
+        <FounderSection />
         <ContactSection />
       </main>
     </>
