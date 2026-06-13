@@ -7,8 +7,10 @@ const services = [
   { num: '02', name: 'TikTok Ads', desc: 'Short-form video campaigns engineered for TikTok\'s algorithm. We build creatives that stop the scroll and systems that turn views into sales.' },
   { num: '03', name: 'Funnel Creation & Optimization', desc: 'We build and optimize the full customer journey — from ad click to checkout. Every step is structured to reduce drop-off and increase revenue.' },
   { num: '04', name: 'Ad Creation', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
-  { num: '05', name: 'Conversion Optimization', desc: 'Landing pages, offers, and post-click experiences refined to turn traffic into revenue and push your ROAS higher.' },
-  { num: '06', name: 'Web Design', desc: 'Modern, high-converting websites built around your brand — designed to look the part and close the deal.' },
+  { num: '05', name: 'Email & SMS Marketing', desc: 'Retention campaigns that keep your customers coming back. Automated flows and broadcast campaigns built to generate revenue between ad pushes.' },
+  { num: '06', name: 'B2B Marketing & CRM', desc: 'Full-service CRM setup and automation for targeted email campaigns. We reach your ideal prospects, build the sequences, and drive revenue from the top of the funnel down.' },
+  { num: '07', name: 'Conversion Optimization', desc: 'Landing pages, offers, and post-click experiences refined to turn traffic into revenue and push your ROAS higher.' },
+  { num: '08', name: 'Web Design', desc: 'Modern, high-converting websites built around your brand — designed to look the part and close the deal.' },
 ]
 
 const cardVariant = {

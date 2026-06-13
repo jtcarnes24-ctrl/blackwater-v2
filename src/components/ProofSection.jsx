@@ -38,11 +38,6 @@ const results = [
     desc: '$51,290 in a single month. 204 sessions up 77%, 21 orders. A focused product and the right paid traffic structure behind it.',
   },
   {
-    img: '/results/result-4.jpg',
-    label: 'Shopify — $4,950 in a Day',
-    desc: '$4,950 with 121 orders and a 4.67% conversion rate. Revenue up 57% over the day before — steady scaling, not spiking.',
-  },
-  {
     img: '/results/result-5.jpg',
     label: 'Shopify — $5,440 in a Day',
     desc: '$5,440 in one day, 58% above the prior period with a 3.08% conversion rate. Clean traffic, solid offer, ads doing exactly what they should.',

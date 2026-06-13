@@ -36,7 +36,7 @@ export function Nav() {
         background: 'transparent',
       }}>
         <a href="#" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={LOGO} alt="BlackWater Marketing" style={{ height: '48px', width: '48px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <img src={LOGO} alt="BlackWater Marketing" style={{ height: '64px', width: '64px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </a>
 
         <button
