@@ -4,9 +4,11 @@ import { LiquidButton } from './ui/LiquidButton'
 
 const services = [
   { num: '01', name: 'Meta Ads Management', desc: 'Scaling brands through high-performing paid advertising on Facebook and Instagram. Built to convert, optimized to grow.' },
-  { num: '02', name: 'Ad Creation', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
-  { num: '03', name: 'Conversion Optimization', desc: 'Landing pages, funnels, and customer journeys optimized to turn traffic into revenue and increase overall ROAS.' },
-  { num: '04', name: 'Web Design', desc: 'Modern, high-converting websites built around your brand — designed to look the part and close the deal.' },
+  { num: '02', name: 'TikTok Ads', desc: 'Short-form video campaigns engineered for TikTok\'s algorithm. We build creatives that stop the scroll and systems that turn views into sales.' },
+  { num: '03', name: 'Funnel Creation & Optimization', desc: 'We build and optimize the full customer journey — from ad click to checkout. Every step is structured to reduce drop-off and increase revenue.' },
+  { num: '04', name: 'Ad Creation', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
+  { num: '05', name: 'Conversion Optimization', desc: 'Landing pages, offers, and post-click experiences refined to turn traffic into revenue and push your ROAS higher.' },
+  { num: '06', name: 'Web Design', desc: 'Modern, high-converting websites built around your brand — designed to look the part and close the deal.' },
 ]
 
 const cardVariant = {

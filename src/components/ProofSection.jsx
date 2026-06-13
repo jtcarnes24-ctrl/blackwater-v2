@@ -3,54 +3,49 @@ import { easeOut, easeInOut, viewport } from '../lib/animations'
 
 const results = [
   {
-    img: '/results/result-1.jpg',
-    label: 'Lead Gen — $6.4K in a Day',
-    desc: '$6,400 in sales and 426 orders in a single day. We structured the campaign around a tight audience and let the creative do the heavy lifting.',
-  },
-  {
-    img: '/results/result-2.jpg',
-    label: 'Clothing Brand — First $10K Month',
-    desc: 'A clothing client that had never crossed five figures in a month. We rebuilt their ad structure from scratch and got them there with 654 orders.',
-  },
-  {
-    img: '/results/result-10.jpg',
-    label: 'Ecom — $56K Month',
-    desc: '$56,873 in 30 days with a 312% lift over the previous period. Consistent daily spend, tested creatives, and a scaling strategy that held up.',
-  },
-  {
-    img: '/results/result-6.jpg',
-    label: 'Ecom — $39K Month',
-    desc: '$39,936 in a single month — 162 orders at a 7.29% conversion rate. Clean funnel, right audience, and ads that kept performing.',
-  },
-  {
-    img: '/results/result-5.jpg',
-    label: 'Drop Day — $8,433 in 24 Hours',
-    desc: '227 orders and $8,433 on a single product drop. Orders up 588% over the prior period. Campaigns were prepped and the timing was locked in.',
-  },
-  {
     img: '/results/result-8.jpg',
-    label: 'Flash Sale — $8,433 Revenue',
-    desc: '$8,433 from a flash sale campaign. 227 orders, 592% jump in sales. Short window, maximum output.',
-  },
-  {
-    img: '/results/result-4.jpg',
-    label: 'End of Year Flash Sale — $4,558',
-    desc: '$4,558 in one day off a year-end flash sale. 87 orders, 73% revenue increase over the day before. Quick turnaround, strong return.',
-  },
-  {
-    img: '/results/result-3.jpg',
-    label: 'Q4 Push — 519% Sales Increase',
-    desc: '$3,415 with a 519% spike in revenue and a 4.8% conversion rate. Q4 campaigns live and die by the setup — this one was dialed.',
-  },
-  {
-    img: '/results/result-7.jpg',
-    label: 'Single Day — $5,440',
-    desc: '$5,440 in one day, 58% higher than the day before with a 3.08% conversion rate. Steady spend, consistent output.',
+    label: 'Meta Ads — 12.97x ROAS',
+    desc: '$6,857 in spend generated $88,913 in purchases — 12.97x ROAS across all active campaigns. 875 purchases at $7.84 cost per result.',
   },
   {
     img: '/results/result-9.jpg',
-    label: 'Meta Ads — 11.79x ROAS',
-    desc: '$1,321 in ad spend turned into $19,508 in purchases — 11.79x ROAS across all campaigns. 928 add-to-carts, 164 purchases.',
+    label: 'Meta Ads — 12.56x ROAS',
+    desc: '$1,644 in ad spend returned $20,663 in purchases. Multiple campaigns running consistently above 12x across website and mobile.',
+  },
+  {
+    img: '/results/result-6.jpg',
+    label: 'Meta Ads — 11.73x ROAS',
+    desc: '$1,321 spent, $15,508 in purchases — 11.73x ROAS average. 103 purchases across campaigns with a $12.83 cost per result.',
+  },
+  {
+    img: '/results/result-7.jpg',
+    label: 'Meta Ads — 7.38x ROAS',
+    desc: 'Campaigns holding a 7.38x ROAS at $5.63 per purchase with a 15.94% hook rate — creative and targeting dialed in.',
+  },
+  {
+    img: '/results/result-1.jpg',
+    label: 'Shopify — $8,236 in a Day',
+    desc: '$8,236 in a single day. 193 orders, 578% jump over the previous period. Consistent traffic flow and an offer that converted.',
+  },
+  {
+    img: '/results/result-2.jpg',
+    label: 'Shopify — $7,659 in a Day',
+    desc: '$7,659 with 159 orders and a 3.04% conversion rate. Revenue up 25% day over day with the same spend — optimization doing its job.',
+  },
+  {
+    img: '/results/result-3.jpg',
+    label: 'Shopify — $51K Month',
+    desc: '$51,290 in a single month. 204 sessions up 77%, 21 orders. A focused product and the right paid traffic structure behind it.',
+  },
+  {
+    img: '/results/result-4.jpg',
+    label: 'Shopify — $4,950 in a Day',
+    desc: '$4,950 with 121 orders and a 4.67% conversion rate. Revenue up 57% over the day before — steady scaling, not spiking.',
+  },
+  {
+    img: '/results/result-5.jpg',
+    label: 'Shopify — $5,440 in a Day',
+    desc: '$5,440 in one day, 58% above the prior period with a 3.08% conversion rate. Clean traffic, solid offer, ads doing exactly what they should.',
   },
 ]
 

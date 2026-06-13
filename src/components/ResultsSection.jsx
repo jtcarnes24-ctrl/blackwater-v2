@@ -24,10 +24,10 @@ function Counter({ target, duration = 2, format }) {
 }
 
 const stats = [
-  { target: 100, duration: 2.2, format: v => `$${Math.round(v)}K+`, label: 'Ad Spend\nManaged' },
+  { target: 500, duration: 2.2, format: v => `${Math.round(v)}+`, label: 'Creatives\nScaled' },
   { target: 35, duration: 2.0, format: v => `${Math.round(v)}+`, label: 'Clients\nWorked With' },
   { target: 4.2, duration: 2.2, format: v => `${v.toFixed(1)}x`, label: 'Average\nROAS' },
-  { target: 5, duration: 1.6, format: v => `${Math.round(v)}+`, label: 'Years of\nExperience' },
+  { target: 15.8, duration: 2.0, format: v => `$${v.toFixed(1)}`, label: 'Average\nCAC' },
 ]
 
 export function ResultsSection() {
