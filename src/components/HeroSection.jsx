@@ -14,6 +14,13 @@ export function HeroSection() {
     <section ref={ref} style={{ position: 'relative', height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
       <Waves strokeColor="rgba(255,255,255,0.13)" backgroundColor="#080808" />
 
+      {/* Ambient gradient orbs */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-15%', left: '-8%', width: 'min(700px, 90vw)', height: 'min(700px, 90vw)', background: 'radial-gradient(circle, rgba(90,60,255,0.09) 0%, transparent 65%)', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: '-20%', right: '-5%', width: 'min(500px, 70vw)', height: 'min(500px, 70vw)', background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 65%)', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', top: '40%', right: '15%', width: 'min(300px, 40vw)', height: 'min(300px, 40vw)', background: 'radial-gradient(circle, rgba(60,180,255,0.05) 0%, transparent 65%)', borderRadius: '50%' }} />
+      </div>
+
       <motion.div
         style={{ y, opacity, position: 'relative', zIndex: 10, padding: '0 clamp(1.5rem, 8vw, 7rem)', width: '100%' }}
       >

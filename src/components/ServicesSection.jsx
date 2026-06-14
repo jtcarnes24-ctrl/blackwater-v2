@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
@@ -6,26 +7,25 @@ const services = [
   { num: '01', name: 'Meta Ads Management', desc: 'Scaling brands through high-performing paid advertising on Facebook and Instagram. Built to convert, optimized to grow.' },
   { num: '02', name: 'TikTok Ads', desc: 'Short-form video campaigns engineered for TikTok\'s algorithm. We build creatives that stop the scroll and systems that turn views into sales.' },
   { num: '03', name: 'Funnel Creation & Optimization', desc: 'We build and optimize the full customer journey — from ad click to checkout. Every step is structured to reduce drop-off and increase revenue.' },
-  { num: '04', name: 'Ad Creation', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
+  { num: '04', name: 'Ad Creative', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
   { num: '05', name: 'Email & SMS Marketing', desc: 'Retention campaigns that keep your customers coming back. Automated flows and broadcast campaigns built to generate revenue between ad pushes.' },
   { num: '06', name: 'B2B Marketing & CRM', desc: 'Full-service CRM setup and automation for targeted email campaigns. We reach your ideal prospects, build the sequences, and drive revenue from the top of the funnel down.' },
   { num: '07', name: 'Conversion Optimization', desc: 'Landing pages, offers, and post-click experiences refined to turn traffic into revenue and push your ROAS higher.' },
   { num: '08', name: 'Web Design', desc: 'Modern, high-converting websites built around your brand — designed to look the part and close the deal.' },
 ]
 
-const cardVariant = {
-  hidden: { opacity: 0, y: 50 },
-  show: { opacity: 1, y: 0 },
-}
-
 export function ServicesSection() {
+  const [hovered, setHovered] = useState(null)
+
   return (
     <section id="services" style={{ background: '#080808', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '2rem' }}>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5rem', flexWrap: 'wrap', gap: '2rem' }}>
         <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
           <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
-            style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '1.25rem', fontWeight: 600 }}>
-            What We Do
+            style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(255,255,255,0.2)' }} />
+            Full-Service Growth
           </motion.p>
           {['OUR', 'SERVICES'].map((line, i) => (
             <div key={line} style={{ overflow: 'hidden' }}>
@@ -47,26 +47,82 @@ export function ServicesSection() {
         </motion.div>
       </div>
 
+      {/* Editorial numbered list */}
       <motion.div
-        variants={staggerContainer(0.1, 0.1)}
+        variants={staggerContainer(0.06, 0.1)}
         initial="hidden"
         whileInView="show"
         viewport={viewport}
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.07)' }}
       >
-        {services.map((s) => (
+        {services.map((s, i) => (
           <motion.div
             key={s.num}
-            variants={cardVariant}
-            transition={{ duration: 0.55, ease: easeOut }}
-            whileHover={{ backgroundColor: '#111' }}
-            style={{ background: '#080808', padding: '2.5rem 2rem', transition: 'background 0.3s' }}
+            variants={fadeUp}
+            transition={{ duration: 0.5, ease: easeOut }}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            style={{ borderTop: '1px solid rgba(255,255,255,0.07)', cursor: 'default' }}
           >
-            <p style={{ fontSize: '0.65rem', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.25)', fontWeight: 700, marginBottom: '1.5rem' }}>{s.num}</p>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.9rem', lineHeight: 1.2 }}>{s.name}</h3>
-            <p style={{ fontSize: '0.88rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{s.desc}</p>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'clamp(1rem, 3vw, 3rem)',
+              padding: 'clamp(1.25rem, 2.5vw, 2rem) 0',
+              transition: 'opacity 0.3s',
+              opacity: hovered !== null && hovered !== i ? 0.35 : 1,
+            }}>
+              <span style={{
+                fontSize: '0.6rem', letterSpacing: '0.18em', color: 'rgba(255,255,255,0.25)',
+                fontWeight: 700, minWidth: '2rem', flexShrink: 0,
+              }}>
+                {s.num}
+              </span>
+
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <h3 style={{
+                  fontSize: 'clamp(1.2rem, 2.8vw, 2.6rem)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.025em',
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                  lineHeight: 1,
+                  marginBottom: hovered === i ? '0.6rem' : 0,
+                  transition: 'margin 0.35s cubic-bezier(0.32,0.72,0,1)',
+                }}>
+                  {s.name}
+                </h3>
+
+                <div style={{
+                  overflow: 'hidden',
+                  maxHeight: hovered === i ? '80px' : '0',
+                  opacity: hovered === i ? 1 : 0,
+                  transition: 'max-height 0.4s cubic-bezier(0.32,0.72,0,1), opacity 0.3s ease',
+                }}>
+                  <p style={{
+                    fontSize: '0.88rem',
+                    color: 'rgba(255,255,255,0.45)',
+                    lineHeight: 1.65,
+                    maxWidth: '560px',
+                  }}>
+                    {s.desc}
+                  </p>
+                </div>
+              </div>
+
+              <span style={{
+                fontSize: '1.1rem',
+                color: 'rgba(255,255,255,0.5)',
+                flexShrink: 0,
+                transform: hovered === i ? 'translate(0, 0)' : 'translate(-6px, 4px)',
+                opacity: hovered === i ? 1 : 0,
+                transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.3s ease',
+              }}>
+                ↗
+              </span>
+            </div>
           </motion.div>
         ))}
+        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }} />
       </motion.div>
     </section>
   )

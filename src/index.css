@@ -44,6 +44,11 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
 /* Mobile responsive layout helpers */
 .method-grid {
   display: grid;
