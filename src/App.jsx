@@ -5,6 +5,7 @@ import { ServicesSection } from './components/ServicesSection'
 import { ResultsSection } from './components/ResultsSection'
 import { MarqueeSection } from './components/MarqueeSection'
 import { ProofSection } from './components/ProofSection'
+import { TestimonialsSection } from './components/TestimonialsSection'
 import { FlowGroup2 } from './components/FlowGroup2'
 import { FounderSection } from './components/FounderSection'
 import { ContactSection } from './components/ContactSection'
@@ -20,6 +21,7 @@ function App() {
         <ResultsSection />
         <MarqueeSection />
         <ProofSection />
+        <TestimonialsSection />
         <FlowGroup2 />
         <FounderSection />
         <ContactSection />
