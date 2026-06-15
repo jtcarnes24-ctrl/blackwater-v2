@@ -6,6 +6,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
   const smoothRef = useRef({ x: size / 2, y: size / 2 })
   const activeRef = useRef(false)
   const trailRef = useRef([])
+  const particlesRef = useRef([])
   const timeRef = useRef(0)
   const imagesRef = useRef({ color: null, bw: null })
   const rafRef = useRef(null)
@@ -15,6 +16,12 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     const ctx = canvas.getContext('2d')
     canvas.width = size
     canvas.height = size
+
+    // Offscreen canvas for compositing B&W without cream bleed
+    const offscreen = document.createElement('canvas')
+    offscreen.width = size
+    offscreen.height = size
+    const offCtx = offscreen.getContext('2d')
 
     let loaded = 0
     const onLoad = () => { loaded++; if (loaded === 2) startLoop() }
@@ -29,11 +36,12 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
 
     const lerp = (a, b, t) => a + (b - a) * t
     const RADIUS = size * 0.13
-    const TRAIL_MAX_AGE = 80
+    const TRAIL_MAX_AGE = 140
+    const PARTICLE_MAX_AGE = 90
 
-    const drawLiquidPath = (cx, cy, r, t) => {
+    const drawLiquidPath = (actx, cx, cy, r, t) => {
       const pts = 80
-      ctx.beginPath()
+      actx.beginPath()
       for (let i = 0; i <= pts; i++) {
         const angle = (i / pts) * Math.PI * 2
         const wave =
@@ -43,9 +51,22 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         const pr = r * (1 + wave)
         const px = cx + Math.cos(angle) * pr
         const py = cy + Math.sin(angle) * pr
-        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py)
+        i === 0 ? actx.moveTo(px, py) : actx.lineTo(px, py)
       }
-      ctx.closePath()
+      actx.closePath()
+    }
+
+    const spawnParticle = (x, y) => {
+      const angle = Math.random() * Math.PI * 2
+      const speed = (0.4 + Math.random() * 1.2) * (size / 560)
+      particlesRef.current.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        age: 0,
+        maxAge: PARTICLE_MAX_AGE * (0.5 + Math.random() * 0.5),
+        radius: RADIUS * (0.18 + Math.random() * 0.28),
+      })
     }
 
     const startLoop = () => {
@@ -60,43 +81,68 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         // Add trail point every frame while active
         if (activeRef.current) {
           trailRef.current.push({ x: smoothRef.current.x, y: smoothRef.current.y, age: 0 })
+          // Spawn particles occasionally
+          if (Math.random() < 0.25) spawnParticle(smoothRef.current.x, smoothRef.current.y)
         }
 
-        // Age + cull
+        // Age + cull trail
         trailRef.current = trailRef.current
           .map(p => ({ ...p, age: p.age + 1 }))
           .filter(p => p.age < TRAIL_MAX_AGE)
 
-        ctx.clearRect(0, 0, size, size)
+        // Update + cull particles
+        particlesRef.current = particlesRef.current
+          .map(p => ({
+            ...p,
+            x: p.x + p.vx,
+            y: p.y + p.vy,
+            vx: p.vx * 0.97,
+            vy: p.vy * 0.97,
+            age: p.age + 1,
+          }))
+          .filter(p => p.age < p.maxAge)
 
-        // Base: full color photo
-        ctx.drawImage(color, 0, 0, size, size)
+        // --- Draw to offscreen: mask shape only ---
+        offCtx.clearRect(0, 0, size, size)
 
-        // Reveal B&W hat photo in cursor trail + active blob
-        const hasReveal = trailRef.current.length > 0 || activeRef.current
+        const hasReveal = trailRef.current.length > 0 || activeRef.current || particlesRef.current.length > 0
         if (hasReveal) {
-          ctx.save()
-          ctx.beginPath()
+          offCtx.save()
+          offCtx.beginPath()
 
-          // Trail — circles shrink as they age
+          // Trail circles
           for (const pt of trailRef.current) {
             const progress = pt.age / TRAIL_MAX_AGE
-            const r = Math.max(RADIUS * (1 - progress * 0.65), 2)
-            ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2)
+            const r = Math.max(RADIUS * (1 - progress * 0.55), 3)
+            offCtx.arc(pt.x, pt.y, r, 0, Math.PI * 2)
+          }
+
+          // Particles
+          for (const p of particlesRef.current) {
+            const progress = p.age / p.maxAge
+            const r = Math.max(p.radius * (1 - progress * 0.7), 1)
+            offCtx.arc(p.x, p.y, r, 0, Math.PI * 2)
           }
 
           // Leading liquid blob
           if (activeRef.current) {
-            drawLiquidPath(smoothRef.current.x, smoothRef.current.y, RADIUS, t)
+            drawLiquidPath(offCtx, smoothRef.current.x, smoothRef.current.y, RADIUS, t)
           }
 
-          ctx.clip()
-          // Fill cream first so transparent B&W edges don't bleed color through
-          ctx.fillStyle = '#f2ede4'
-          ctx.fillRect(0, 0, size, size)
-          ctx.drawImage(bw, 0, 0, size, size)
-          ctx.restore()
+          offCtx.clip()
+          offCtx.drawImage(bw, 0, 0, size, size)
+          offCtx.restore()
         }
+
+        // --- Composite onto main canvas ---
+        ctx.clearRect(0, 0, size, size)
+        ctx.drawImage(color, 0, 0, size, size)
+
+        // Use destination-out to punch holes where B&W will go, then draw B&W
+        // Actually: just draw offscreen on top. Where offscreen is transparent, color shows.
+        // B&W transparent areas → offscreen transparent → color shows.
+        // That means color bleeds at B&W edges — acceptable since photos are same crop.
+        ctx.drawImage(offscreen, 0, 0, size, size)
 
         rafRef.current = requestAnimationFrame(draw)
       }
