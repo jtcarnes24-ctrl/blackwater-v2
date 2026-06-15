@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { SplineScene } from './ui/SplineScene'
 import { AIChart } from './ui/AIChart'
 
 export function AISection() {
@@ -44,7 +43,7 @@ export function AISection() {
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ marginBottom: '2rem' }}>
               <AIChart />
             </div>
 
@@ -68,26 +67,6 @@ export function AISection() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Right, 3D robot */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          viewport={{ once: true }}
-          style={{ flex: 1, minHeight: '600px', position: 'relative' }}
-          onWheel={e => e.stopPropagation()}
-        >
-          <div
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-            onWheel={e => e.stopPropagation()}
-          >
-            <SplineScene
-              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-              className="w-full h-full"
-            />
           </div>
         </motion.div>
       </div>
