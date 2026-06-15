@@ -32,7 +32,7 @@ export function AIChart() {
   return (
     <div style={{ width: '100%' }}>
       <p style={{ fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '0.5rem', fontWeight: 600 }}>
-        AI in Marketing — Global Demand Index (2016–2025)
+        AI in Marketing, Global Demand Index (2016–2025)
       </p>
       <div style={{ height: '220px' }}>
         <ResponsiveContainer width="100%" height="100%">

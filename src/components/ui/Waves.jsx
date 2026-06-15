@@ -18,6 +18,7 @@ export function Waves({
 
   useEffect(() => {
     if (!containerRef.current || !svgRef.current) return
+    if (window.innerWidth < 768) return
 
     noiseRef.current = createNoise2D()
     setSize()

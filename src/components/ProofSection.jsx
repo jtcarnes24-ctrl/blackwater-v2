@@ -3,14 +3,14 @@ import { easeOut, easeInOut, viewport } from '../lib/animations'
 
 const results = [
   {
-    img: '/results/result-8.jpg',
+    img: '/results/result-8.webp',
     label: 'Meta Ads',
     stat: '12.97x ROAS',
     desc: '$6,857 in spend generated $88,913 in purchases. 875 purchases at $7.84 cost per result.',
     span: '1 / 6',
   },
   {
-    img: '/results/result-9.jpg',
+    img: '/results/result-9.webp',
     label: 'Meta Ads',
     stat: '12.56x ROAS',
     desc: '$1,644 in ad spend returned $20,663 in purchases across website and mobile.',
@@ -18,7 +18,7 @@ const results = [
     tall: true,
   },
   {
-    img: '/results/result-6.jpg',
+    img: '/results/result-6.webp',
     label: 'Meta Ads',
     stat: '11.73x ROAS',
     desc: '$1,321 spent, $15,508 in purchases. 103 purchases at $12.83 per result.',
@@ -26,35 +26,35 @@ const results = [
     tall: true,
   },
   {
-    img: '/results/result-7.jpg',
+    img: '/results/result-7.webp',
     label: 'Meta Ads',
     stat: '7.38x ROAS',
     desc: '$5.63 per purchase with a 15.94% hook rate. Creative and targeting dialed in.',
     span: '1 / 5',
   },
   {
-    img: '/results/result-1.jpg',
+    img: '/results/result-1.webp',
     label: 'Shopify',
     stat: '$8,236/day',
     desc: '193 orders. 578% jump over the previous period.',
     span: '5 / 9',
   },
   {
-    img: '/results/result-2.jpg',
+    img: '/results/result-2.webp',
     label: 'Shopify',
     stat: '$7,659/day',
     desc: '159 orders, 3.04% conversion rate. Revenue up 25% day-over-day on same spend.',
     span: '9 / 13',
   },
   {
-    img: '/results/result-3.jpg',
+    img: '/results/result-3.webp',
     label: 'Shopify',
     stat: '$51K month',
     desc: '$51,290 in a single month. Sessions up 77%.',
     span: '1 / 7',
   },
   {
-    img: '/results/result-5.jpg',
+    img: '/results/result-5.webp',
     label: 'Shopify',
     stat: '$5,440/day',
     desc: '58% above prior period. 3.08% conversion rate. Ads doing exactly what they should.',
