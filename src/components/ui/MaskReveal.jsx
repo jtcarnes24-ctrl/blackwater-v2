@@ -6,6 +6,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
   const smoothRef = useRef({ x: size / 2, y: size / 2 })
   const activeRef = useRef(false)
   const radiusRef = useRef(0)
+  const trailRef = useRef([])
   const timeRef = useRef(0)
   const imagesRef = useRef({ color: null, bw: null })
   const rafRef = useRef(null)
@@ -28,7 +29,8 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     imagesRef.current = { color: colorImg, bw: bwImg }
 
     const lerp = (a, b, t) => a + (b - a) * t
-    const MAX_RADIUS = size * 0.38
+    const MAX_RADIUS = size * 0.18
+    const TRAIL_MAX_AGE = 120
 
     const drawLiquidPath = (cx, cy, r, t) => {
       const pts = 90
@@ -53,25 +55,41 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         timeRef.current += 0.016
         const t = timeRef.current
 
-        // Smooth cursor follow
+        // Smooth cursor follow for main blob
         smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.09)
         smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.09)
 
-        // Radius grows in on hover, shrinks out on leave
+        // Radius grows in / out
         const targetRadius = activeRef.current ? MAX_RADIUS : 0
-        radiusRef.current = lerp(radiusRef.current, targetRadius, activeRef.current ? 0.1 : 0.07)
+        radiusRef.current = lerp(radiusRef.current, targetRadius, activeRef.current ? 0.1 : 0.06)
+
+        // Trail at raw cursor position every frame
+        if (activeRef.current) {
+          trailRef.current.push({ x: posRef.current.x, y: posRef.current.y, age: 0 })
+        }
+        trailRef.current = trailRef.current
+          .map(p => ({ ...p, age: p.age + 1 }))
+          .filter(p => p.age < TRAIL_MAX_AGE)
 
         ctx.clearRect(0, 0, size, size)
-
-        // Base: B&W always visible
         ctx.drawImage(bw, 0, 0, size, size)
 
-        if (radiusRef.current > 1) {
-          const cx = smoothRef.current.x
-          const cy = smoothRef.current.y
-
+        const hasReveal = radiusRef.current > 1 || trailRef.current.length > 0
+        if (hasReveal) {
           ctx.save()
-          drawLiquidPath(cx, cy, radiusRef.current, t)
+          ctx.beginPath()
+
+          // Trail circles shrink as they age
+          for (const pt of trailRef.current) {
+            const r = Math.max(MAX_RADIUS * (1 - pt.age / TRAIL_MAX_AGE * 0.7), 2)
+            ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2)
+          }
+
+          // Leading liquid blob
+          if (radiusRef.current > 1) {
+            drawLiquidPath(smoothRef.current.x, smoothRef.current.y, radiusRef.current, t)
+          }
+
           ctx.clip()
           ctx.drawImage(color, 0, 0, size, size)
           ctx.restore()
