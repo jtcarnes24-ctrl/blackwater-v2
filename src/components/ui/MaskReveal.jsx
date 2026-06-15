@@ -69,12 +69,16 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         timeRef.current += 0.018
         const t = timeRef.current
 
-        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.07)
-        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.07)
+        // Smooth only used for leading liquid blob — trail uses raw cursor
+        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.12)
+        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.12)
 
         if (activeRef.current) {
-          trailRef.current.push({ x: smoothRef.current.x, y: smoothRef.current.y, age: 0 })
-          if (Math.random() < 0.3) spawnParticle(smoothRef.current.x, smoothRef.current.y)
+          // Raw position for trail — always tracks, never lags
+          const rx = posRef.current.x
+          const ry = posRef.current.y
+          trailRef.current.push({ x: rx, y: ry, age: 0 })
+          if (Math.random() < 0.45) spawnParticle(rx, ry)
         }
 
         trailRef.current = trailRef.current
