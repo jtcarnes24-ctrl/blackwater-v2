@@ -84,6 +84,8 @@ export function FounderSection() {
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 15,
+          WebkitMaskImage: 'linear-gradient(to bottom, black 55%, transparent 88%)',
+          maskImage: 'linear-gradient(to bottom, black 55%, transparent 88%)',
         }}>
           <MaskReveal
             colorSrc="/jack-color.png"
