@@ -1,102 +1,94 @@
 import { useRef, useEffect } from 'react'
 
-export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
-  const containerRef = useRef(null)
-  const topRef = useRef(null)
-  const posRef = useRef({ x: 50, y: 50 })
-  const smoothRef = useRef({ x: 50, y: 50 })
+export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
+  const canvasRef = useRef(null)
+  const posRef = useRef({ x: 0.5, y: 0.4 })
+  const smoothRef = useRef({ x: 0.5, y: 0.4 })
   const activeRef = useRef(false)
+  const imagesRef = useRef({ color: null, bw: null })
   const rafRef = useRef(null)
 
   useEffect(() => {
-    const lerp = (a, b, t) => a + (b - a) * t
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    canvas.width = size
+    canvas.height = size
 
-    const tick = () => {
-      smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.1)
-      smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.1)
-
-      if (topRef.current) {
-        if (activeRef.current) {
-          const { x, y } = smoothRef.current
-          // Transparent hole at cursor → reveals B&W below, black = color photo visible
-          const mask = `radial-gradient(circle 30% at ${x}% ${y}%, transparent 0%, transparent 25%, black 60%)`
-          topRef.current.style.maskImage = mask
-          topRef.current.style.webkitMaskImage = mask
-        } else {
-          // No mask = color photo fully visible
-          topRef.current.style.maskImage = 'none'
-          topRef.current.style.webkitMaskImage = 'none'
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(tick)
+    let loaded = 0
+    const onLoad = () => {
+      loaded++
+      if (loaded === 2) startLoop()
     }
 
-    rafRef.current = requestAnimationFrame(tick)
+    const colorImg = new window.Image()
+    const bwImg = new window.Image()
+    colorImg.onload = onLoad
+    bwImg.onload = onLoad
+    colorImg.src = colorSrc
+    bwImg.src = bwSrc
+    imagesRef.current = { color: colorImg, bw: bwImg }
+
+    const lerp = (a, b, t) => a + (b - a) * t
+    const radius = size * 0.28
+
+    const startLoop = () => {
+      const draw = () => {
+        const { color, bw } = imagesRef.current
+        ctx.clearRect(0, 0, size, size)
+
+        // Base: B&W hat photo
+        ctx.drawImage(bw, 0, 0, size, size)
+
+        // Smooth cursor
+        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.1)
+        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.1)
+
+        if (activeRef.current) {
+          const cx = smoothRef.current.x * size
+          const cy = smoothRef.current.y * size
+
+          // Clip to everything EXCEPT the circle (even-odd winding)
+          ctx.save()
+          ctx.beginPath()
+          ctx.rect(0, 0, size, size)
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2, true)
+          ctx.clip('evenodd')
+          ctx.drawImage(color, 0, 0, size, size)
+          ctx.restore()
+        } else {
+          // Default: full color on top
+          ctx.drawImage(color, 0, 0, size, size)
+        }
+
+        rafRef.current = requestAnimationFrame(draw)
+      }
+      rafRef.current = requestAnimationFrame(draw)
+    }
+
     return () => cancelAnimationFrame(rafRef.current)
-  }, [])
+  }, [colorSrc, bwSrc, size])
 
   const onMouseMove = (e) => {
-    const rect = containerRef.current.getBoundingClientRect()
+    const rect = canvasRef.current.getBoundingClientRect()
     posRef.current = {
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
+      x: (e.clientX - rect.left) / rect.width,
+      y: (e.clientY - rect.top) / rect.height,
     }
-    if (!activeRef.current) activeRef.current = true
-  }
-
-  const onMouseLeave = () => {
-    activeRef.current = false
-  }
-
-  const baseStyle = {
-    height,
-    width: 'auto',
-    maxWidth: '100%',
-    objectFit: 'contain',
-    objectPosition: 'top center',
-    display: 'block',
-    userSelect: 'none',
-    draggable: false,
+    activeRef.current = true
   }
 
   return (
-    <div
-      ref={containerRef}
+    <canvas
+      ref={canvasRef}
       onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
+      onMouseLeave={() => { activeRef.current = false }}
       style={{
-        position: 'relative',
-        display: 'inline-block',
+        width: `${size}px`,
+        height: `${size}px`,
+        maxWidth: '100%',
         cursor: 'crosshair',
-        flexShrink: 0,
+        display: 'block',
       }}
-    >
-      {/* B&W hat — bottom, always visible */}
-      <img
-        src={bwSrc}
-        alt="Jack Carnes"
-        style={{ ...baseStyle, pointerEvents: 'none' }}
-      />
-
-      {/* Color — top layer, mask cuts hole at cursor to reveal B&W */}
-      <img
-        ref={topRef}
-        src={colorSrc}
-        alt=""
-        aria-hidden="true"
-        style={{
-          ...baseStyle,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          maskImage: 'none',
-          WebkitMaskImage: 'none',
-        }}
-      />
-    </div>
+    />
   )
 }

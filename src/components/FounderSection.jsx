@@ -81,7 +81,7 @@ export function FounderSection() {
           <MaskReveal
             colorSrc="/jack-color.png"
             bwSrc="/jack-bw.png"
-            height="clamp(380px, 52vw, 640px)"
+            size={580}
           />
         </div>
       </div>
