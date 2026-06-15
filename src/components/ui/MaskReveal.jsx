@@ -122,6 +122,8 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         width: `${size}px`,
         height: `${size}px`,
         maxWidth: '100%',
+        maxHeight: '100%',
+        aspectRatio: '1 / 1',
         cursor: 'none',
         display: 'block',
       }}
