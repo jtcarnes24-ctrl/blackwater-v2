@@ -16,15 +16,21 @@ export function FounderSection() {
       <div style={{ position: 'relative', minHeight: 'clamp(420px, 58vw, 680px)', overflow: 'hidden' }}>
 
         {/* Animated wavy background */}
-        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-          <div className="wavy-bg" style={{
-            position: 'absolute',
-            top: '-160px', left: '-40px', right: '-40px', bottom: '-160px',
-            backgroundImage: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="140"><ellipse cx="40" cy="70" rx="13" ry="50" stroke="%23080808" stroke-width="1.1" fill="none"/></svg>')}")`,
-            backgroundSize: '80px 140px',
-            opacity: 0.18,
-          }} />
-        </div>
+        <svg
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, opacity: 0.15 }}
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <pattern id="wavyOvals" x="0" y="0" width="80" height="140" patternUnits="userSpaceOnUse">
+              <ellipse cx="40" cy="70" rx="13" ry="50" stroke="#080808" strokeWidth="1.2" fill="none" />
+            </pattern>
+          </defs>
+          <g>
+            <animateTransform attributeName="transform" type="translate" from="0 0" to="0 140" dur="9s" repeatCount="indefinite" />
+            <rect x="-40" y="-160" width="3000" height="2000" fill="url(#wavyOvals)" />
+          </g>
+        </svg>
 
         {/* Text rows — centered vertically behind photo */}
         <div style={{
