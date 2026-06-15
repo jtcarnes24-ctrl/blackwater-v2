@@ -82,7 +82,7 @@ export function ServicesSection() {
 
                 <div style={{
                   overflow: 'hidden',
-                  maxHeight: hovered === i ? '80px' : '0',
+                  maxHeight: hovered === i ? '200px' : '0',
                   opacity: hovered === i ? 1 : 0,
                   transition: 'max-height 0.4s cubic-bezier(0.32,0.72,0,1), opacity 0.3s ease',
                 }}>
