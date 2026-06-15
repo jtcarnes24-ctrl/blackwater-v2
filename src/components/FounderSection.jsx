@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
 import { MaskReveal } from './ui/MaskReveal'
-import { Waves } from './ui/Waves'
 
 const jackItems = Array(10).fill('JACK CARNES').join(' · ')
 const bwItems = Array(6).fill('BLACKWATER MARKETING').join(' · ')
@@ -36,11 +35,6 @@ export function FounderSection() {
       {/* Scroll zoom container */}
       <div ref={scrollContainer} className="founder-scroll-zone">
         <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
-
-          {/* Waves background */}
-          <div style={{ position: 'absolute', inset: 0, zIndex: 1, opacity: 0.3, pointerEvents: 'none' }}>
-            <Waves strokeColor="rgba(8,8,8,0.6)" backgroundColor="transparent" pointerSize={0} />
-          </div>
 
           {/* Marquee text, behind photo */}
           <div style={{

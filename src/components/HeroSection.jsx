@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
-import { Waves } from './ui/Waves'
 import { LiquidButton } from './ui/LiquidButton'
 import { fadeUp, fadeIn, clipReveal, staggerContainer, easeOut, easeInOut } from '../lib/animations'
 
@@ -12,8 +11,6 @@ export function HeroSection() {
 
   return (
     <section ref={ref} style={{ position: 'relative', minHeight: '100dvh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-      <Waves strokeColor="rgba(255,255,255,0.13)" backgroundColor="#080808" />
-
       {/* Ambient gradient orbs */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-15%', left: '-8%', width: 'min(700px, 90vw)', height: 'min(700px, 90vw)', background: 'radial-gradient(circle, rgba(90,60,255,0.09) 0%, transparent 65%)', borderRadius: '50%' }} />
