@@ -34,7 +34,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
 
     const drawLiquidPath = (cx, cy, r, t) => {
       const pts = 90
-      ctx.beginPath()
+      // NOTE: no ctx.beginPath() here — caller owns the path
       for (let i = 0; i <= pts; i++) {
         const angle = (i / pts) * Math.PI * 2
         const wave =
