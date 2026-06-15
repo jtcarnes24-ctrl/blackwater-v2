@@ -49,6 +49,11 @@ body {
   to { transform: translateX(-33.333%); }
 }
 
+@keyframes marquee-scroll-right {
+  from { transform: translateX(-33.333%); }
+  to { transform: translateX(0); }
+}
+
 /* Mobile responsive layout helpers */
 .method-grid {
   display: grid;
