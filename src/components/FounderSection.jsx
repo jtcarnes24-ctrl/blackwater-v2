@@ -29,7 +29,7 @@ export function FounderSection() {
     <section id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.06)' }}>
 
       {/* Scroll zoom container — 300vh sticky */}
-      <div ref={scrollContainer} style={{ position: 'relative', height: '300vh' }}>
+      <div ref={scrollContainer} style={{ position: 'relative', height: '180vh' }}>
         <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
 
           {/* Waves background */}
