@@ -50,7 +50,6 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
     objectFit: 'contain',
     objectPosition: 'top center',
     display: 'block',
-    mixBlendMode: 'multiply',
     userSelect: 'none',
     pointerEvents: 'none',
   }
