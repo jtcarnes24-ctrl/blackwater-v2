@@ -54,6 +54,15 @@ body {
   to { transform: translateX(0); }
 }
 
+@keyframes wavy-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(140px); }
+}
+
+.wavy-bg {
+  animation: wavy-drift 10s linear infinite;
+}
+
 /* Mobile responsive layout helpers */
 .method-grid {
   display: grid;

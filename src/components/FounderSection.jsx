@@ -15,13 +15,25 @@ export function FounderSection() {
       {/* Marquee hero */}
       <div style={{ position: 'relative', minHeight: 'clamp(420px, 58vw, 680px)', overflow: 'hidden' }}>
 
+        {/* Animated wavy background */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+          <div className="wavy-bg" style={{
+            position: 'absolute',
+            top: '-160px', left: '-40px', right: '-40px', bottom: '-160px',
+            backgroundImage: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="140"><ellipse cx="40" cy="70" rx="13" ry="50" stroke="%23080808" stroke-width="1.1" fill="none"/></svg>')}")`,
+            backgroundSize: '80px 140px',
+            opacity: 0.09,
+          }} />
+        </div>
+
         {/* Text rows — centered vertically behind photo */}
         <div style={{
           position: 'absolute', top: '50%', left: 0, right: 0,
           transform: 'translateY(-50%)',
           display: 'flex', flexDirection: 'column', gap: '0.1em',
+          zIndex: 1,
         }}>
-          {/* Row 1: JACK CARNES — scrolls left */}
+          {/* Row 1: JACK CARNES — scrolls left, light gray */}
           <div style={{ overflow: 'hidden' }}>
             <div style={{
               display: 'flex', whiteSpace: 'nowrap', gap: '0',
@@ -34,7 +46,7 @@ export function FounderSection() {
                   fontWeight: 700,
                   letterSpacing: '-0.03em',
                   textTransform: 'uppercase',
-                  color: '#080808',
+                  color: 'rgba(8,8,8,0.18)',
                   lineHeight: 1,
                   paddingRight: '2rem',
                   flexShrink: 0,
@@ -45,7 +57,7 @@ export function FounderSection() {
             </div>
           </div>
 
-          {/* Row 2: BLACKWATER MARKETING — scrolls right */}
+          {/* Row 2: BLACKWATER MARKETING — scrolls right, black */}
           <div style={{ overflow: 'hidden' }}>
             <div style={{
               display: 'flex', whiteSpace: 'nowrap', gap: '0',

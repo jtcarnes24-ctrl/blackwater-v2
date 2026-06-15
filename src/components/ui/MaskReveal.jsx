@@ -5,6 +5,8 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
   const posRef = useRef({ x: 0.5, y: 0.4 })
   const smoothRef = useRef({ x: 0.5, y: 0.4 })
   const activeRef = useRef(false)
+  const radiusRef = useRef(0)
+  const timeRef = useRef(0)
   const imagesRef = useRef({ color: null, bw: null })
   const rafRef = useRef(null)
 
@@ -15,10 +17,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     canvas.height = size
 
     let loaded = 0
-    const onLoad = () => {
-      loaded++
-      if (loaded === 2) startLoop()
-    }
+    const onLoad = () => { loaded++; if (loaded === 2) startLoop() }
 
     const colorImg = new window.Image()
     const bwImg = new window.Image()
@@ -29,34 +28,55 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     imagesRef.current = { color: colorImg, bw: bwImg }
 
     const lerp = (a, b, t) => a + (b - a) * t
-    const radius = size * 0.28
+    const maxRadius = size * 0.3
+
+    const drawLiquidPath = (cx, cy, r, t) => {
+      const pts = 90
+      ctx.beginPath()
+      for (let i = 0; i <= pts; i++) {
+        const angle = (i / pts) * Math.PI * 2
+        const wave =
+          Math.sin(angle * 3 + t * 2.2) * 0.06 +
+          Math.sin(angle * 5 - t * 1.6) * 0.032 +
+          Math.sin(angle * 8 + t * 3.0) * 0.014
+        const pr = r * (1 + wave)
+        const px = cx + Math.cos(angle) * pr
+        const py = cy + Math.sin(angle) * pr
+        i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py)
+      }
+      ctx.closePath()
+    }
 
     const startLoop = () => {
       const draw = () => {
         const { color, bw } = imagesRef.current
-        ctx.clearRect(0, 0, size, size)
+        timeRef.current += 0.018
+        const t = timeRef.current
 
-        // Base: B&W hat photo
+        ctx.clearRect(0, 0, size, size)
         ctx.drawImage(bw, 0, 0, size, size)
 
-        // Smooth cursor
-        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.1)
-        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.1)
+        // Cursor lerp — slow/laggy on purpose
+        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.055)
+        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.055)
 
-        if (activeRef.current) {
+        // Radius animates in on hover, slowly drains out on leave
+        const targetRadius = activeRef.current ? maxRadius : 0
+        const lerpSpeed = activeRef.current ? 0.07 : 0.04
+        radiusRef.current = lerp(radiusRef.current, targetRadius, lerpSpeed)
+
+        if (radiusRef.current > 2) {
           const cx = smoothRef.current.x * size
           const cy = smoothRef.current.y * size
 
-          // Clip to everything EXCEPT the circle (even-odd winding)
           ctx.save()
           ctx.beginPath()
           ctx.rect(0, 0, size, size)
-          ctx.arc(cx, cy, radius, 0, Math.PI * 2, true)
+          drawLiquidPath(cx, cy, radiusRef.current, t)
           ctx.clip('evenodd')
           ctx.drawImage(color, 0, 0, size, size)
           ctx.restore()
         } else {
-          // Default: full color on top
           ctx.drawImage(color, 0, 0, size, size)
         }
 
