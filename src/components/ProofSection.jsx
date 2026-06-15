@@ -1,171 +1,197 @@
-import { motion } from 'framer-motion'
-import { easeOut, easeInOut, viewport } from '../lib/animations'
+import React from 'react'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { easeInOut, viewport } from '../lib/animations'
 
 const results = [
-  {
-    img: '/results/result-8.webp',
-    label: 'Meta Ads',
-    stat: '12.97x ROAS',
-    desc: '$6,857 in spend generated $88,913 in purchases. 875 purchases at $7.84 cost per result.',
-    span: '1 / 6',
-  },
-  {
-    img: '/results/result-9.webp',
-    label: 'Meta Ads',
-    stat: '12.56x ROAS',
-    desc: '$1,644 in ad spend returned $20,663 in purchases across website and mobile.',
-    span: '6 / 9',
-    tall: true,
-  },
-  {
-    img: '/results/result-6.webp',
-    label: 'Meta Ads',
-    stat: '11.73x ROAS',
-    desc: '$1,321 spent, $15,508 in purchases. 103 purchases at $12.83 per result.',
-    span: '9 / 13',
-    tall: true,
-  },
-  {
-    img: '/results/result-7.webp',
-    label: 'Meta Ads',
-    stat: '7.38x ROAS',
-    desc: '$5.63 per purchase with a 15.94% hook rate. Creative and targeting dialed in.',
-    span: '1 / 5',
-  },
-  {
-    img: '/results/result-1.webp',
-    label: 'Shopify',
-    stat: '$8,236/day',
-    desc: '193 orders. 578% jump over the previous period.',
-    span: '5 / 9',
-  },
-  {
-    img: '/results/result-2.webp',
-    label: 'Shopify',
-    stat: '$7,659/day',
-    desc: '159 orders, 3.04% conversion rate. Revenue up 25% day-over-day on same spend.',
-    span: '9 / 13',
-  },
-  {
-    img: '/results/result-3.webp',
-    label: 'Shopify',
-    stat: '$51K month',
-    desc: '$51,290 in a single month. Sessions up 77%.',
-    span: '1 / 7',
-  },
-  {
-    img: '/results/result-5.webp',
-    label: 'Shopify',
-    stat: '$5,440/day',
-    desc: '58% above prior period. 3.08% conversion rate. Ads doing exactly what they should.',
-    span: '7 / 13',
-  },
+  { title: '12.97x ROAS', stat: '$88,913 from $6,857 spend', thumbnail: '/results/result-8.webp' },
+  { title: '12.56x ROAS', stat: '$20,663 from $1,644 spend', thumbnail: '/results/result-9.webp' },
+  { title: '11.73x ROAS', stat: '$15,508 from $1,321 spend', thumbnail: '/results/result-6.webp' },
+  { title: '7.38x ROAS', stat: '$5.63 CPA · 15.94% hook rate', thumbnail: '/results/result-7.webp' },
+  { title: '$8,236/day', stat: '193 orders · 578% jump', thumbnail: '/results/result-1.webp' },
+  { title: '$7,659/day', stat: '159 orders · 3.04% CVR', thumbnail: '/results/result-2.webp' },
+  { title: '$51K month', stat: '$51,290 · sessions up 77%', thumbnail: '/results/result-3.webp' },
+  { title: '$5,440/day', stat: '58% above prior period', thumbnail: '/results/result-5.webp' },
 ]
 
-export function ProofSection() {
+/* fill 15 slots for 3 rows of 5 */
+const products = [...results, ...results, results[0], results[1], results[2], results[3], results[4], results[5], results[6]].slice(0, 15)
+
+function ProductCard({ product, translate }) {
   return (
-    <section
-      id="results-proof"
+    <motion.div
+      style={{ x: translate }}
+      whileHover={{ y: -20 }}
+      className="group/product relative flex-shrink-0"
       style={{
-        background: '#080808',
-        padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)',
-        borderTop: '1px solid rgba(255,255,255,0.06)',
+        x: translate,
+        height: '22rem',
+        width: '28rem',
+        position: 'relative',
+        flexShrink: 0,
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '2rem' }}>
-        <div>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: easeOut }}
-            viewport={viewport}
-            style={{
-              fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.35)', fontWeight: 600, marginBottom: '1.25rem',
-            }}
-          >
-            Client Results
-          </motion.p>
-          {['PROOF IN', 'THE NUMBERS'].map((line, i) => (
-            <div key={line} style={{ overflow: 'hidden' }}>
-              <motion.h2
-                initial={{ clipPath: 'inset(0 0 100% 0)' }}
-                whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
-                transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
-                viewport={viewport}
-                style={{
-                  fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700,
-                  letterSpacing: '-0.03em', lineHeight: 0.92,
-                  color: '#ffffff', textTransform: 'uppercase', margin: 0,
-                }}
-              >
-                {line}
-              </motion.h2>
-            </div>
-          ))}
-        </div>
+      <div style={{ display: 'block', height: '100%', width: '100%', position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+        <img
+          src={product.thumbnail}
+          height="600"
+          width="600"
+          style={{ objectFit: 'cover', objectPosition: 'center top', position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+          alt={product.title}
+          loading="lazy"
+        />
+      </div>
+      {/* hover overlay */}
+      <div style={{
+        position: 'absolute', inset: 0, height: '100%', width: '100%',
+        opacity: 0, background: 'rgba(0,0,0,0.85)', pointerEvents: 'none',
+        borderRadius: '12px', transition: 'opacity 0.25s ease',
+      }}
+        className="group-hover/product-overlay"
+        onMouseEnter={e => { e.currentTarget.style.opacity = '1' }}
+        onMouseLeave={e => { e.currentTarget.style.opacity = '0' }}
+      />
+      <div style={{
+        position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem',
+        opacity: 0, transition: 'opacity 0.25s ease', pointerEvents: 'none',
+      }}
+        className="card-label"
+      >
+        <p style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em' }}>{product.title}</p>
+        <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.78rem', marginTop: '0.2rem' }}>{product.stat}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+function ProductCardHover({ product, translate }) {
+  const [hovered, setHovered] = React.useState(false)
+  return (
+    <motion.div
+      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0 }}
+      whileHover={{ y: -20 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div style={{ height: '100%', width: '100%', position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+        <img
+          src={product.thumbnail}
+          height="600"
+          width="600"
+          style={{ objectFit: 'cover', objectPosition: 'center top', position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+          alt={product.title}
+          loading="lazy"
+        />
+      </div>
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: '12px',
+        background: 'rgba(0,0,0,0.82)',
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.25s ease',
+        pointerEvents: 'none',
+      }} />
+      <div style={{
+        position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem',
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.25s ease',
+        pointerEvents: 'none',
+      }}>
+        <p style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em' }}>{product.title}</p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', marginTop: '0.25rem' }}>{product.stat}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+export function ProofSection() {
+  const firstRow = products.slice(0, 5)
+  const secondRow = products.slice(5, 10)
+  const thirdRow = products.slice(10, 15)
+
+  const ref = React.useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+
+  const springConfig = { stiffness: 300, damping: 30, bounce: 100 }
+
+  const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig)
+  const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig)
+  const rotateX = useSpring(useTransform(scrollYProgress, [0, 0.2], [15, 0]), springConfig)
+  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2], [0.2, 1]), springConfig)
+  const rotateZ = useSpring(useTransform(scrollYProgress, [0, 0.2], [20, 0]), springConfig)
+  const translateY = useSpring(useTransform(scrollYProgress, [0, 0.2], [-700, 500]), springConfig)
+
+  return (
+    <div
+      ref={ref}
+      id="results-proof"
+      style={{
+        height: '300vh',
+        paddingTop: '10rem',
+        paddingBottom: '10rem',
+        overflow: 'hidden',
+        background: '#080808',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        perspective: '1000px',
+        WebkitFontSmoothing: 'antialiased',
+      }}
+    >
+      {/* Header */}
+      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 clamp(1.5rem, 8vw, 7rem)', width: '100%', position: 'relative' }}>
         <motion.p
-          initial={{ opacity: 0 }} whileInView={{ opacity: 0.35 }} transition={{ duration: 0.8, delay: 0.3 }} viewport={viewport}
-          style={{ fontSize: '0.75rem', color: '#fff', lineHeight: 1.7, maxWidth: '180px', textAlign: 'right' }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={viewport}
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', fontWeight: 600, marginBottom: '1.25rem' }}
+        >
+          Client Results
+        </motion.p>
+        {['PROOF IN', 'THE NUMBERS'].map((line, i) => (
+          <div key={line} style={{ overflow: 'hidden' }}>
+            <motion.h2
+              initial={{ clipPath: 'inset(0 0 100% 0)' }}
+              whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
+              transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
+              viewport={viewport}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#ffffff', textTransform: 'uppercase', margin: 0 }}
+            >
+              {line}
+            </motion.h2>
+          </div>
+        ))}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.35 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={viewport}
+          style={{ fontSize: '0.75rem', color: '#fff', lineHeight: 1.7, marginTop: '1.5rem' }}
         >
           Real campaigns. Real accounts. Real revenue.
         </motion.p>
       </div>
 
-      <style>{`
-        .proof-bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
-        @media (max-width: 768px) {
-          .proof-bento { grid-template-columns: 1fr 1fr !important; }
-          .proof-bento > * { grid-column: span 1 !important; }
-        }
-        @media (max-width: 480px) {
-          .proof-bento { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
-
-      {/* Asymmetric bento grid */}
-      <div className="proof-bento">
-        {results.map((r, i) => (
-          <motion.div
-            key={r.label + i}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: easeOut, delay: (i % 4) * 0.07 }}
-            viewport={viewport}
-            style={{
-              gridColumn: r.span, /* overridden on mobile by .proof-bento > * */
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.06)',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <div style={{
-              width: '100%',
-              aspectRatio: r.tall ? '3/4' : '16/9',
-              overflow: 'hidden',
-              background: '#111',
-              flexShrink: 0,
-            }}>
-              <img
-                src={r.img}
-                alt={r.label}
-                loading="lazy"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
-              />
-            </div>
-            <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
-                <p style={{ fontSize: '0.65rem', fontWeight: 600, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{r.label}</p>
-                <p style={{ fontSize: '0.88rem', fontWeight: 700, color: '#f2ede4', letterSpacing: '-0.01em', flexShrink: 0 }}>{r.stat}</p>
-              </div>
-              <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>{r.desc}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
+      {/* Parallax rows */}
+      <motion.div
+        style={{ rotateX, rotateZ, translateY, opacity }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
+          {firstRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateX} key={product.title + i} />
+          ))}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
+          {secondRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateXReverse} key={product.title + i} />
+          ))}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', paddingLeft: '4rem' }}>
+          {thirdRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateX} key={product.title + i} />
+          ))}
+        </div>
+      </motion.div>
+    </div>
   )
 }
