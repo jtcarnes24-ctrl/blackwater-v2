@@ -29,7 +29,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     imagesRef.current = { color: colorImg, bw: bwImg }
 
     const lerp = (a, b, t) => a + (b - a) * t
-    const MAX_RADIUS = size * 0.18
+    const MAX_RADIUS = size * 0.13
     const TRAIL_MAX_AGE = 120
 
     const drawLiquidPath = (cx, cy, r, t) => {
@@ -38,9 +38,10 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
       for (let i = 0; i <= pts; i++) {
         const angle = (i / pts) * Math.PI * 2
         const wave =
-          Math.sin(angle * 3 + t * 1.8) * 0.045 +
-          Math.sin(angle * 5 - t * 1.3) * 0.022 +
-          Math.sin(angle * 7 + t * 2.5) * 0.01
+          Math.sin(angle * 3 + t * 1.8) * 0.13 +
+          Math.sin(angle * 5 - t * 1.3) * 0.08 +
+          Math.sin(angle * 7 + t * 2.5) * 0.05 +
+          Math.sin(angle * 11 - t * 3.1) * 0.03
         const pr = r * (1 + wave)
         i === 0
           ? ctx.moveTo(cx + Math.cos(angle) * pr, cy + Math.sin(angle) * pr)
