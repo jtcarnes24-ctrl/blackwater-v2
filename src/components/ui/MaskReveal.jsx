@@ -91,6 +91,9 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
           }
 
           ctx.clip()
+          // Fill cream first so transparent B&W edges don't bleed color through
+          ctx.fillStyle = '#f2ede4'
+          ctx.fillRect(0, 0, size, size)
           ctx.drawImage(bw, 0, 0, size, size)
           ctx.restore()
         }

@@ -16,8 +16,8 @@ export function FounderSection() {
       {/* Marquee hero */}
       <div style={{ position: 'relative', minHeight: 'clamp(420px, 58vw, 680px)', overflow: 'hidden' }}>
 
-        {/* Animated wavy lines — same as hero */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.35, pointerEvents: 'none' }}>
+        {/* Animated wavy lines — same as hero, behind everything */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1, opacity: 0.3, pointerEvents: 'none' }}>
           <Waves strokeColor="rgba(8,8,8,0.6)" backgroundColor="transparent" pointerSize={0} />
         </div>
 
@@ -26,7 +26,7 @@ export function FounderSection() {
           position: 'absolute', top: '50%', left: 0, right: 0,
           transform: 'translateY(-50%)',
           display: 'flex', flexDirection: 'column', gap: '0.1em',
-          zIndex: 1,
+          zIndex: 5,
         }}>
           {/* Row 1: JACK CARNES — scrolls left, light gray */}
           <div style={{ overflow: 'hidden' }}>
@@ -83,7 +83,7 @@ export function FounderSection() {
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          zIndex: 10,
+          zIndex: 15,
         }}>
           <MaskReveal
             colorSrc="/jack-color.png"
