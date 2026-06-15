@@ -53,8 +53,8 @@ export function Waves({
     pathsRef.current.forEach(p => p.remove())
     pathsRef.current = []
 
-    const xGap = 8
-    const yGap = 8
+    const xGap = 14
+    const yGap = 14
     const oWidth = width + 200
     const oHeight = height + 30
     const totalLines = Math.ceil(oWidth / xGap)
