@@ -12,15 +12,21 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
     const lerp = (a, b, t) => a + (b - a) * t
 
     const tick = () => {
-      smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.09)
-      smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.09)
+      smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.1)
+      smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.1)
 
       if (topRef.current) {
-        const { x, y } = smoothRef.current
-        const size = activeRef.current ? '34%' : '0%'
-        const mask = `radial-gradient(circle ${size} at ${x}% ${y}%, transparent 20%, black 70%)`
-        topRef.current.style.maskImage = mask
-        topRef.current.style.webkitMaskImage = mask
+        if (activeRef.current) {
+          const { x, y } = smoothRef.current
+          // Transparent hole at cursor → reveals B&W below, black = color photo visible
+          const mask = `radial-gradient(circle 30% at ${x}% ${y}%, transparent 0%, transparent 25%, black 60%)`
+          topRef.current.style.maskImage = mask
+          topRef.current.style.webkitMaskImage = mask
+        } else {
+          // No mask = color photo fully visible
+          topRef.current.style.maskImage = 'none'
+          topRef.current.style.webkitMaskImage = 'none'
+        }
       }
 
       rafRef.current = requestAnimationFrame(tick)
@@ -36,14 +42,14 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
     }
-    activeRef.current = true
+    if (!activeRef.current) activeRef.current = true
   }
 
   const onMouseLeave = () => {
     activeRef.current = false
   }
 
-  const imgStyle = {
+  const baseStyle = {
     height,
     width: 'auto',
     maxWidth: '100%',
@@ -51,7 +57,7 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
     objectPosition: 'top center',
     display: 'block',
     userSelect: 'none',
-    pointerEvents: 'none',
+    draggable: false,
   }
 
   return (
@@ -62,29 +68,33 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
       style={{
         position: 'relative',
         display: 'inline-block',
-        cursor: 'crosshair',
+        cursor: 'none',
         flexShrink: 0,
       }}
     >
-      {/* B&W hat photo — bottom layer, always visible */}
-      <img src={bwSrc} alt="Jack Carnes" style={imgStyle} />
+      {/* B&W hat — bottom, always visible */}
+      <img
+        src={bwSrc}
+        alt="Jack Carnes"
+        style={{ ...baseStyle, pointerEvents: 'none' }}
+      />
 
-      {/* Color photo — top layer, masked by cursor */}
+      {/* Color — top layer, mask cuts hole at cursor to reveal B&W */}
       <img
         ref={topRef}
         src={colorSrc}
         alt=""
         aria-hidden="true"
         style={{
-          ...imgStyle,
+          ...baseStyle,
           position: 'absolute',
           top: 0,
           left: 0,
-          height: '100%',
           width: '100%',
-          objectFit: 'contain',
-          maskImage: 'radial-gradient(circle 0% at 50% 50%, transparent 20%, black 70%)',
-          WebkitMaskImage: 'radial-gradient(circle 0% at 50% 50%, transparent 20%, black 70%)',
+          height: '100%',
+          pointerEvents: 'none',
+          maskImage: 'none',
+          WebkitMaskImage: 'none',
         }}
       />
     </div>
