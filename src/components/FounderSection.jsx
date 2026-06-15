@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { MaskReveal } from './ui/MaskReveal'
 
 const jackItems = Array(10).fill('JACK CARNES').join(' · ')
 const bwItems = Array(6).fill('BLACKWATER MARKETING').join(' · ')
@@ -69,25 +70,18 @@ export function FounderSection() {
           </div>
         </div>
 
-        {/* Photo — centered on top of text */}
+        {/* Mask reveal — centered on top of text */}
         <div style={{
           position: 'absolute',
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 10,
-          pointerEvents: 'none',
         }}>
-          <img
-            src="/founder.jpg"
-            alt="Jack Carnes — Founder of BlackWater Marketing"
-            style={{
-              height: 'clamp(380px, 52vw, 640px)',
-              width: 'auto',
-              objectFit: 'contain',
-              objectPosition: 'top',
-              display: 'block',
-            }}
+          <MaskReveal
+            colorSrc="/jack-color.png"
+            bwSrc="/jack-bw.png"
+            height="clamp(380px, 52vw, 640px)"
           />
         </div>
       </div>
