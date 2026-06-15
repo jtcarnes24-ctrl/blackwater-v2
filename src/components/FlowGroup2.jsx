@@ -49,7 +49,7 @@ export function FlowGroup2() {
               transition={{ duration: 0.6, ease: easeOut, delay: 0.35 }} viewport={viewport}
               style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '42ch', margin: '1.5rem 0 0.85rem' }}
             >
-              Brands that aren't using AI in their marketing right now aren't just falling behind — they're getting priced out. The cost to acquire a customer keeps climbing while your competitors are using AI to find better audiences, test more creatives, and optimize faster than any human team can keep up with manually.
+              Brands that aren't using AI in their marketing right now aren't just falling behind, they're getting priced out. The cost to acquire a customer keeps climbing while your competitors are using AI to find better audiences, test more creatives, and optimize faster than any human team can keep up with manually.
             </motion.p>
 
             <motion.p
@@ -65,7 +65,7 @@ export function FlowGroup2() {
               transition={{ duration: 0.6, ease: easeOut, delay: 0.49 }} viewport={viewport}
               style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '42ch', margin: '0 0 1.5rem' }}
             >
-              Every campaign at BlackWater runs AI-driven creative analysis, audience modeling, and real-time budget optimization. It's not an add-on — it's built into how we operate.
+              Every campaign at BlackWater runs AI-driven creative analysis, audience modeling, and real-time budget optimization. It's not an add-on, it's built into how we operate.
             </motion.p>
 
             <motion.div

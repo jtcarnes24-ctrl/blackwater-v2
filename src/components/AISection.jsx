@@ -17,7 +17,7 @@ export function AISection() {
       }}
     >
       <div style={{ display: 'flex', width: '100%', maxWidth: '1400px', margin: '0 auto' }}>
-        {/* Left — copy */}
+        {/* Left, copy */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -40,7 +40,7 @@ export function AISection() {
             <span style={{ color: '#f2ede4' }}>We engineer them.</span>
           </h2>
           <p style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '420px', marginBottom: '2rem' }}>
-            Every campaign at BlackWater is powered by AI-driven creative analysis, audience modeling, and real-time budget optimization — so your ad spend works harder than the competition's.
+            Every campaign at BlackWater is powered by AI-driven creative analysis, audience modeling, and real-time budget optimization, so your ad spend works harder than the competition's.
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -51,7 +51,7 @@ export function AISection() {
             {[
               { label: 'Creative Intelligence', desc: 'AI analyzes hooks, copy, and visuals to predict performance before launch.' },
               { label: 'Audience Modeling', desc: 'Machine learning clusters your best buyers and finds more like them at scale.' },
-              { label: 'Real-Time Optimization', desc: 'Automated rules kill losers and scale winners 24/7 — no manual babysitting.' },
+              { label: 'Real-Time Optimization', desc: 'Automated rules kill losers and scale winners 24/7, no manual babysitting.' },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -71,7 +71,7 @@ export function AISection() {
           </div>
         </motion.div>
 
-        {/* Right — 3D robot */}
+        {/* Right, 3D robot */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

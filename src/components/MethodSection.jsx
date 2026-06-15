@@ -3,7 +3,7 @@ import { clipReveal, fadeUp, slideRight, staggerContainer, easeOut, easeInOut, v
 
 const pillars = [
   { num: '01', title: 'Built on What Works', desc: 'The Method was built by studying the top-performing strategies across the industry and combining them into one. No guesswork. No borrowed ideas. Just what works, distilled.' },
-  { num: '02', title: 'Engineered for Performance', desc: 'Every decision has a reason behind it. The structure is designed to get results efficiently — so your ad spend works harder from day one, not after months of trial and error.' },
+  { num: '02', title: 'Engineered for Performance', desc: 'Every decision has a reason behind it. The structure is designed to get results efficiently, so your ad spend works harder from day one, not after months of trial and error.' },
   { num: '03', title: 'Applied Consistently', desc: "The Method isn't adjusted per campaign. It's the foundation. That consistency is what creates predictable, repeatable results for every client we work with." },
 ]
 
@@ -31,11 +31,11 @@ export function MethodSection() {
           <motion.div variants={staggerContainer(0.1, 0.3)} initial="hidden" whileInView="show" viewport={viewport}>
             <motion.p variants={fadeUp} transition={{ duration: 0.6, ease: easeOut }}
               style={{ fontSize: '0.92rem', color: 'rgba(8,8,8,0.55)', lineHeight: 1.7, marginTop: '2rem', marginBottom: '1rem' }}>
-              It didn't come from a course or a template. It came from years of studying the best media buyers and marketing agencies in the world — pulling what actually produces results, cutting what doesn't.
+              It didn't come from a course or a template. It came from years of studying the best media buyers and marketing agencies in the world, pulling what actually produces results, cutting what doesn't.
             </motion.p>
             <motion.p variants={fadeUp} transition={{ duration: 0.6, ease: easeOut }}
               style={{ fontSize: '0.92rem', color: 'rgba(8,8,8,0.55)', lineHeight: 1.7 }}>
-              Every campaign we run is built on it. It's the thinking behind them — the structure, the sequencing, the decisions most agencies never think to make.
+              Every campaign we run is built on it. It's the thinking behind them, the structure, the sequencing, the decisions most agencies never think to make.
             </motion.p>
           </motion.div>
         </motion.div>

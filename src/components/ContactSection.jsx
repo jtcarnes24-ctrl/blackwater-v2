@@ -10,15 +10,6 @@ export function ContactSection() {
       <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: 'min(900px, 120vw)', height: 'min(600px, 80vw)', background: 'radial-gradient(ellipse, rgba(90,60,255,0.06) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
-        <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '2rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.75rem' }}
-        >
-          <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(255,255,255,0.18)' }} />
-          Let's Work Together
-        </motion.p>
-
         {['CONTACT', 'US'].map((line, i) => (
           <div key={line} style={{ overflow: 'hidden' }}>
             <motion.h2

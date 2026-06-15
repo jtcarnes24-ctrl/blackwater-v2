@@ -11,7 +11,7 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
   return (
-    <section ref={ref} style={{ position: 'relative', height: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+    <section ref={ref} style={{ position: 'relative', minHeight: '100dvh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
       <Waves strokeColor="rgba(255,255,255,0.13)" backgroundColor="#080808" />
 
       {/* Ambient gradient orbs */}
@@ -43,7 +43,7 @@ export function HeroSection() {
             Proven Systems Designed For Conversions
           </motion.p>
 
-          {/* Headline — each line clips up */}
+          {/* Headline, each line clips up */}
           <div style={{ overflow: 'hidden', marginBottom: '0.05em' }}>
             <motion.h1
               variants={clipReveal}
@@ -86,7 +86,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, ease: easeOut }}
             style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.5)', maxWidth: '420px', marginBottom: '2rem', lineHeight: 1.65 }}
           >
-            We build paid social systems that scale. Meta Ads engineered for results — not vanity metrics.
+            We build paid social systems that scale. Meta Ads engineered for results, not vanity metrics.
           </motion.p>
 
           <motion.div
@@ -104,19 +104,6 @@ export function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.4 }}
-        style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}
-      >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ width: '1px', height: '50px', background: 'linear-gradient(to bottom, rgba(255,255,255,0.5), transparent)', margin: '0 auto' }}
-        />
-      </motion.div>
     </section>
   )
 }

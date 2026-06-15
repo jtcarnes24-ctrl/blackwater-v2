@@ -34,7 +34,7 @@ export function AboutSection() {
           transition={{ duration: 0.6, ease: easeOut }}
           style={{ fontSize: '1.05rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.7, maxWidth: '640px', marginTop: '2.5rem' }}
         >
-          BlackWater Marketing is a performance-driven digital marketing agency built for brands that don't settle. We specialize in Meta ad campaigns that actually move the needle — not just run. Creative strategy, conversion optimization, and paid advertising working together so every dollar you spend has a reason to be there.
+          BlackWater Marketing is a performance-driven digital marketing agency built for brands that don't settle. We specialize in Meta ad campaigns that actually move the needle, not just run. Creative strategy, conversion optimization, and paid advertising working together so every dollar you spend has a reason to be there.
         </motion.p>
       </motion.div>
     </section>

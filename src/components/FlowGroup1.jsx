@@ -4,7 +4,7 @@ import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } fr
 
 const pillars = [
   { num: '01', title: 'Built on What Works', desc: 'The Method was built by studying the top-performing strategies across the industry and combining them into one. No guesswork. No borrowed ideas. Just what works, distilled.' },
-  { num: '02', title: 'Engineered for Performance', desc: 'Every decision has a reason behind it. The structure is designed to get results efficiently — so your ad spend works harder from day one, not after months of trial and error.' },
+  { num: '02', title: 'Engineered for Performance', desc: 'Every decision has a reason behind it. The structure is designed to get results efficiently, so your ad spend works harder from day one, not after months of trial and error.' },
   { num: '03', title: 'Applied Consistently', desc: "The Method isn't adjusted per campaign. It's the foundation. That consistency is what creates predictable, repeatable results for every client we work with." },
 ]
 
@@ -46,7 +46,7 @@ export function FlowGroup1() {
           transition={{ duration: 0.6, ease: easeOut, delay: 0.3 }} viewport={viewport}
           style={{ fontSize: 'clamp(1rem, 1.8vw, 1.3rem)', color: 'rgba(8,8,8,0.6)', lineHeight: 1.7, maxWidth: '55ch' }}
         >
-          BlackWater Marketing is a performance-driven digital marketing agency built for brands that don't settle. We specialize in Meta ad campaigns that actually move the needle — not just run. Creative strategy, conversion optimization, and paid advertising working together so every dollar you spend has a reason to be there.
+          BlackWater Marketing is a performance-driven digital marketing agency built for brands that don't settle. We specialize in Meta ad campaigns that actually move the needle, not just run. Creative strategy, conversion optimization, and paid advertising working together so every dollar you spend has a reason to be there.
         </motion.p>
       </FlowSection>
 
@@ -84,7 +84,7 @@ export function FlowGroup1() {
               transition={{ duration: 0.6, ease: easeOut, delay: 0.2 }} viewport={viewport}
               style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, marginTop: '2rem' }}
             >
-              Every campaign we run is built on it. It's the thinking behind the ads — the structure, the sequencing, the decisions most agencies never think to make.
+              Every campaign we run is built on it. It's the thinking behind the ads, the structure, the sequencing, the decisions most agencies never think to make.
             </motion.p>
           </div>
 

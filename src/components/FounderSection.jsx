@@ -10,9 +10,9 @@ const bwItems = Array(6).fill('BLACKWATER MARKETING').join(' · ')
 const repeated = (str) => [str, str, str].join('    ')
 
 const PARAS = [
-  `I started out running my own fitness brand — selling to weightlifters, figuring it out as I went. Pretty quickly I realized the product wasn't the hard part. Getting it in front of the right people was. That's when I went deep on ads. Not as a side skill — as the whole thing. Once you understand how paid traffic actually works, you start seeing it everywhere. Every successful brand you admire has a machine running behind it. I wanted to build that machine.`,
-  `BlackWater started as a system before it was an agency. I spent a long time studying what the best-performing brands were doing differently — not just their ads, but the whole machine behind them. The creative strategy, the funnel structure, the way they scaled without blowing their numbers. I built The Method from that. Every client we take on runs through it.`,
-  `I don't take on clients I can't actually help. That sounds obvious, but it's rarer than you'd think in this industry. When we work together, you're not getting handed off to an account manager two weeks in. You get me — on the account, watching the numbers, adjusting when something needs to move. The brands I work with tend to stay because the results keep coming.`,
+  `I started out running my own fitness brand, selling to weightlifters, figuring it out as I went. Pretty quickly I realized the product wasn't the hard part. Getting it in front of the right people was. That's when I went deep on ads. Not as a side skill, as the whole thing. Once you understand how paid traffic actually works, you start seeing it everywhere. Every successful brand you admire has a machine running behind it. I wanted to build that machine.`,
+  `BlackWater started as a system before it was an agency. I spent a long time studying what the best-performing brands were doing differently, not just their ads, but the whole machine behind them. The creative strategy, the funnel structure, the way they scaled without blowing their numbers. I built The Method from that. Every client we take on runs through it.`,
+  `I don't take on clients I can't actually help. That sounds obvious, but it's rarer than you'd think in this industry. When we work together, you're not getting handed off to an account manager two weeks in. You get me, on the account, watching the numbers, adjusting when something needs to move. The brands I work with tend to stay because the results keep coming.`,
 ]
 
 export function FounderSection() {
@@ -28,7 +28,7 @@ export function FounderSection() {
   return (
     <section id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.06)' }}>
 
-      {/* Scroll zoom container — 300vh sticky */}
+      {/* Scroll zoom container, 300vh sticky */}
       <div ref={scrollContainer} style={{ position: 'relative', height: '180vh' }}>
         <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
 
@@ -37,7 +37,7 @@ export function FounderSection() {
             <Waves strokeColor="rgba(8,8,8,0.6)" backgroundColor="transparent" pointerSize={0} />
           </div>
 
-          {/* Marquee text — behind photo */}
+          {/* Marquee text, behind photo */}
           <div style={{
             position: 'absolute', top: '50%', left: 0, right: 0,
             transform: 'translateY(-50%)',
@@ -76,7 +76,7 @@ export function FounderSection() {
             </div>
           </div>
 
-          {/* MaskReveal — zooms on scroll */}
+          {/* MaskReveal, zooms on scroll */}
           <motion.div style={{
             position: 'absolute',
             bottom: 0,
@@ -100,7 +100,7 @@ export function FounderSection() {
         </div>
       </div>
 
-      {/* Bio — after scroll zoom completes */}
+      {/* Bio, after scroll zoom completes */}
       <div style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 7rem)' }}>
         <motion.div
           variants={staggerContainer(0.12, 0.05)}
@@ -118,7 +118,7 @@ export function FounderSection() {
             }}
           >
             <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(8,8,8,0.2)' }} />
-            Founder — BlackWater Marketing
+            Founder, BlackWater Marketing
           </motion.p>
 
           <div style={{ display: 'flex', gap: 'clamp(2rem, 6vw, 8rem)', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '2rem' }}>
