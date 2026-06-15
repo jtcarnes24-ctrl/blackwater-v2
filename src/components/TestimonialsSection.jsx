@@ -25,18 +25,21 @@ export function TestimonialsSection() {
         ))}
       </motion.div>
 
+      <style>{`
+        .testimonials-bento { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: auto auto; gap: 1rem; }
+        @media (max-width: 768px) {
+          .testimonials-bento { grid-template-columns: 1fr !important; grid-template-rows: auto !important; }
+          .testimonials-bento > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+        }
+      `}</style>
+
       {/* Bento-style asymmetric testimonial grid */}
       <motion.div
+        className="testimonials-bento"
         variants={staggerContainer(0.1, 0.05)}
         initial="hidden"
         whileInView="show"
         viewport={viewport}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(12, 1fr)',
-          gridTemplateRows: 'auto auto',
-          gap: '1rem',
-        }}
       >
         {/* Large card, col 1-7 */}
         <motion.div
@@ -75,13 +78,6 @@ export function TestimonialsSection() {
         </motion.div>
       </motion.div>
 
-      {/* Mobile fallback grid */}
-      <style>{`
-        @media (max-width: 768px) {
-          .testimonials-bento { display: none !important; }
-          .testimonials-mobile { display: flex !important; }
-        }
-      `}</style>
     </section>
   )
 }

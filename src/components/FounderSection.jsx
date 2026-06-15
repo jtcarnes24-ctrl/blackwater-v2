@@ -28,8 +28,13 @@ export function FounderSection() {
   return (
     <section id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.06)' }}>
 
-      {/* Scroll zoom container, 300vh sticky */}
-      <div ref={scrollContainer} style={{ position: 'relative', height: '180vh' }}>
+      <style>{`
+        .founder-scroll-zone { position: relative; height: 180vh; }
+        @media (max-width: 768px) { .founder-scroll-zone { height: 120vh; } }
+      `}</style>
+
+      {/* Scroll zoom container */}
+      <div ref={scrollContainer} className="founder-scroll-zone">
         <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
 
           {/* Waves background */}
@@ -83,7 +88,7 @@ export function FounderSection() {
             left: '50%',
             translateX: '-50%',
             zIndex: 15,
-            width: 'min(760px, 100vw)',
+            width: 'min(760px, 90vw)',
             scale,
             transformOrigin: 'bottom center',
             WebkitMaskImage: 'linear-gradient(to bottom, black 62%, transparent 76%)',
@@ -121,7 +126,7 @@ export function FounderSection() {
             Founder, BlackWater Marketing
           </motion.p>
 
-          <div style={{ display: 'flex', gap: 'clamp(2rem, 6vw, 8rem)', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '2rem' }}>
+          <div style={{ display: 'flex', gap: 'clamp(1.5rem, 6vw, 8rem)', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '2rem' }}>
 
             <div style={{ flexShrink: 0 }}>
               {['JACK', 'CARNES'].map((line, i) => (

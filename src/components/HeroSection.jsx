@@ -40,7 +40,7 @@ export function HeroSection() {
               transition={{ duration: 0.5, ease: easeOut }}
               style={{ display: 'block', width: '32px', height: '1px', background: 'rgba(255,255,255,0.4)', flexShrink: 0, transformOrigin: 'left' }}
             />
-            Proven Systems Designed For Conversions
+            Built For Conversions
           </motion.p>
 
           {/* Headline, each line clips up */}

@@ -112,12 +112,19 @@ export function ProofSection() {
         </motion.p>
       </div>
 
+      <style>{`
+        .proof-bento { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+        @media (max-width: 768px) {
+          .proof-bento { grid-template-columns: 1fr 1fr !important; }
+          .proof-bento > * { grid-column: span 1 !important; }
+        }
+        @media (max-width: 480px) {
+          .proof-bento { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+
       {/* Asymmetric bento grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gap: '1rem',
-      }}>
+      <div className="proof-bento">
         {results.map((r, i) => (
           <motion.div
             key={r.label + i}
@@ -126,7 +133,7 @@ export function ProofSection() {
             transition={{ duration: 0.5, ease: easeOut, delay: (i % 4) * 0.07 }}
             viewport={viewport}
             style={{
-              gridColumn: r.span,
+              gridColumn: r.span, /* overridden on mobile by .proof-bento > * */
               background: 'rgba(255,255,255,0.02)',
               border: '1px solid rgba(255,255,255,0.06)',
               borderRadius: '12px',

@@ -51,23 +51,32 @@ export function ResultsSection() {
         ))}
       </motion.div>
 
+      <style>{`
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 4rem; }
+        .stats-grid > * { padding: 2.5rem 2rem 2.5rem 0; }
+        .stats-grid > *:not(:first-child) { padding-left: 2rem; }
+        .stats-grid > *:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+        @media (max-width: 768px) {
+          .stats-grid { grid-template-columns: 1fr 1fr; }
+          .stats-grid > * { padding: 2rem 1rem 2rem 0; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); }
+          .stats-grid > *:not(:first-child) { padding-left: 1rem; }
+          .stats-grid > *:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.08) !important; }
+          .stats-grid > *:nth-last-child(-n+2) { border-bottom: none; }
+        }
+      `}</style>
+
       <motion.div
+        className="stats-grid"
         variants={staggerContainer(0.12, 0.2)}
         initial="hidden"
         whileInView="show"
         viewport={viewport}
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', marginTop: '4rem' }}
       >
         {stats.map((s, i) => (
           <motion.div
             key={s.label}
             variants={fadeUp}
             transition={{ duration: 0.6, ease: easeOut }}
-            style={{
-              padding: '2.5rem 2rem 2.5rem 0',
-              borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-              paddingLeft: i > 0 ? '2rem' : '0',
-            }}
           >
             <div style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)', fontWeight: 700, letterSpacing: '-0.04em', color: '#ffffff', lineHeight: 1, marginBottom: '0.75rem' }}>
               <Counter target={s.target} duration={s.duration} format={s.format} />
