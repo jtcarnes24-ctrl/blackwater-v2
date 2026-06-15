@@ -22,7 +22,7 @@ export function FounderSection() {
             top: '-160px', left: '-40px', right: '-40px', bottom: '-160px',
             backgroundImage: `url("data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="140"><ellipse cx="40" cy="70" rx="13" ry="50" stroke="%23080808" stroke-width="1.1" fill="none"/></svg>')}")`,
             backgroundSize: '80px 140px',
-            opacity: 0.09,
+            opacity: 0.18,
           }} />
         </div>
 

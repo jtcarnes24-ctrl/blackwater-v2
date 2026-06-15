@@ -2,10 +2,10 @@ import { useRef, useEffect } from 'react'
 
 export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
   const canvasRef = useRef(null)
-  const posRef = useRef({ x: 0.5, y: 0.4 })
-  const smoothRef = useRef({ x: 0.5, y: 0.4 })
+  const posRef = useRef({ x: size / 2, y: size / 2 })
+  const smoothRef = useRef({ x: size / 2, y: size / 2 })
   const activeRef = useRef(false)
-  const radiusRef = useRef(0)
+  const trailRef = useRef([]) // { x, y, age, maxAge }
   const timeRef = useRef(0)
   const imagesRef = useRef({ color: null, bw: null })
   const rafRef = useRef(null)
@@ -28,17 +28,20 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
     imagesRef.current = { color: colorImg, bw: bwImg }
 
     const lerp = (a, b, t) => a + (b - a) * t
-    const maxRadius = size * 0.3
+    const RADIUS = size * 0.1        // smaller leading circle
+    const TRAIL_MAX_AGE = 90         // frames trail persists
+    const TRAIL_ADD_EVERY = 3        // add trail point every N frames
+    let frameCount = 0
 
     const drawLiquidPath = (cx, cy, r, t) => {
-      const pts = 90
+      const pts = 80
       ctx.beginPath()
       for (let i = 0; i <= pts; i++) {
         const angle = (i / pts) * Math.PI * 2
         const wave =
-          Math.sin(angle * 3 + t * 2.2) * 0.06 +
-          Math.sin(angle * 5 - t * 1.6) * 0.032 +
-          Math.sin(angle * 8 + t * 3.0) * 0.014
+          Math.sin(angle * 3 + t * 2.2) * 0.07 +
+          Math.sin(angle * 5 - t * 1.6) * 0.035 +
+          Math.sin(angle * 8 + t * 3.0) * 0.015
         const pr = r * (1 + wave)
         const px = cx + Math.cos(angle) * pr
         const py = cy + Math.sin(angle) * pr
@@ -52,32 +55,54 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         const { color, bw } = imagesRef.current
         timeRef.current += 0.018
         const t = timeRef.current
+        frameCount++
+
+        // Lerp cursor — slow, laggy
+        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.07)
+        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.07)
+
+        // Add trail point
+        if (activeRef.current && frameCount % TRAIL_ADD_EVERY === 0) {
+          trailRef.current.push({
+            x: smoothRef.current.x,
+            y: smoothRef.current.y,
+            age: 0,
+            maxAge: TRAIL_MAX_AGE,
+          })
+        }
+
+        // Age trail, remove dead points
+        trailRef.current = trailRef.current
+          .map(p => ({ ...p, age: p.age + 1 }))
+          .filter(p => p.age < p.maxAge)
 
         ctx.clearRect(0, 0, size, size)
-        ctx.drawImage(bw, 0, 0, size, size)
 
-        // Cursor lerp — slow/laggy on purpose
-        smoothRef.current.x = lerp(smoothRef.current.x, posRef.current.x, 0.055)
-        smoothRef.current.y = lerp(smoothRef.current.y, posRef.current.y, 0.055)
+        // Base: full color — no B&W visible by default
+        ctx.drawImage(color, 0, 0, size, size)
 
-        // Radius animates in on hover, slowly drains out on leave
-        const targetRadius = activeRef.current ? maxRadius : 0
-        const lerpSpeed = activeRef.current ? 0.07 : 0.04
-        radiusRef.current = lerp(radiusRef.current, targetRadius, lerpSpeed)
+        // Reveal B&W only where trail circles + active cursor are
+        const hasReveal = trailRef.current.length > 0 || activeRef.current
 
-        if (radiusRef.current > 2) {
-          const cx = smoothRef.current.x * size
-          const cy = smoothRef.current.y * size
-
+        if (hasReveal) {
           ctx.save()
           ctx.beginPath()
-          ctx.rect(0, 0, size, size)
-          drawLiquidPath(cx, cy, radiusRef.current, t)
-          ctx.clip('evenodd')
-          ctx.drawImage(color, 0, 0, size, size)
+
+          // Trail circles — shrink and fade out as they age
+          for (const pt of trailRef.current) {
+            const progress = pt.age / pt.maxAge          // 0→1
+            const r = RADIUS * (1 - progress * 0.55)    // shrinks to 45% at end
+            ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2)
+          }
+
+          // Leading liquid blob at cursor
+          if (activeRef.current) {
+            drawLiquidPath(smoothRef.current.x, smoothRef.current.y, RADIUS, t)
+          }
+
+          ctx.clip()
+          ctx.drawImage(bw, 0, 0, size, size)
           ctx.restore()
-        } else {
-          ctx.drawImage(color, 0, 0, size, size)
         }
 
         rafRef.current = requestAnimationFrame(draw)
@@ -91,8 +116,8 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
   const onMouseMove = (e) => {
     const rect = canvasRef.current.getBoundingClientRect()
     posRef.current = {
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
+      x: (e.clientX - rect.left) / rect.width * size,
+      y: (e.clientY - rect.top) / rect.height * size,
     }
     activeRef.current = true
   }
@@ -106,7 +131,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         width: `${size}px`,
         height: `${size}px`,
         maxWidth: '100%',
-        cursor: 'crosshair',
+        cursor: 'none',
         display: 'block',
       }}
     />
