@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
 import { MaskReveal } from './ui/MaskReveal'
+import { Waves } from './ui/Waves'
 
 const jackItems = Array(10).fill('JACK CARNES').join(' · ')
 const bwItems = Array(6).fill('BLACKWATER MARKETING').join(' · ')
@@ -15,22 +16,10 @@ export function FounderSection() {
       {/* Marquee hero */}
       <div style={{ position: 'relative', minHeight: 'clamp(420px, 58vw, 680px)', overflow: 'hidden' }}>
 
-        {/* Animated wavy background */}
-        <svg
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, opacity: 0.15 }}
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <pattern id="wavyOvals" x="0" y="0" width="80" height="140" patternUnits="userSpaceOnUse">
-              <ellipse cx="40" cy="70" rx="13" ry="50" stroke="#080808" strokeWidth="1.2" fill="none" />
-            </pattern>
-          </defs>
-          <g>
-            <animateTransform attributeName="transform" type="translate" from="0 0" to="0 140" dur="9s" repeatCount="indefinite" />
-            <rect x="-40" y="-160" width="3000" height="2000" fill="url(#wavyOvals)" />
-          </g>
-        </svg>
+        {/* Animated wavy lines — same as hero */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.35, pointerEvents: 'none' }}>
+          <Waves strokeColor="rgba(8,8,8,0.6)" backgroundColor="transparent" pointerSize={0} />
+        </div>
 
         {/* Text rows — centered vertically behind photo */}
         <div style={{
