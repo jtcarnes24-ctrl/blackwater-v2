@@ -68,7 +68,7 @@ export function MaskReveal({ colorSrc, bwSrc, height = '560px' }) {
       style={{
         position: 'relative',
         display: 'inline-block',
-        cursor: 'none',
+        cursor: 'crosshair',
         flexShrink: 0,
       }}
     >
