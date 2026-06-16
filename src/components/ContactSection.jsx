@@ -4,10 +4,16 @@ import { LiquidButton } from './ui/LiquidButton'
 
 export function ContactSection() {
   return (
-    <section id="contact" style={{ background: '#080808', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
-      {/* Grainy ambient mesh */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\' opacity=\'0.03\'/%3E%3C/svg%3E")', backgroundSize: '200px 200px', opacity: 0.5 }} />
-      <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: 'min(900px, 120vw)', height: 'min(600px, 80vw)', background: 'radial-gradient(ellipse, rgba(90,60,255,0.06) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
+    <section id="contact" style={{ background: '#0A1628', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)', position: 'relative', overflow: 'hidden' }}>
+      {/* Dot grid */}
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
+        backgroundImage: 'radial-gradient(circle, rgba(242,237,228,0.1) 1px, transparent 1px)',
+        backgroundSize: '40px 40px',
+        maskImage: 'radial-gradient(ellipse 90% 80% at 50% 100%, transparent 30%, black 100%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 50% 100%, transparent 30%, black 100%)',
+      }} />
+      <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: 'min(900px, 120vw)', height: 'min(600px, 80vw)', background: 'radial-gradient(ellipse, rgba(242,237,228,0.03) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
         {['CONTACT', 'US'].map((line, i) => (
@@ -40,9 +46,9 @@ export function ContactSection() {
         </motion.div>
       </motion.div>
 
-      <div style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em' }}>© 2025 BlackWater Marketing. All rights reserved.</p>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+      <div style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(242,237,228,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <p style={{ fontSize: '0.72rem', color: 'rgba(242,237,228,0.3)', letterSpacing: '0.1em' }}>© 2025 BlackWater Marketing. All rights reserved.</p>
+        <p style={{ fontSize: '0.72rem', color: 'rgba(242,237,228,0.3)', letterSpacing: '0.1em' }}>Powered by Performance</p>
       </div>
       </div>
     </section>
