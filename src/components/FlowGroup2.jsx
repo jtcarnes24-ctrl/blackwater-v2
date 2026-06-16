@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import FlowArt, { FlowSection } from './ui/FlowArt'
-import { SplineScene } from './ui/SplineScene'
 import { AIChart } from './ui/AIChart'
 import { easeOut, easeInOut, viewport } from '../lib/animations'
 
@@ -68,27 +67,15 @@ export function FlowGroup2() {
               Every campaign at BlackWater runs AI-driven creative analysis, audience modeling, and real-time budget optimization. It's not an add-on, it's built into how we operate.
             </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: easeOut, delay: 0.45 }} viewport={viewport}
-            >
-              <AIChart />
-            </motion.div>
           </div>
 
           <motion.div
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.2 }} viewport={viewport}
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: easeOut, delay: 0.3 }} viewport={viewport}
             className="ai-robot"
-          style={{}}
-            onWheel={e => e.stopPropagation()}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <div style={{ position: 'absolute', inset: 0 }} onWheel={e => e.stopPropagation()}>
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="w-full h-full"
-              />
-            </div>
+            <AIChart />
           </motion.div>
         </div>
       </FlowSection>
