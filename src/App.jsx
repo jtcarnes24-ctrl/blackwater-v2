@@ -8,7 +8,6 @@ const ServicesSection    = lazy(() => import('./components/ServicesSection').the
 const ResultsSection     = lazy(() => import('./components/ResultsSection').then(m => ({ default: m.ResultsSection })))
 const MarqueeSection     = lazy(() => import('./components/MarqueeSection').then(m => ({ default: m.MarqueeSection })))
 const ProofSection       = lazy(() => import('./components/ProofSection').then(m => ({ default: m.ProofSection })))
-const TestimonialsSection = lazy(() => import('./components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })))
 const FlowGroup2         = lazy(() => import('./components/FlowGroup2').then(m => ({ default: m.FlowGroup2 })))
 const FounderSection     = lazy(() => import('./components/FounderSection').then(m => ({ default: m.FounderSection })))
 const ContactSection     = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })))
@@ -25,7 +24,6 @@ function App() {
           <ResultsSection />
           <MarqueeSection />
           <ProofSection />
-          <TestimonialsSection />
           <FlowGroup2 />
           <FounderSection />
           <ContactSection />
