@@ -18,7 +18,7 @@ export function ServicesSection() {
   const [hovered, setHovered] = useState(null)
 
   return (
-    <section id="services" style={{ background: '#080808', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)' }}>
+    <section id="services" style={{ background: '#0A1628', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)' }}>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5rem', flexWrap: 'wrap', gap: '2rem' }}>
         <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
@@ -56,7 +56,7 @@ export function ServicesSection() {
             transition={{ duration: 0.5, ease: easeOut }}
             onMouseEnter={() => setHovered(i)}
             onMouseLeave={() => setHovered(null)}
-            style={{ borderTop: '1px solid rgba(255,255,255,0.07)', cursor: 'default' }}
+            style={{ borderTop: '1px solid rgba(242,237,228,0.1)', cursor: 'default' }}
           >
             <div style={{
               display: 'flex',
@@ -88,7 +88,7 @@ export function ServicesSection() {
                 }}>
                   <p style={{
                     fontSize: '0.88rem',
-                    color: 'rgba(255,255,255,0.45)',
+                    color: 'rgba(242,237,228,0.45)',
                     lineHeight: 1.65,
                     maxWidth: '560px',
                   }}>
@@ -99,7 +99,7 @@ export function ServicesSection() {
 
               <span style={{
                 fontSize: '1.1rem',
-                color: 'rgba(255,255,255,0.5)',
+                color: 'rgba(242,237,228,0.55)',
                 flexShrink: 0,
                 transform: hovered === i ? 'translate(0, 0)' : 'translate(-6px, 4px)',
                 opacity: hovered === i ? 1 : 0,
@@ -110,7 +110,7 @@ export function ServicesSection() {
             </div>
           </motion.div>
         ))}
-        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }} />
+        <div style={{ borderBottom: '1px solid rgba(242,237,228,0.1)' }} />
       </motion.div>
     </section>
   )

@@ -68,7 +68,7 @@ export function FounderSection() {
                   <span key={i} style={{
                     fontSize: 'clamp(3.5rem, 8.5vw, 9.5rem)', fontWeight: 700,
                     letterSpacing: '-0.03em', textTransform: 'uppercase',
-                    color: '#080808', lineHeight: 1, paddingRight: '2rem', flexShrink: 0,
+                    color: '#0A1628', lineHeight: 1, paddingRight: '2rem', flexShrink: 0,
                   }}>{text}</span>
                 ))}
               </div>
