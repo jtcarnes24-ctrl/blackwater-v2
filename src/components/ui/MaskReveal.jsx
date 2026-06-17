@@ -73,7 +73,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
           .filter(p => p.age < TRAIL_MAX_AGE)
 
         // Scale color image up so it aligns with the silhouette
-        const CS = 1.38
+        const CS = 1.05
         const cOff = -(size * (CS - 1)) / 2
 
         ctx.clearRect(0, 0, size, size)
