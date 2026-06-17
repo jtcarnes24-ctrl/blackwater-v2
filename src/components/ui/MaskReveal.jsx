@@ -72,8 +72,12 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
           .map(p => ({ ...p, age: p.age + 1 }))
           .filter(p => p.age < TRAIL_MAX_AGE)
 
+        // Scale color image up so it aligns with the silhouette
+        const CS = 1.38
+        const cOff = -(size * (CS - 1)) / 2
+
         ctx.clearRect(0, 0, size, size)
-        ctx.drawImage(bw, 0, 0, size, size)
+        ctx.drawImage(color, cOff, cOff, size * CS, size * CS)
 
         const hasReveal = radiusRef.current > 1 || trailRef.current.length > 0
         if (hasReveal) {
@@ -92,7 +96,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
           }
 
           ctx.clip()
-          ctx.drawImage(color, 0, 0, size, size)
+          ctx.drawImage(bw, 0, 0, size, size)
           ctx.restore()
         }
 
