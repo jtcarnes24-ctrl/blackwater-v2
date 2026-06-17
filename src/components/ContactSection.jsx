@@ -1,19 +1,12 @@
 import { motion } from 'framer-motion'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { InfiniteGrid } from './ui/InfiniteGrid'
 
 export function ContactSection() {
   return (
     <section id="contact" style={{ background: '#03070F', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)', position: 'relative', overflow: 'hidden' }}>
-      {/* Dot grid */}
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: 'radial-gradient(circle, rgba(242,237,228,0.1) 1px, transparent 1px)',
-        backgroundSize: '40px 40px',
-        maskImage: 'radial-gradient(ellipse 90% 80% at 50% 100%, transparent 30%, black 100%)',
-        WebkitMaskImage: 'radial-gradient(ellipse 90% 80% at 50% 100%, transparent 30%, black 100%)',
-      }} />
-      <div style={{ position: 'absolute', top: '-30%', left: '50%', transform: 'translateX(-50%)', width: 'min(900px, 120vw)', height: 'min(600px, 80vw)', background: 'radial-gradient(ellipse, rgba(242,237,228,0.03) 0%, transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
+      <InfiniteGrid />
       <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
         {['CONTACT', 'US'].map((line, i) => (
