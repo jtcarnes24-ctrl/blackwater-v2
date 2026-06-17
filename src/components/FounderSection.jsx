@@ -1,12 +1,7 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useState, useEffect, useMemo } from 'react'
+import { motion } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
-import { MaskReveal } from './ui/MaskReveal'
-
-const jackItems = Array(10).fill('JACK CARNES').join(' · ')
-const bwItems = Array(6).fill('BLACKWATER MARKETING').join(' · ')
-const repeated = (str) => [str, str, str].join('    ')
 
 const PARAS = [
   `I started out running my own fitness brand, selling to weightlifters, figuring it out as I went. Pretty quickly I realized the product wasn't the hard part. Getting it in front of the right people was. That's when I went deep on ads. Not as a side skill, as the whole thing. Once you understand how paid traffic actually works, you start seeing it everywhere. Every successful brand you admire has a machine running behind it. I wanted to build that machine.`,
@@ -14,93 +9,126 @@ const PARAS = [
   `I don't take on clients I can't actually help. That sounds obvious, but it's rarer than you'd think in this industry. When we work together, you're not getting handed off to an account manager two weeks in. You get me, on the account, watching the numbers, adjusting when something needs to move. The brands I work with tend to stay because the results keep coming.`,
 ]
 
-export function FounderSection() {
-  const scrollContainer = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: scrollContainer,
-    offset: ['start start', 'end end'],
-  })
-
-  const scale = useTransform(scrollYProgress, [0, 0.75], [1, 4])
-  const maskOpacity = useTransform(scrollYProgress, [0.55, 0.75], [1, 0])
-
+function BlurLetter({ char, delay }) {
   return (
-    <section id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.06)' }}>
+    <motion.span
+      initial={{ opacity: 0, filter: 'blur(12px)', y: -18 }}
+      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+      transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      style={{ display: 'inline-block' }}
+    >
+      {char}
+    </motion.span>
+  )
+}
 
-      <style>{`
-        .founder-scroll-zone { position: relative; height: 180vh; }
-        @media (max-width: 768px) { .founder-scroll-zone { height: 120vh; } }
-      `}</style>
+function BlurWord({ text, startDelay = 0, letterDelay = 0.045, style, className }) {
+  return (
+    <span className={className} style={{ display: 'inline-block', ...style }}>
+      {text.split('').map((ch, i) => (
+        <BlurLetter key={i} char={ch} delay={startDelay + i * letterDelay} />
+      ))}
+    </span>
+  )
+}
 
-      {/* Scroll zoom container */}
-      <div ref={scrollContainer} className="founder-scroll-zone">
-        <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}>
+export function FounderSection() {
+  return (
+    <section id="founder" style={{ background: '#080808', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
 
-          {/* Marquee text, behind photo */}
-          <div style={{
-            position: 'absolute', top: '50%', left: 0, right: 0,
-            transform: 'translateY(-50%)',
-            display: 'flex', flexDirection: 'column', gap: '0.1em',
-            zIndex: 5,
-          }}>
-            <div style={{ overflow: 'hidden' }}>
-              <div style={{
-                display: 'flex', whiteSpace: 'nowrap',
-                animation: 'marquee-scroll 18s linear infinite',
-                willChange: 'transform',
-              }}>
-                {[repeated(jackItems), repeated(jackItems), repeated(jackItems)].map((text, i) => (
-                  <span key={i} style={{
-                    fontSize: 'clamp(3.5rem, 8.5vw, 9.5rem)', fontWeight: 700,
-                    letterSpacing: '-0.03em', textTransform: 'uppercase',
-                    color: 'rgba(8,8,8,0.18)', lineHeight: 1, paddingRight: '2rem', flexShrink: 0,
-                  }}>{text}</span>
-                ))}
-              </div>
-            </div>
-            <div style={{ overflow: 'hidden' }}>
-              <div style={{
-                display: 'flex', whiteSpace: 'nowrap',
-                animation: 'marquee-scroll-right 22s linear infinite',
-                willChange: 'transform',
-              }}>
-                {[repeated(bwItems), repeated(bwItems), repeated(bwItems)].map((text, i) => (
-                  <span key={i} style={{
-                    fontSize: 'clamp(3.5rem, 8.5vw, 9.5rem)', fontWeight: 700,
-                    letterSpacing: '-0.03em', textTransform: 'uppercase',
-                    color: '#0A1628', lineHeight: 1, paddingRight: '2rem', flexShrink: 0,
-                  }}>{text}</span>
-                ))}
-              </div>
-            </div>
+      {/* ── Name + Photo hero ── */}
+      <div style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        padding: '8rem 1rem',
+      }}>
+
+        {/* Text stack */}
+        <div style={{ textAlign: 'center', position: 'relative', userSelect: 'none' }}>
+
+          {/* BLACK */}
+          <div style={{ lineHeight: 0.82, marginBottom: '0.02em' }}>
+            <BlurWord
+              text="BLACK"
+              startDelay={0.1}
+              style={{
+                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.04em',
+                color: '#f2ede4',
+                textTransform: 'uppercase',
+              }}
+            />
           </div>
 
-          {/* MaskReveal, zooms on scroll */}
-          <motion.div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: '50%',
-            translateX: '-50%',
-            zIndex: 15,
-            width: 'min(760px, 90vw)',
-            scale,
-            transformOrigin: 'bottom center',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 62%, transparent 76%)',
-            maskImage: 'linear-gradient(to bottom, black 62%, transparent 76%)',
-            opacity: maskOpacity,
-          }}>
-            <MaskReveal
-              colorSrc="/jack-color.png"
-              bwSrc="/jack-bw.png"
-              size={760}
+          {/* WATER */}
+          <div style={{ lineHeight: 0.82, marginBottom: '0.06em' }}>
+            <BlurWord
+              text="WATER"
+              startDelay={0.22}
+              style={{
+                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.04em',
+                color: '#f2ede4',
+                textTransform: 'uppercase',
+              }}
             />
-          </motion.div>
+          </div>
 
+          {/* MARKETING — outlined */}
+          <div style={{ lineHeight: 1 }}>
+            <BlurWord
+              text="MARKETING"
+              startDelay={0.38}
+              letterDelay={0.03}
+              style={{
+                fontSize: 'clamp(2.2rem, 6.5vw, 6.5rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                color: 'transparent',
+                WebkitTextStroke: '1.5px rgba(242,237,228,0.55)',
+                textTransform: 'uppercase',
+              }}
+            />
+          </div>
         </div>
+
+        {/* Photo — centered over text boundary */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -54%)',
+            zIndex: 10,
+            pointerEvents: 'none',
+          }}
+        >
+          <img
+            src="/jack-founder.png"
+            alt="Jack Carnes"
+            style={{
+              width: 'clamp(100px, 14vw, 200px)',
+              height: 'clamp(170px, 24vw, 340px)',
+              objectFit: 'cover',
+              objectPosition: 'top center',
+              borderRadius: '999px',
+              display: 'block',
+            }}
+          />
+        </motion.div>
       </div>
 
-      {/* Bio, after scroll zoom completes */}
-      <div style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 7rem)' }}>
+      {/* ── Bio ── */}
+      <div style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
         <motion.div
           variants={staggerContainer(0.12, 0.05)}
           initial="hidden"
@@ -112,11 +140,11 @@ export function FounderSection() {
             transition={{ duration: 0.5, ease: easeOut }}
             style={{
               fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(8,8,8,0.4)', fontWeight: 600, marginBottom: '0.75rem',
+              color: 'rgba(242,237,228,0.4)', fontWeight: 600, marginBottom: '0.75rem',
               display: 'flex', alignItems: 'center', gap: '0.75rem',
             }}
           >
-            <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(8,8,8,0.2)' }} />
+            <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(242,237,228,0.2)' }} />
             Founder, BlackWater Marketing
           </motion.p>
 
@@ -133,7 +161,7 @@ export function FounderSection() {
                     style={{
                       fontSize: 'clamp(2.8rem, 5.5vw, 6rem)', fontWeight: 700,
                       letterSpacing: '-0.03em', lineHeight: 0.92,
-                      color: '#080808', textTransform: 'uppercase', margin: 0,
+                      color: '#f2ede4', textTransform: 'uppercase', margin: 0,
                     }}
                   >{line}</motion.h2>
                 </div>
@@ -148,7 +176,7 @@ export function FounderSection() {
                   transition={{ duration: 0.6, ease: easeOut }}
                   style={{
                     fontSize: 'clamp(0.92rem, 1.5vw, 1.08rem)',
-                    color: 'rgba(8,8,8,0.62)',
+                    color: 'rgba(242,237,228,0.55)',
                     lineHeight: 1.78,
                     marginTop: i === 0 ? 0 : '1.2rem',
                   }}
@@ -164,7 +192,7 @@ export function FounderSection() {
                   href="https://calendly.com/blkwtrenterprises/30min"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ background: '#080808', color: '#f2ede4' }}
+                  style={{ background: '#f2ede4', color: '#080808' }}
                 >
                   Book a Call →
                 </LiquidButton>
