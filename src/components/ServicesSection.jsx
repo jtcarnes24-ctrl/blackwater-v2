@@ -18,7 +18,7 @@ export function ServicesSection() {
   const [hovered, setHovered] = useState(null)
 
   return (
-    <section id="services" style={{ background: '#0A1628', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)' }}>
+    <section id="services" style={{ background: '#03070F', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)' }}>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5rem', flexWrap: 'wrap', gap: '2rem' }}>
         <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>

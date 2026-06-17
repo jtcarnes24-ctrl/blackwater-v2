@@ -4,7 +4,7 @@ import { LiquidButton } from './ui/LiquidButton'
 
 export function ContactSection() {
   return (
-    <section id="contact" style={{ background: '#0A1628', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#03070F', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)', position: 'relative', overflow: 'hidden' }}>
       {/* Dot grid */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,

@@ -32,7 +32,7 @@ const stats = [
 
 export function ResultsSection() {
   return (
-    <section id="results" style={{ background: '#0A1628', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)' }}>
+    <section id="results" style={{ background: '#03070F', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.08)' }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
         <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
           style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.45)', marginBottom: '1.25rem', fontWeight: 600 }}>
