@@ -47,58 +47,43 @@ export function FounderSection() {
         padding: '8rem 1rem',
       }}>
 
-        {/* Text stack */}
-        <div style={{ textAlign: 'center', position: 'relative', userSelect: 'none' }}>
+        {/* Text stack — full viewport width */}
+        <div style={{ width: '100%', textAlign: 'center', position: 'relative', userSelect: 'none', padding: '0 2vw' }}>
 
-          {/* BLACK */}
-          <div style={{ lineHeight: 0.82, marginBottom: '0.02em' }}>
+          {/* JACK */}
+          <div style={{ lineHeight: 0.85 }}>
             <BlurWord
-              text="BLACK"
+              text="JACK"
               startDelay={0.1}
               style={{
-                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                fontSize: '28vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
                 color: '#f2ede4',
                 textTransform: 'uppercase',
+                display: 'block',
               }}
             />
           </div>
 
-          {/* WATER */}
-          <div style={{ lineHeight: 0.82, marginBottom: '0.06em' }}>
+          {/* CARNES */}
+          <div style={{ lineHeight: 0.85 }}>
             <BlurWord
-              text="WATER"
-              startDelay={0.22}
+              text="CARNES"
+              startDelay={0.28}
               style={{
-                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                fontSize: '18.5vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
                 color: '#f2ede4',
                 textTransform: 'uppercase',
-              }}
-            />
-          </div>
-
-          {/* MARKETING — outlined */}
-          <div style={{ lineHeight: 1 }}>
-            <BlurWord
-              text="MARKETING"
-              startDelay={0.38}
-              letterDelay={0.03}
-              style={{
-                fontSize: 'clamp(2.2rem, 6.5vw, 6.5rem)',
-                fontWeight: 700,
-                letterSpacing: '-0.03em',
-                color: 'transparent',
-                WebkitTextStroke: '1.5px rgba(242,237,228,0.55)',
-                textTransform: 'uppercase',
+                display: 'block',
               }}
             />
           </div>
         </div>
 
-        {/* Photo — centered over text boundary */}
+        {/* Photo — centered between JACK and CARNES */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -107,7 +92,7 @@ export function FounderSection() {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -54%)',
+            transform: 'translate(-50%, -50%)',
             zIndex: 10,
             pointerEvents: 'none',
           }}
@@ -116,8 +101,8 @@ export function FounderSection() {
             src="/jack-founder.png"
             alt="Jack Carnes"
             style={{
-              width: 'clamp(100px, 14vw, 200px)',
-              height: 'clamp(170px, 24vw, 340px)',
+              width: 'clamp(110px, 13vw, 210px)',
+              height: 'clamp(185px, 22vw, 355px)',
               objectFit: 'cover',
               objectPosition: 'top center',
               borderRadius: '999px',

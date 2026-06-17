@@ -123,7 +123,7 @@ export function HeroSection() {
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: 'clamp(3rem, 9.5vw, 10.5rem)',
                 fontWeight: 700, lineHeight: 0.9,
-                letterSpacing: '-0.03em', color: '#ffffff',
+                letterSpacing: '-0.03em', color: '#f2ede4',
                 textTransform: 'uppercase', margin: 0,
               }}
             >
@@ -138,7 +138,9 @@ export function HeroSection() {
                 fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: 'clamp(3rem, 9.5vw, 10.5rem)',
                 fontWeight: 700, lineHeight: 0.9,
-                letterSpacing: '-0.03em', color: '#ffffff',
+                letterSpacing: '-0.03em',
+                color: 'transparent',
+                WebkitTextStroke: '2px #f2ede4',
                 textTransform: 'uppercase', margin: 0,
               }}
             >
