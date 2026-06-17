@@ -47,7 +47,7 @@ export function FounderSection() {
         padding: '8rem 1rem',
       }}>
 
-        {/* Text stack — full viewport width */}
+        {/* Text stack — full viewport width, photo nested inside so absolute % is relative to text height */}
         <div style={{ width: '100%', textAlign: 'center', position: 'relative', userSelect: 'none' }}>
 
           {/* JACK */}
@@ -81,37 +81,36 @@ export function FounderSection() {
               }}
             />
           </div>
-        </div>
 
-        {/* Photo — centered between JACK and CARNES */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.88 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 10,
-          }}
-        >
+          {/* Photo — inside text div, so top:50% = midpoint between the two lines */}
           <style>{`.founder-photo { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); } .founder-photo:hover { transform: scale(1.1); }`}</style>
-          <img
-            src="/jack-founder.png"
-            alt="Jack Carnes"
-            className="founder-photo"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
             style={{
-              width: 'clamp(110px, 13vw, 210px)',
-              height: 'clamp(185px, 22vw, 355px)',
-              objectFit: 'cover',
-              objectPosition: 'top center',
-              borderRadius: '999px',
-              display: 'block',
-              cursor: 'default',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
             }}
-          />
-        </motion.div>
+          >
+            <img
+              src="/jack-founder.png"
+              alt="Jack Carnes"
+              className="founder-photo"
+              style={{
+                width: 'clamp(110px, 13vw, 210px)',
+                height: 'clamp(185px, 22vw, 355px)',
+                objectFit: 'cover',
+                objectPosition: 'top center',
+                borderRadius: '999px',
+                display: 'block',
+              }}
+            />
+          </motion.div>
+        </div>
       </div>
 
       {/* ── Bio ── */}
