@@ -91,7 +91,7 @@ export function FounderSection() {
             style={{
               position: 'absolute',
               top: '50%',
-              left: '50%',
+              left: '46%',
               transform: 'translate(-50%, -50%)',
               zIndex: 10,
             }}
@@ -101,8 +101,8 @@ export function FounderSection() {
               alt="Jack Carnes"
               className="founder-photo"
               style={{
-                width: 'clamp(110px, 13vw, 210px)',
-                height: 'clamp(185px, 22vw, 355px)',
+                width: 'clamp(130px, 16vw, 250px)',
+                height: 'clamp(220px, 27vw, 420px)',
                 objectFit: 'cover',
                 objectPosition: 'top center',
                 borderRadius: '999px',
