@@ -77,7 +77,7 @@ export function MaskReveal({ colorSrc, bwSrc, size = 560 }) {
         const cOff = -(size * (CS - 1)) / 2
 
         ctx.clearRect(0, 0, size, size)
-        ctx.drawImage(color, cOff, cOff, size * CS, size * CS)
+        ctx.drawImage(color, cOff, cOff - size * 0.05, size * CS, size * CS)
 
         const hasReveal = radiusRef.current > 1 || trailRef.current.length > 0
         if (hasReveal) {
