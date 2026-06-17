@@ -90,8 +90,8 @@ export function FounderSection() {
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
             style={{
               position: 'absolute',
-              top: '50%',
-              left: '46%',
+              top: '44%',
+              left: '43%',
               transform: 'translate(-50%, -50%)',
               zIndex: 10,
             }}
