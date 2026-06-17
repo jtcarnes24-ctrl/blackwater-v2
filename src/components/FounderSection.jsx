@@ -48,7 +48,7 @@ export function FounderSection() {
       }}>
 
         {/* Text stack — full viewport width */}
-        <div style={{ width: '100%', textAlign: 'center', position: 'relative', userSelect: 'none', padding: '0 2vw' }}>
+        <div style={{ width: '100%', textAlign: 'center', position: 'relative', userSelect: 'none' }}>
 
           {/* JACK */}
           <div style={{ lineHeight: 0.85 }}>
@@ -56,7 +56,7 @@ export function FounderSection() {
               text="JACK"
               startDelay={0.1}
               style={{
-                fontSize: '28vw',
+                fontSize: '22vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
                 color: '#f2ede4',
@@ -72,7 +72,7 @@ export function FounderSection() {
               text="CARNES"
               startDelay={0.28}
               style={{
-                fontSize: '18.5vw',
+                fontSize: '22vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
                 color: '#f2ede4',
@@ -94,12 +94,13 @@ export function FounderSection() {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 10,
-            pointerEvents: 'none',
           }}
         >
+          <style>{`.founder-photo { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); } .founder-photo:hover { transform: scale(1.1); }`}</style>
           <img
             src="/jack-founder.png"
             alt="Jack Carnes"
+            className="founder-photo"
             style={{
               width: 'clamp(110px, 13vw, 210px)',
               height: 'clamp(185px, 22vw, 355px)',
@@ -107,6 +108,7 @@ export function FounderSection() {
               objectPosition: 'top center',
               borderRadius: '999px',
               display: 'block',
+              cursor: 'default',
             }}
           />
         </motion.div>
