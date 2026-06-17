@@ -1,9 +1,71 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion'
 import { useRef } from 'react'
 import { LiquidButton } from './ui/LiquidButton'
 import { clipReveal, staggerContainer, easeOut, easeInOut } from '../lib/animations'
 
 const MARQUEE_TEXT = 'DRIVEN BY THE METHOD · DRIVEN BY THE METHOD · DRIVEN BY THE METHOD · DRIVEN BY THE METHOD · DRIVEN BY THE METHOD · DRIVEN BY THE METHOD · '
+
+function InfiniteGrid() {
+  const mouseX = useMotionValue(-9999)
+  const mouseY = useMotionValue(-9999)
+  const gridOffsetX = useMotionValue(0)
+  const gridOffsetY = useMotionValue(0)
+
+  useAnimationFrame(() => {
+    gridOffsetX.set((gridOffsetX.get() + 0.4) % 40)
+    gridOffsetY.set((gridOffsetY.get() + 0.4) % 40)
+  })
+
+  const maskImage = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, black, transparent)`
+
+  const handleMouseMove = (e) => {
+    const { left, top } = e.currentTarget.getBoundingClientRect()
+    mouseX.set(e.clientX - left)
+    mouseY.set(e.clientY - top)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(-9999)
+    mouseY.set(-9999)
+  }
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+    >
+      {/* Base dim grid */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.06 }}>
+        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} />
+      </div>
+      {/* Mouse-reveal bright grid */}
+      <motion.div style={{ position: 'absolute', inset: 0, opacity: 0.45, maskImage, WebkitMaskImage: maskImage }}>
+        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} />
+      </motion.div>
+    </div>
+  )
+}
+
+function GridSVG({ offsetX, offsetY }) {
+  return (
+    <svg style={{ width: '100%', height: '100%' }}>
+      <defs>
+        <motion.pattern
+          id="bw-grid"
+          width="40"
+          height="40"
+          patternUnits="userSpaceOnUse"
+          x={offsetX}
+          y={offsetY}
+        >
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(242,237,228,1)" strokeWidth="0.6" />
+        </motion.pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#bw-grid)" />
+    </svg>
+  )
+}
 
 export function HeroSection() {
   const ref = useRef(null)
@@ -19,19 +81,23 @@ export function HeroSection() {
         .marquee-run { display: flex; white-space: nowrap; animation: marquee-drift 28s linear infinite; will-change: transform; }
       `}</style>
 
-      {/* Marquee strip — right under nav */}
-      <div style={{ borderBottom: '0.5px solid rgba(242,237,228,0.1)', overflow: 'hidden', padding: '11px 0', flexShrink: 0 }}>
+      {/* Infinite grid background */}
+      <InfiniteGrid />
+
+      {/* Marquee strip */}
+      <div style={{ borderBottom: '0.5px solid rgba(242,237,228,0.1)', overflow: 'hidden', padding: '14px 0', flexShrink: 0, position: 'relative', zIndex: 10 }}>
         <div className="marquee-run">
           {[MARQUEE_TEXT, MARQUEE_TEXT].map((t, i) => (
             <span key={i} style={{
               fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(1rem, 2.2vw, 1.5rem)',
+              fontSize: 'clamp(2.2rem, 5vw, 5.5rem)',
               fontWeight: 700,
-              letterSpacing: '0.18em',
+              letterSpacing: '0.06em',
               color: 'transparent',
-              WebkitTextStroke: '0.8px rgba(242,237,228,0.5)',
+              WebkitTextStroke: '1px rgba(242,237,228,0.45)',
               textTransform: 'uppercase',
               flexShrink: 0,
+              lineHeight: 1,
             }}>{t}</span>
           ))}
         </div>
