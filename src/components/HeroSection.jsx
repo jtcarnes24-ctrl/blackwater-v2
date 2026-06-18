@@ -33,7 +33,7 @@ export function HeroSection() {
               fontWeight: 700,
               letterSpacing: '0.06em',
               color: 'transparent',
-              WebkitTextStroke: '1px rgba(242,237,228,0.45)',
+              WebkitTextStroke: '0.5px rgba(242,237,228,0.4)',
               textTransform: 'uppercase',
               flexShrink: 0,
               lineHeight: 1,
@@ -76,7 +76,7 @@ export function HeroSection() {
                 fontWeight: 700, lineHeight: 0.9,
                 letterSpacing: '-0.03em',
                 color: 'transparent',
-                WebkitTextStroke: '2px rgba(242,237,228,0.65)',
+                WebkitTextStroke: '1px rgba(242,237,228,0.55)',
                 textTransform: 'uppercase', margin: 0,
               }}
             >
