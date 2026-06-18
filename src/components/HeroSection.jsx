@@ -51,6 +51,12 @@ export function HeroSection() {
           initial="hidden"
           animate="show"
         >
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.6, ease: easeInOut, delay: 0.15 }}
+            style={{ width: '32px', height: '2px', background: '#C8D746', marginBottom: '1.2rem', transformOrigin: 'left' }}
+          />
           <div style={{ overflow: 'hidden', marginBottom: '0.05em' }}>
             <motion.h1
               variants={clipReveal}

@@ -59,7 +59,7 @@ export function FounderSection() {
                 fontSize: '22vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
-                color: '#f2ede4',
+                color: '#C8D746',
                 textTransform: 'uppercase',
                 display: 'block',
               }}
@@ -75,7 +75,7 @@ export function FounderSection() {
                 fontSize: '22vw',
                 fontWeight: 700,
                 letterSpacing: '-0.04em',
-                color: '#f2ede4',
+                color: '#C8D746',
                 textTransform: 'uppercase',
                 display: 'block',
               }}
@@ -126,11 +126,11 @@ export function FounderSection() {
             transition={{ duration: 0.5, ease: easeOut }}
             style={{
               fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(242,237,228,0.4)', fontWeight: 600, marginBottom: '0.75rem',
+              color: '#C8D746', fontWeight: 600, marginBottom: '0.75rem',
               display: 'flex', alignItems: 'center', gap: '0.75rem',
             }}
           >
-            <span style={{ display: 'block', width: '20px', height: '1px', background: 'rgba(242,237,228,0.2)' }} />
+            <span style={{ display: 'block', width: '20px', height: '1px', background: '#C8D746' }} />
             Founder, BlackWater Marketing
           </motion.p>
 
