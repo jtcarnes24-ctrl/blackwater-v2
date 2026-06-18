@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion'
 import { useId } from 'react'
 
-function GridSVG({ offsetX, offsetY, patternId }) {
+function GridSVG({ offsetX, offsetY, patternId, color }) {
   return (
     <svg style={{ width: '100%', height: '100%' }}>
       <defs>
@@ -13,7 +13,7 @@ function GridSVG({ offsetX, offsetY, patternId }) {
           x={offsetX}
           y={offsetY}
         >
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(242,237,228,1)" strokeWidth="0.6" />
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke={color} strokeWidth="0.6" />
         </motion.pattern>
       </defs>
       <rect width="100%" height="100%" fill={`url(#${patternId})`} />
@@ -21,7 +21,7 @@ function GridSVG({ offsetX, offsetY, patternId }) {
   )
 }
 
-export function InfiniteGrid() {
+export function InfiniteGrid({ color = 'rgba(242,237,228,1)' }) {
   const uid = useId().replace(/:/g, '')
   const mouseX = useMotionValue(-9999)
   const mouseY = useMotionValue(-9999)
@@ -53,10 +53,10 @@ export function InfiniteGrid() {
       style={{ position: 'absolute', inset: 0, zIndex: 1 }}
     >
       <div style={{ position: 'absolute', inset: 0, opacity: 0.06 }}>
-        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} patternId={`${uid}a`} />
+        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} patternId={`${uid}a`} color={color} />
       </div>
       <motion.div style={{ position: 'absolute', inset: 0, opacity: 0.45, maskImage, WebkitMaskImage: maskImage }}>
-        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} patternId={`${uid}b`} />
+        <GridSVG offsetX={gridOffsetX} offsetY={gridOffsetY} patternId={`${uid}b`} color={color} />
       </motion.div>
     </div>
   )
