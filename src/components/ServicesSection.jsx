@@ -66,6 +66,17 @@ export function ServicesSection() {
               transition: 'opacity 0.3s',
               opacity: hovered !== null && hovered !== i ? 0.35 : 1,
             }}>
+              <span style={{
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                color: 'rgba(8,8,8,0.4)',
+                flexShrink: 0,
+                width: '2rem',
+                transform: hovered === i ? 'translateX(0)' : 'translateX(-8px)',
+                opacity: hovered === i ? 1 : 0.3,
+                transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.3s ease',
+              }}>{s.num}</span>
               <div style={{ flex: 1, overflow: 'hidden' }}>
                 <h3 style={{
                   fontSize: 'clamp(1.2rem, 2.8vw, 2.6rem)',

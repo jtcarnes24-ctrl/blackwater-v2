@@ -9,18 +9,20 @@ export function ContactSection() {
       <InfiniteGrid color="rgba(0,0,0,1)" />
       <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
-        {['CONTACT', 'US'].map((line, i) => (
-          <div key={line} style={{ overflow: 'hidden' }}>
+        {[{ word: 'CONTACT', x: -60 }, { word: 'US', x: 60 }].map(({ word, x }, i) => (
+          <div key={word} style={{ overflow: 'hidden' }}>
             <motion.h2
-              variants={clipReveal}
+              initial={{ opacity: 0, x }}
+              whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, ease: easeInOut, delay: i * 0.1 }}
+              viewport={viewport}
               style={{
                 fontSize: 'clamp(4rem, 12vw, 13rem)', fontWeight: 700,
                 letterSpacing: '-0.04em', lineHeight: 0.88,
                 color: '#080808', textTransform: 'uppercase', margin: 0,
               }}
             >
-              {line}
+              {word}
             </motion.h2>
           </div>
         ))}

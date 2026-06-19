@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
 
@@ -33,8 +33,12 @@ function BlurWord({ text, startDelay = 0, letterDelay = 0.045, style, className 
 }
 
 export function FounderSection() {
+  const sectionRef = useRef(null)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
+  const photoY = useTransform(scrollYProgress, [0, 1], [-30, 30])
+
   return (
-    <section id="founder" style={{ background: '#080808', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
+    <section ref={sectionRef} id="founder" style={{ background: '#080808', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
 
       {/* ── Name + Photo hero ── */}
       <div style={{
@@ -96,19 +100,21 @@ export function FounderSection() {
               zIndex: 10,
             }}
           >
-            <img
-              src="/jack-founder.png"
-              alt="Jack Carnes"
-              className="founder-photo"
-              style={{
-                width: 'clamp(130px, 16vw, 250px)',
-                height: 'clamp(220px, 27vw, 420px)',
-                objectFit: 'cover',
-                objectPosition: 'top center',
-                borderRadius: '999px',
-                display: 'block',
-              }}
-            />
+            <motion.div style={{ y: photoY }}>
+              <img
+                src="/jack-founder.png"
+                alt="Jack Carnes"
+                className="founder-photo"
+                style={{
+                  width: 'clamp(130px, 16vw, 250px)',
+                  height: 'clamp(220px, 27vw, 420px)',
+                  objectFit: 'cover',
+                  objectPosition: 'top center',
+                  borderRadius: '999px',
+                  display: 'block',
+                }}
+              />
+            </motion.div>
           </motion.div>
         </div>
       </div>
