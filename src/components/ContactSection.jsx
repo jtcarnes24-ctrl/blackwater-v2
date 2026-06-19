@@ -41,7 +41,10 @@ export function ContactSection() {
 
       <div style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(8,8,8,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.35)', letterSpacing: '0.1em' }}>© 2025 BlackWater Marketing. All rights reserved.</p>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.35)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.35)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.5)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
+        </div>
       </div>
       </div>
     </section>
