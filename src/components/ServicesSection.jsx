@@ -4,10 +4,10 @@ import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } fr
 import { LiquidButton } from './ui/LiquidButton'
 
 const services = [
-  { num: '01', name: 'Meta Ads Management', desc: 'Scaling brands through high-performing paid advertising on Facebook and Instagram. Built to convert, optimized to grow.' },
+  { num: '01', name: 'Meta Ads', desc: 'Scaling brands through high-performing paid advertising on Facebook and Instagram. Built to convert, optimized to grow.' },
   { num: '02', name: 'TikTok Ads', desc: 'Short-form video campaigns engineered for TikTok\'s algorithm. We build creatives that stop the scroll and systems that turn views into sales.' },
   { num: '03', name: 'Funnel Creation & Optimization', desc: 'We build and optimize the full customer journey, from ad click to checkout. Every step is structured to reduce drop-off and increase revenue.' },
-  { num: '04', name: 'Ad Creative', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
+  { num: '04', name: 'Ad Creative Generation', desc: 'Scroll-stopping creatives and ad concepts built to improve engagement, lower acquisition costs, and drive results that show in the numbers.' },
   { num: '05', name: 'Email & SMS Marketing', desc: 'Retention campaigns that keep your customers coming back. Automated flows and broadcast campaigns built to generate revenue between ad pushes.' },
   { num: '06', name: 'B2B Marketing & CRM', desc: 'Full-service CRM setup and automation for targeted email campaigns. We reach your ideal prospects, build the sequences, and drive revenue from the top of the funnel down.' },
   { num: '07', name: 'Conversion Optimization', desc: 'Landing pages, offers, and post-click experiences refined to turn traffic into revenue and push your ROAS higher.' },
@@ -108,16 +108,6 @@ export function ServicesSection() {
                 </div>
               </div>
 
-              <span style={{
-                fontSize: '1.1rem',
-                color: 'rgba(8,8,8,0.55)',
-                flexShrink: 0,
-                transform: hovered === i ? 'translate(0, 0)' : 'translate(-6px, 4px)',
-                opacity: hovered === i ? 1 : 0,
-                transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.3s ease',
-              }}>
-                ↗
-              </span>
             </div>
           </motion.div>
         ))}

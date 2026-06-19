@@ -87,18 +87,13 @@ export function FounderSection() {
           </div>
 
           {/* Photo — inside text div, so top:50% = midpoint between the two lines */}
-          <style>{`.founder-photo { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); } .founder-photo:hover { transform: scale(1.1); }`}</style>
+          <style>{`.founder-photo { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); } .founder-photo:hover { transform: scale(1.1); } .founder-photo-wrap { position: absolute; top: 37%; left: 43%; transform: translate(-50%, -50%); z-index: 10; } @media (max-width: 640px) { .founder-photo-wrap { left: 50%; } }`}</style>
           <motion.div
             initial={{ opacity: 0, scale: 0.88 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
-            style={{
-              position: 'absolute',
-              top: '37%',
-              left: '43%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 10,
-            }}
+            className="founder-photo-wrap"
+            style={{}}
           >
             <motion.div style={{ y: photoY }}>
               <img
