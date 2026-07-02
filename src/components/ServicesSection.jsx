@@ -42,7 +42,7 @@ export function ServicesSection() {
             rel="noopener noreferrer"
             style={{ color: '#080808', borderColor: '#080808' }}
           >
-            Get Started
+            Apply Now
           </LiquidButton>
         </motion.div>
       </div>

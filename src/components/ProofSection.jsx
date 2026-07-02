@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { easeInOut, viewport } from '../lib/animations'
+import { LiquidButton } from './ui/LiquidButton'
 
 const results = [
   { title: '12.97x ROAS', stat: '$88,913 from $6,857 spend', thumbnail: '/results/result-8.webp' },
@@ -176,6 +177,22 @@ export function ProofSection() {
           ))}
         </div>
       </motion.div>
+
+      {/* marginTop clears the parallax rows' max downward translateY (500px)
+          so this reads as a calm, static CTA below the tilted collage instead
+          of getting visually buried under the cards mid-scroll */}
+      <div style={{ position: 'relative', zIndex: 20, marginTop: 'calc(500px + 4rem)', paddingBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={viewport}
+        >
+          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
+            Apply Now →
+          </LiquidButton>
+        </motion.div>
+      </div>
     </div>
   )
 }

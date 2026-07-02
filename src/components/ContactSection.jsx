@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
+import { fadeUp, clipReveal, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
 
 function CalendlyEmbed() {
@@ -38,6 +38,62 @@ export function ContactSection() {
         }
       `}</style>
       <div style={{ position: 'relative', zIndex: 1 }}>
+
+      {/* ── Closing CTA ── */}
+      <motion.div
+        variants={staggerContainer(0.1, 0.05)}
+        initial="hidden"
+        whileInView="show"
+        viewport={viewport}
+        style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)', paddingBottom: 'clamp(3rem, 8vw, 6rem)', borderBottom: '1px solid rgba(8,8,8,0.1)' }}
+      >
+        <motion.p
+          variants={fadeUp}
+          transition={{ duration: 0.5, ease: easeOut }}
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}
+        >
+          Ready When You Are
+        </motion.p>
+
+        {['STOP GUESSING.', 'START SCALING.'].map((line, i) => (
+          <div key={line} style={{ overflow: 'hidden' }}>
+            <motion.h2
+              variants={clipReveal}
+              transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#080808', textTransform: 'uppercase', margin: 0 }}
+            >
+              {line}
+            </motion.h2>
+          </div>
+        ))}
+
+        <motion.p
+          variants={fadeUp}
+          transition={{ duration: 0.5, ease: easeOut }}
+          style={{ fontSize: '1.05rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.6, maxWidth: '48ch', marginTop: '1.75rem' }}
+        >
+          You've seen the numbers. You've seen the method. The only thing left is your account.
+        </motion.p>
+
+        <motion.p
+          variants={fadeUp}
+          transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
+          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(8,8,8,0.45)', lineHeight: 1.6, marginTop: '0.85rem' }}
+        >
+          "I don't take on clients I can't actually help." — Jack Carnes
+        </motion.p>
+
+        <motion.div
+          variants={fadeUp}
+          transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
+          style={{ marginTop: '2.5rem' }}
+        >
+          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
+            Apply Now →
+          </LiquidButton>
+        </motion.div>
+      </motion.div>
+
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
         {[{ word: 'CONTACT', x: -60 }, { word: 'US', x: 60 }].map(({ word, x }, i) => (
           <div key={word} style={{ overflow: 'hidden' }}>
@@ -64,7 +120,7 @@ export function ContactSection() {
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '3.5rem' }}
         >
           <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
-            Book a Call →
+            Apply Now →
           </LiquidButton>
           <LiquidButton href="mailto:blkwtrenterprises@gmail.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>
             Send an Email

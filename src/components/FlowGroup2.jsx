@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import FlowArt, { FlowSection } from './ui/FlowArt'
 import { AIChart } from './ui/AIChart'
+import { LiquidButton } from './ui/LiquidButton'
 import { easeOut, easeInOut, viewport } from '../lib/animations'
 
 const testimonials = [
@@ -178,6 +179,18 @@ export function FlowGroup2() {
         ))}
 
         <TestimonialCarousel />
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: easeOut }}
+          viewport={viewport}
+          style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
+        >
+          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#080808', borderColor: '#080808' }}>
+            Apply Now →
+          </LiquidButton>
+        </motion.div>
       </FlowSection>
     </FlowArt>
   )

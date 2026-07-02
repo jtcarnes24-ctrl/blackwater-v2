@@ -118,7 +118,7 @@ export function HeroSection() {
           </p>
           <div className="hero-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
-              Book a Call →
+              Apply Now →
             </LiquidButton>
             <LiquidButton href="#services">Our Services</LiquidButton>
           </div>

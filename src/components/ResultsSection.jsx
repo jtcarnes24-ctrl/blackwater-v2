@@ -1,6 +1,7 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
+import { LiquidButton } from './ui/LiquidButton'
 
 function Counter({ target, duration = 2, format }) {
   const [value, setValue] = useState(0)
@@ -86,6 +87,18 @@ export function ResultsSection() {
             </p>
           </motion.div>
         ))}
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: easeOut }}
+        viewport={viewport}
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}
+      >
+        <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
+          Apply Now →
+        </LiquidButton>
       </motion.div>
     </section>
   )

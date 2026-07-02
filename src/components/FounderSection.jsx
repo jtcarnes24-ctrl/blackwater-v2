@@ -216,7 +216,7 @@ export function FounderSection() {
                   rel="noopener noreferrer"
                   style={{ background: '#f2ede4', color: '#080808' }}
                 >
-                  Book a Call →
+                  Apply Now →
                 </LiquidButton>
               </motion.div>
             </div>

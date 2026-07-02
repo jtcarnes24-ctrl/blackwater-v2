@@ -9,8 +9,7 @@ const navLinks = [
   { label: 'The Method', href: '#method' },
   { label: 'Our Services', href: '#services' },
   { label: 'Results', href: '#results' },
-  { label: 'Talk to Us', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
-  { label: 'Book a Call', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
+  { label: 'Apply Now', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
 ]
 
 export function Nav() {
@@ -78,7 +77,7 @@ export function Nav() {
                 rel="noopener noreferrer"
                 style={{ padding: '0.6rem 1.4rem', fontSize: '0.72rem' }}
               >
-                Book a Call
+                Apply Now
               </LiquidButton>
             </div>
           )}
