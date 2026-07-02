@@ -17,8 +17,19 @@ const products = [...results, ...results, results[0], results[1], results[2], re
 
 function ProductCardHover({ product, translate }) {
   const [hovered, setHovered] = React.useState(false)
+  const [isTouch, setIsTouch] = React.useState(false)
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(hover: none), (max-width: 768px)')
+    const update = () => setIsTouch(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
   return (
     <motion.div
+      className="proof-card"
       style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0, willChange: 'transform' }}
       whileHover={{ y: -20 }}
       onMouseEnter={() => setHovered(true)}
@@ -34,22 +45,37 @@ function ProductCardHover({ product, translate }) {
           loading="lazy"
         />
       </div>
-      <div style={{
-        position: 'absolute', inset: 0, borderRadius: '12px',
-        background: 'rgba(0,0,0,0.82)',
-        opacity: hovered ? 1 : 0,
-        transition: 'opacity 0.25s ease',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem',
-        opacity: hovered ? 1 : 0,
-        transition: 'opacity 0.25s ease',
-        pointerEvents: 'none',
-      }}>
-        <p style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em' }}>{product.title}</p>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', marginTop: '0.25rem' }}>{product.stat}</p>
-      </div>
+      {!isTouch && (
+        <>
+          <div style={{
+            position: 'absolute', inset: 0, borderRadius: '12px',
+            background: 'rgba(0,0,0,0.82)',
+            opacity: hovered ? 1 : 0,
+            transition: 'opacity 0.25s ease',
+            pointerEvents: 'none',
+          }} />
+          <div style={{
+            position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem',
+            opacity: hovered ? 1 : 0,
+            transition: 'opacity 0.25s ease',
+            pointerEvents: 'none',
+          }}>
+            <p style={{ color: '#fff', fontWeight: 700, fontSize: '1rem', letterSpacing: '-0.02em' }}>{product.title}</p>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.78rem', marginTop: '0.25rem' }}>{product.stat}</p>
+          </div>
+        </>
+      )}
+      {isTouch && (
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, borderRadius: '0 0 12px 12px',
+          padding: '1.5rem 0.85rem 0.75rem',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0))',
+          pointerEvents: 'none',
+        }}>
+          <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '-0.02em' }}>{product.title}</p>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.72rem', marginTop: '0.2rem' }}>{product.stat}</p>
+        </div>
+      )}
     </motion.div>
   )
 }
@@ -92,6 +118,12 @@ export function ProofSection() {
         WebkitFontSmoothing: 'antialiased',
       }}
     >
+      <style>{`
+        @media (hover: none), (max-width: 768px) {
+          .proof-card { width: min(75vw, 320px) !important; height: 16rem !important; }
+        }
+      `}</style>
+
       {/* Header */}
       <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 clamp(1.5rem, 8vw, 7rem)', width: '100%', position: 'relative', zIndex: 20, marginBottom: '2rem' }}>
         <motion.p

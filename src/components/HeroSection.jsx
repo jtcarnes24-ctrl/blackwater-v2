@@ -47,6 +47,7 @@ export function HeroSection() {
           opacity: var(--scroll-o, 1);
           will-change: transform, opacity;
         }
+        .hero-eyebrow { animation: hero-fade 0.6s ease 0.05s both; }
         .hero-bar     { animation: hero-bar  0.6s cubic-bezier(0.76,0,0.24,1) 0.15s both; transform-origin: left; }
         .hero-h1      { animation: hero-line 0.85s cubic-bezier(0.76,0,0.24,1) 0.25s both; }
         .hero-tagline { animation: hero-fade 0.7s ease 0.4s both; }
@@ -84,6 +85,14 @@ export function HeroSection() {
       }}>
         {/* Top-left */}
         <div style={{ textAlign: 'left', maxWidth: '50vw' }}>
+          <p className="hero-eyebrow" style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: '0.72rem', letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: '#C8D746',
+            fontWeight: 600, marginBottom: '1rem',
+          }}>
+            The AI-Powered Ads Agency
+          </p>
           <div className="hero-bar" style={{
             width: '28px', height: '2px', background: '#C8D746', marginBottom: '1rem',
           }} />
@@ -105,7 +114,7 @@ export function HeroSection() {
             lineHeight: 1.5, maxWidth: '32ch',
             marginBottom: '2rem',
           }}>
-            Paid social that scales brands — Meta &amp; TikTok ads, engineered for ROAS.
+            Meta &amp; TikTok campaigns run by AI systems that test more creatives, kill losers faster, and scale winners around the clock.
           </p>
           <div className="hero-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
