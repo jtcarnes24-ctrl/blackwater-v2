@@ -78,6 +78,8 @@ export function ContactSection() {
         <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+          <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
+          <a href="https://www.instagram.com/roasjc/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @roasjc</a>
           <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
         </div>
       </div>

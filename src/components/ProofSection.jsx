@@ -5,7 +5,6 @@ import { easeInOut, viewport } from '../lib/animations'
 const results = [
   { title: '12.97x ROAS', stat: '$88,913 from $6,857 spend', thumbnail: '/results/result-8.webp' },
   { title: '12.56x ROAS', stat: '$20,663 from $1,644 spend', thumbnail: '/results/result-9.webp' },
-  { title: '11.73x ROAS', stat: '$15,508 from $1,321 spend', thumbnail: '/results/result-6.webp' },
   { title: '7.38x ROAS', stat: '$5.63 CPA · 15.94% hook rate', thumbnail: '/results/result-7.webp' },
   { title: '$8,236/day', stat: '193 orders · 578% jump', thumbnail: '/results/result-1.webp' },
   { title: '$7,659/day', stat: '159 orders · 3.04% CVR', thumbnail: '/results/result-2.webp' },
