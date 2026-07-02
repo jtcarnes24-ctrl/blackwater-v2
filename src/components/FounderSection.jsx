@@ -145,7 +145,7 @@ export function FounderSection() {
                 width: '96px',
                 height: '96px',
                 objectFit: 'cover',
-                objectPosition: 'top center',
+                objectPosition: 'center 20%',
                 borderRadius: '999px',
                 flexShrink: 0,
                 display: 'block',

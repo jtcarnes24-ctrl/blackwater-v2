@@ -1,14 +1,78 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import FlowArt, { FlowSection } from './ui/FlowArt'
 import { AIChart } from './ui/AIChart'
 import { easeOut, easeInOut, viewport } from '../lib/animations'
 
 const testimonials = [
-  { quote: 'Started working with BlackWater a few months ago and the difference has honestly been huge. The ads actually feel structured now instead of just throwing content out and hoping something works.', name: 'Dmitri V.' },
-  { quote: 'What stood out to me was how focused they were on testing and improving everything instead of making random changes. We started getting more consistent sales pretty quickly.', name: 'Noah R.' },
-  { quote: 'A lot of agencies just talk, but these guys actually care about performance. They helped us improve our creatives, landing pages, and ad structure.', name: 'Giuseppe C.' },
-  { quote: 'Really good experience overall. They explained everything clearly, kept me updated, and actually helped us figure out what was hurting conversions on our site.', name: 'Charlotte L.' },
+  { quote: "Jack and the team don't just run ads and disappear. They're constantly testing stuff, sending updates, and actually explaining what's working. It feels like having another team in our business instead of another agency.", name: 'Luca Moretti' },
+  { quote: "I've worked with agencies before and this was a completely different experience. The communication is fast, they're straight up about what's working, and our numbers have looked better every month since we started.", name: 'Priya Narayanan' },
+  { quote: "One thing I noticed right away was how much they actually cared about the outcome. They weren't just trying to spend our budget. Every change had a reason behind it and it paid off.", name: 'Mateo Álvarez' },
+  { quote: "These guys are lowkey obsessed with improving everything. Every week there was something new being tested or optimized. It made me feel like our account was actually getting attention instead of being forgotten.", name: 'Zain Al-Haddad' },
+  { quote: "I was honestly skeptical because everyone says they can scale brands. BlackWater actually backed it up. We finally have a system that brings in sales consistently instead of random good weeks.", name: 'Anika Sørensen' },
+  { quote: "The response time is crazy. I don't think I've ever waited more than a couple hours for an answer. Having three people working together on our account definitely makes a difference.", name: 'Thiago Carvalho' },
+  { quote: "I've never had an agency send this many ideas without me asking. New creatives, landing page feedback, ad angles, offers. They helped improve way more than just our Meta ads.", name: 'Sofia Petrovic' },
+  { quote: "Probably the easiest agency we've worked with. No confusing reports or fluff. They just tell you what happened, what's changing next, and keep pushing to get better results. Love that.", name: "Kieran O'Donnell" },
+  { quote: "Our CPA kept creeping up and we couldn't figure out why. BlackWater came in, cleaned everything up, and within a few weeks we were finally profitable again. Wish we found them sooner lol.", name: 'Nikolai Varga' },
+  { quote: "Shout out to the whole BlackWater crew. It never felt like one person trying to juggle everything. There was always someone available, ideas were flowing, and they treated our brand like it was their own.", name: 'Yara Ben Salem' },
 ]
+
+function TestimonialCarousel() {
+  const [index, setIndex] = useState(0)
+
+  const goPrev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
+  const goNext = () => setIndex((i) => (i + 1) % testimonials.length)
+
+  const t = testimonials[index]
+  const arrowBtnStyle = {
+    width: '40px', height: '40px', borderRadius: '999px',
+    border: '1px solid rgba(8,8,8,0.15)', background: 'transparent',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    cursor: 'pointer', flexShrink: 0, color: '#080808',
+  }
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 4vw, 2.5rem)', width: '100%', justifyContent: 'center' }}>
+        <button type="button" aria-label="Previous testimonial" onClick={goPrev} style={arrowBtnStyle}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+
+        <div style={{ width: '100%', maxWidth: '560px', minHeight: '260px', display: 'flex', alignItems: 'center' }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                background: 'rgba(8,8,8,0.05)', border: '1px solid rgba(8,8,8,0.08)',
+                borderRadius: '4px', padding: '1.75rem', width: '100%',
+              }}
+            >
+              <p style={{ fontSize: '1.5rem', color: 'rgba(8,8,8,0.15)', fontWeight: 700, lineHeight: 1, marginBottom: '0.75rem' }}>"</p>
+              <p style={{ fontSize: '0.95rem', color: 'rgba(8,8,8,0.65)', lineHeight: 1.65, marginBottom: '1.25rem' }}>{t.quote}</p>
+              <p style={{ fontSize: '0.8rem', fontWeight: 700, color: '#080808', letterSpacing: '0.05em' }}>{t.name}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <button type="button" aria-label="Next testimonial" onClick={goNext} style={arrowBtnStyle}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
+
+      <p style={{ fontSize: '0.75rem', color: 'rgba(8,8,8,0.4)', letterSpacing: '0.05em', fontWeight: 600 }}>
+        {index + 1} / {testimonials.length}
+      </p>
+    </div>
+  )
+}
 
 export function FlowGroup2() {
   return (
@@ -113,24 +177,7 @@ export function FlowGroup2() {
           </div>
         ))}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem', flex: 1, alignContent: 'end' }}>
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: easeOut, delay: i * 0.08 }} viewport={viewport}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              style={{
-                background: 'rgba(8,8,8,0.05)', border: '1px solid rgba(8,8,8,0.08)',
-                borderRadius: '4px', padding: '1.5rem',
-              }}
-            >
-              <p style={{ fontSize: '1.5rem', color: 'rgba(8,8,8,0.15)', fontWeight: 700, lineHeight: 1, marginBottom: '0.75rem' }}>"</p>
-              <p style={{ fontSize: '0.88rem', color: 'rgba(8,8,8,0.65)', lineHeight: 1.65, marginBottom: '1.25rem' }}>{t.quote}</p>
-              <p style={{ fontSize: '0.8rem', fontWeight: 700, color: '#080808', letterSpacing: '0.05em' }}>{t.name}</p>
-            </motion.div>
-          ))}
-        </div>
+        <TestimonialCarousel />
       </FlowSection>
     </FlowArt>
   )
