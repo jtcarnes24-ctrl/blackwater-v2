@@ -5,9 +5,10 @@ import { useGSAP } from '@gsap/react'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function FlowSection({ className, style = {}, children, 'aria-label': ariaLabel }) {
+export function FlowSection({ id, className, style = {}, children, 'aria-label': ariaLabel }) {
   return (
     <section
+      id={id}
       data-flow-section
       aria-label={ariaLabel}
       style={{ position: 'relative', minHeight: '100vh', width: '100%', overflow: 'hidden' }}

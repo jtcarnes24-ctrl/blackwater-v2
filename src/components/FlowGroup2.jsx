@@ -19,64 +19,69 @@ export function FlowGroup2() {
         aria-label="AI-powered advertising"
         style={{ background: '#080808', color: '#ffffff' }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}
-        >
-          AI-Powered Advertising
-        </motion.p>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
+            style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', fontWeight: 600, marginBottom: '1.5rem' }}
+          >
+            AI-Powered Advertising
+          </motion.p>
 
-        <div className="ai-layout">
-          <div style={{ flex: 1 }}>
-            {["WE DON'T JUST", 'RUN ADS.', 'WE ENGINEER', 'THEM.'].map((line, i) => (
-              <div key={i} style={{ overflow: 'hidden' }}>
-                <motion.h2
-                  initial={{ clipPath: 'inset(0 0 100% 0)' }}
-                  whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
-                  transition={{ duration: 0.75, ease: easeInOut, delay: i * 0.07 }}
-                  viewport={viewport}
-                  style={{ fontSize: 'clamp(1.8rem, 3.5vw, 4rem)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 0.95, color: '#ffffff', textTransform: 'uppercase', margin: 0 }}
-                >
-                  {line}
-                </motion.h2>
-              </div>
-            ))}
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: easeOut, delay: 0.35 }} viewport={viewport}
-              style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '42ch', margin: '1.5rem 0 0.85rem' }}
+          {/* Heading overlaid on the demand-index graph */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '1000px', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'clamp(240px, 34vh, 360px)' }}>
+            <motion.div
+              initial={{ opacity: 0 }} whileInView={{ opacity: 0.3 }}
+              transition={{ duration: 1, ease: easeOut }} viewport={viewport}
+              aria-hidden="true"
+              style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', pointerEvents: 'none', zIndex: 0 }}
             >
-              Brands that aren't using AI in their marketing right now aren't just falling behind, they're getting priced out. The cost to acquire a customer keeps climbing while your competitors are using AI to find better audiences, test more creatives, and optimize faster than any human team can keep up with manually.
-            </motion.p>
+              <AIChart />
+            </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: easeOut, delay: 0.42 }} viewport={viewport}
-              style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '42ch', margin: '0 0 0.85rem' }}
-            >
-              We've watched brands with solid products shut down because their ad accounts dried up and they had no system to fix it. No creative testing framework. No AI-assisted analysis. Just guessing and hoping the numbers come back. They don't.
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: easeOut, delay: 0.49 }} viewport={viewport}
-              style={{ fontSize: '0.92rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, maxWidth: '42ch', margin: '0 0 1.5rem' }}
-            >
-              Every campaign at BlackWater runs AI-driven creative analysis, audience modeling, and real-time budget optimization. It's not an add-on, it's built into how we operate.
-            </motion.p>
-
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              {["WE DON'T JUST", 'RUN ADS.', 'WE ENGINEER', 'THEM.'].map((line, i) => (
+                <div key={i} style={{ overflow: 'hidden' }}>
+                  {/* Reveal on mount, not scroll — this heading sits inside a
+                      GSAP-pinned section where whileInView + clip-path is
+                      unreliable, and it must always be visible over the graph */}
+                  <motion.h2
+                    initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                    animate={{ clipPath: 'inset(0 0 0% 0)' }}
+                    transition={{ duration: 0.75, ease: easeInOut, delay: 0.2 + i * 0.07 }}
+                    style={{ fontSize: 'clamp(2rem, 4.5vw, 4.5rem)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 0.95, color: '#ffffff', textTransform: 'uppercase', margin: 0 }}
+                  >
+                    {line}
+                  </motion.h2>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <motion.div
+          {/* Supporting copy below */}
+          <motion.p
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: 0.3 }} viewport={viewport}
-            className="ai-robot"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            transition={{ duration: 0.6, ease: easeOut, delay: 0.35 }} viewport={viewport}
+            style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, maxWidth: '60ch', margin: '2.5rem 0 1rem' }}
           >
-            <AIChart />
-          </motion.div>
+            Brands that aren't using AI in their marketing right now aren't just falling behind, they're getting priced out. The cost to acquire a customer keeps climbing while your competitors are using AI to find better audiences, test more creatives, and optimize faster than any human team can keep up with manually.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: easeOut, delay: 0.42 }} viewport={viewport}
+            style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, maxWidth: '60ch', margin: '0 0 1rem' }}
+          >
+            We've watched brands with solid products shut down because their ad accounts dried up and they had no system to fix it. No creative testing framework. No AI-assisted analysis. Just guessing and hoping the numbers come back. They don't.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: easeOut, delay: 0.49 }} viewport={viewport}
+            style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, maxWidth: '60ch', margin: 0 }}
+          >
+            Every campaign at BlackWater runs AI-driven creative analysis, audience modeling, and real-time budget optimization. It's not an add-on, it's built into how we operate.
+          </motion.p>
         </div>
       </FlowSection>
 

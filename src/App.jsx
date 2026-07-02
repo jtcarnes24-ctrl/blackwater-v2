@@ -31,9 +31,13 @@ function App() {
     const raf = (time) => lenis.raf(time * 1000)
     gsap.ticker.add(raf)
     gsap.ticker.lagSmoothing(0)
+    // Exposed so Nav can drive smooth anchor scrolling through the same
+    // instance — native scrollIntoView gets overridden by Lenis every frame
+    window.__lenis = lenis
     return () => {
       gsap.ticker.remove(raf)
       lenis.destroy()
+      window.__lenis = null
     }
   }, [])
 

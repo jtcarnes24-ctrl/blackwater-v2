@@ -31,9 +31,18 @@ export function Nav() {
   const handleNavClick = (href, external) => {
     setOpen(false)
     if (!external) {
+      // Wait for the overlay clip-path exit, then drive Lenis directly.
+      // Offset clears the fixed nav so the section heading isn't tucked
+      // under it. Works for GSAP-pinned sections where scrollIntoView fails.
       setTimeout(() => {
-        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
-      }, 300)
+        const target = document.querySelector(href)
+        if (!target) return
+        if (window.__lenis) {
+          window.__lenis.scrollTo(target, { offset: -96, duration: 1.2 })
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 550)
     }
   }
 
@@ -43,10 +52,10 @@ export function Nav() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '1.5rem clamp(1.5rem, 5vw, 4rem)',
-        background: scrolled ? 'rgba(8,8,8,0.7)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+        background: (scrolled && !open) ? 'rgba(8,8,8,0.7)' : 'transparent',
+        backdropFilter: (scrolled && !open) ? 'blur(12px)' : 'none',
+        WebkitBackdropFilter: (scrolled && !open) ? 'blur(12px)' : 'none',
+        borderBottom: (scrolled && !open) ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
         transition: 'background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease',
       }}>
         <a href="#" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
