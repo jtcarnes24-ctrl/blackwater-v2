@@ -12,10 +12,11 @@ const PARAS = [
 function BlurLetter({ char, delay }) {
   return (
     <motion.span
-      initial={{ opacity: 0, filter: 'blur(12px)', y: -18 }}
-      animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+      initial={{ opacity: 0, filter: 'blur(6px)', y: -18 }}
+      whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+      viewport={{ once: true, margin: '-10%' }}
       transition={{ duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94], delay }}
-      style={{ display: 'inline-block' }}
+      style={{ display: 'inline-block', willChange: 'transform, filter' }}
     >
       {char}
     </motion.span>
@@ -40,8 +41,8 @@ export function FounderSection() {
   return (
     <section ref={sectionRef} id="founder" style={{ background: '#080808', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
 
-      {/* ── Name + Photo hero ── */}
-      <div style={{
+      {/* ── Name + Photo hero (desktop only — mobile uses the compact header in the bio block below) ── */}
+      <div className="founder-hero" style={{
         position: 'relative',
         minHeight: '100vh',
         display: 'flex',
@@ -97,7 +98,7 @@ export function FounderSection() {
           >
             <motion.div style={{ y: photoY }}>
               <img
-                src="/jack-founder.png"
+                src="/jack-founder.jpg"
                 alt="Jack Carnes"
                 className="founder-photo"
                 style={{
@@ -135,9 +136,43 @@ export function FounderSection() {
             Founder, BlackWater Marketing
           </motion.p>
 
-          <div style={{ display: 'flex', gap: 'clamp(1.5rem, 6vw, 8rem)', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '2rem' }}>
+          {/* Mobile-only compact header: photo + name, directly above the bio text */}
+          <div className="founder-mobile-header" style={{ display: 'none', alignItems: 'center', gap: '1.25rem', marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+            <img
+              src="/jack-founder.jpg"
+              alt="Jack Carnes"
+              style={{
+                width: '96px',
+                height: '96px',
+                objectFit: 'cover',
+                objectPosition: 'top center',
+                borderRadius: '999px',
+                flexShrink: 0,
+                display: 'block',
+              }}
+            />
+            <div style={{ lineHeight: 0.95 }}>
+              {['JACK', 'CARNES'].map((line, i) => (
+                <div key={line} style={{ overflow: 'hidden' }}>
+                  <motion.h2
+                    initial={{ clipPath: 'inset(0 0 100% 0)' }}
+                    whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
+                    transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.07 }}
+                    viewport={viewport}
+                    style={{
+                      fontSize: 'clamp(1.8rem, 9vw, 2.6rem)', fontWeight: 700,
+                      letterSpacing: '-0.03em', lineHeight: 0.98,
+                      color: '#f2ede4', textTransform: 'uppercase', margin: 0,
+                    }}
+                  >{line}</motion.h2>
+                </div>
+              ))}
+            </div>
+          </div>
 
-            <div style={{ flexShrink: 0 }}>
+          <div className="founder-bio-row" style={{ display: 'flex', gap: 'clamp(1.5rem, 6vw, 8rem)', flexWrap: 'wrap', alignItems: 'flex-start', marginTop: '2rem' }}>
+
+            <div className="founder-name-desktop" style={{ flexShrink: 0 }}>
               {['JACK', 'CARNES'].map((line, i) => (
                 <div key={line} style={{ overflow: 'hidden' }}>
                   <motion.h2
@@ -176,7 +211,7 @@ export function FounderSection() {
                 style={{ marginTop: '2.5rem' }}
               >
                 <LiquidButton
-                  href="https://calendly.com/blkwtrenterprises/30min"
+                  href="https://calendly.com/blkwtrenterprises/45"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ background: '#f2ede4', color: '#080808' }}

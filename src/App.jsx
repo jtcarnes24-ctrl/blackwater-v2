@@ -1,7 +1,13 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
+import Lenis from 'lenis'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Nav } from './components/Nav'
+
+gsap.registerPlugin(ScrollTrigger)
 import { HeroSection } from './components/HeroSection'
 import { FlowGroup1 } from './components/FlowGroup1'
+import { Marquee } from './components/Marquee'
 
 // Everything below the fold loads on demand
 const ServicesSection    = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })))
@@ -13,10 +19,30 @@ const FounderSection     = lazy(() => import('./components/FounderSection').then
 const ContactSection     = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })))
 
 function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    })
+    // Single animation loop: Lenis rides GSAP's ticker so ScrollTrigger
+    // pins/scrubs update in the same frame as the smoothed scroll position
+    lenis.on('scroll', ScrollTrigger.update)
+    const raf = (time) => lenis.raf(time * 1000)
+    gsap.ticker.add(raf)
+    gsap.ticker.lagSmoothing(0)
+    return () => {
+      gsap.ticker.remove(raf)
+      lenis.destroy()
+    }
+  }, [])
+
   return (
     <>
+      <div className="noise" />
       <Nav />
       <main style={{ background: '#080808' }}>
+        <Marquee />
         <HeroSection />
         <FlowGroup1 />
         <Suspense fallback={null}>

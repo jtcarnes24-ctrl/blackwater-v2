@@ -36,7 +36,12 @@ export function ServicesSection() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3, ease: easeOut }} viewport={viewport}>
-          <LiquidButton href="https://calendly.com/blkwtrenterprises/30min" target="_blank" rel="noopener noreferrer">
+          <LiquidButton
+            href="https://calendly.com/blkwtrenterprises/45"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#080808', borderColor: '#080808' }}
+          >
             Get Started
           </LiquidButton>
         </motion.div>

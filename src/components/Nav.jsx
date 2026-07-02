@@ -7,7 +7,9 @@ const navLinks = [
   { label: 'About Us', href: '#about' },
   { label: 'The Method', href: '#method' },
   { label: 'Our Services', href: '#services' },
-  { label: 'Talk to Us', href: 'https://calendly.com/blkwtrenterprises/30min', external: true },
+  { label: 'Results', href: '#results' },
+  { label: 'Talk to Us', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
+  { label: 'Book a Call', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
 ]
 
 export function Nav() {
@@ -15,7 +17,8 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80)
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -39,21 +42,21 @@ export function Nav() {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '1.25rem clamp(1.5rem, 5vw, 4rem)',
-        background: scrolled ? 'rgba(255,255,255,0.12)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.18)' : '1px solid transparent',
-        transition: 'background 0.5s cubic-bezier(0.32,0.72,0,1), border-color 0.5s cubic-bezier(0.32,0.72,0,1)',
+        padding: '1.5rem clamp(1.5rem, 5vw, 4rem)',
+        background: scrolled ? 'rgba(8,8,8,0.7)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(12px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+        transition: 'background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease',
       }}>
         <a href="#" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={LOGO} alt="BlackWater Marketing" style={{ height: '64px', width: '64px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <img src="/logo-transparent.png" alt="BlackWater Marketing" style={{ height: '72px', width: '72px', objectFit: 'contain' }} />
         </a>
 
         <button
           onClick={() => setOpen(o => !o)}
           aria-label="Menu"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px', zIndex: 101, position: 'relative' }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px', zIndex: 101, position: 'relative', }}
         >
           <motion.span animate={open ? { width: 26, rotate: 45, y: 9 } : { width: 28, rotate: 0, y: 0 }}
             style={{ display: 'block', height: '1.5px', background: '#fff', transformOrigin: 'center', transition: 'all 0.3s ease' }} />
@@ -90,13 +93,13 @@ export function Nav() {
                   transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
                   style={{
                     fontSize: 'clamp(2.5rem, 7vw, 6rem)', fontWeight: 700,
-                    letterSpacing: '-0.03em', color: 'rgba(255,255,255,0.35)',
+                    letterSpacing: '-0.03em', color: '#f2ede4',
                     textDecoration: 'none', lineHeight: 1.1,
                     cursor: 'pointer', textTransform: 'uppercase',
                     transition: 'color 0.2s',
                   }}
-                  onMouseEnter={e => e.target.style.color = '#ffffff'}
-                  onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.35)'}
+                  onMouseEnter={e => e.target.style.color = '#C8D746'}
+                  onMouseLeave={e => e.target.style.color = '#f2ede4'}
                 >
                   {link.label}
                 </motion.a>
@@ -108,7 +111,7 @@ export function Nav() {
               transition={{ delay: 0.5 }}
               style={{ marginTop: '3rem', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff' }}
             >
-              BlackWater Marketing © 2025
+              BlackWater Marketing © 2026
             </motion.p>
           </motion.div>
         )}

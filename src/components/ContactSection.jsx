@@ -1,23 +1,54 @@
-import { motion } from 'framer-motion'
-import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
+import { useRef, useEffect } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
-import { InfiniteGrid } from './ui/InfiniteGrid'
+
+function CalendlyEmbed() {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '200px' })
+
+  useEffect(() => {
+    if (!inView) return
+    if (document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]')) return
+    const script = document.createElement('script')
+    script.src = 'https://assets.calendly.com/assets/external/widget.js'
+    script.async = true
+    document.body.appendChild(script)
+  }, [inView])
+
+  return (
+    <div ref={ref} style={{ marginTop: '4rem' }}>
+      {inView && (
+        <div
+          className="calendly-inline-widget"
+          data-url="https://calendly.com/blkwtrenterprises/45"
+          style={{ minWidth: '280px', height: '700px' }}
+        />
+      )}
+    </div>
+  )
+}
 
 export function ContactSection() {
   return (
     <section id="contact" style={{ background: '#C8D746', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.1)', position: 'relative', overflow: 'hidden' }}>
-      <InfiniteGrid color="rgba(0,0,0,1)" />
+      <style>{`
+        @media (max-width: 480px) {
+          .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
+        }
+      `}</style>
       <div style={{ position: 'relative', zIndex: 1 }}>
       <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
         {[{ word: 'CONTACT', x: -60 }, { word: 'US', x: 60 }].map(({ word, x }, i) => (
           <div key={word} style={{ overflow: 'hidden' }}>
             <motion.h2
+              className="contact-heading"
               initial={{ opacity: 0, x }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, ease: easeInOut, delay: i * 0.1 }}
               viewport={viewport}
               style={{
-                fontSize: 'clamp(4rem, 12vw, 13rem)', fontWeight: 700,
+                fontSize: 'clamp(2.6rem, 12vw, 13rem)', fontWeight: 700,
                 letterSpacing: '-0.04em', lineHeight: 0.88,
                 color: '#080808', textTransform: 'uppercase', margin: 0,
               }}
@@ -32,7 +63,7 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut }}
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '3.5rem' }}
         >
-          <LiquidButton href="https://calendly.com/blkwtrenterprises/30min" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
+          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
             Book a Call →
           </LiquidButton>
           <LiquidButton href="mailto:blkwtrenterprises@gmail.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>
@@ -41,11 +72,13 @@ export function ContactSection() {
         </motion.div>
       </motion.div>
 
+      <CalendlyEmbed />
+
       <div style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(8,8,8,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.35)', letterSpacing: '0.1em' }}>© 2025 BlackWater Marketing. All rights reserved.</p>
+        <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.35)', letterSpacing: '0.1em' }}>Powered by Performance</p>
-          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.5)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
+          <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
         </div>
       </div>
       </div>

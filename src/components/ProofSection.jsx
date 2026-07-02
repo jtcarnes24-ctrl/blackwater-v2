@@ -19,7 +19,7 @@ function ProductCardHover({ product, translate }) {
   const [hovered, setHovered] = React.useState(false)
   return (
     <motion.div
-      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0 }}
+      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0, willChange: 'transform' }}
       whileHover={{ y: -20 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -62,14 +62,17 @@ export function ProofSection() {
   const ref = React.useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
 
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 }
+  // Springs only on the row slides (the visible "drift"); the container
+  // rotate/fade/lift tracks scroll directly — Lenis already smooths the
+  // input, so extra springs here just double the per-frame work
+  const springConfig = { stiffness: 300, damping: 30 }
 
   const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig)
   const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig)
-  const rotateX = useSpring(useTransform(scrollYProgress, [0, 0.2], [15, 0]), springConfig)
-  const opacity = useSpring(useTransform(scrollYProgress, [0, 0.2], [0.2, 1]), springConfig)
-  const rotateZ = useSpring(useTransform(scrollYProgress, [0, 0.2], [20, 0]), springConfig)
-  const translateY = useSpring(useTransform(scrollYProgress, [0, 0.2], [-700, 500]), springConfig)
+  const rotateX = useTransform(scrollYProgress, [0, 0.2], [15, 0])
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [0.2, 1])
+  const rotateZ = useTransform(scrollYProgress, [0, 0.2], [20, 0])
+  const translateY = useTransform(scrollYProgress, [0, 0.2], [-700, 500])
 
   return (
     <div
@@ -90,7 +93,7 @@ export function ProofSection() {
       }}
     >
       {/* Header */}
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 clamp(1.5rem, 8vw, 7rem)', width: '100%', position: 'relative' }}>
+      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 clamp(1.5rem, 8vw, 7rem)', width: '100%', position: 'relative', zIndex: 20, marginBottom: '2rem' }}>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +128,7 @@ export function ProofSection() {
       </div>
 
       {/* Parallax rows */}
-      <motion.div style={{ rotateX, rotateZ, translateY, opacity }}>
+      <motion.div style={{ rotateX, rotateZ, translateY, opacity, position: 'relative', zIndex: 1, willChange: 'transform, opacity' }}>
         <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
           {firstRow.map((product, i) => (
             <ProductCardHover product={product} translate={translateX} key={product.title + i} />

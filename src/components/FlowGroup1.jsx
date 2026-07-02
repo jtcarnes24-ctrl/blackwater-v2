@@ -99,7 +99,7 @@ export function FlowGroup1() {
                 style={{ padding: '1.5rem 0', borderTop: '1px solid rgba(255,255,255,0.08)', ...(i === pillars.length - 1 ? { borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}) }}
               >
                 <p style={{ fontSize: '0.65rem', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.25)', fontWeight: 700, marginBottom: '0.4rem' }}>{p.num}</p>
-                <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.4rem' }}>{p.title}</h4>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: '0.4rem' }}>{p.title}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{p.desc}</p>
               </motion.div>
             ))}
