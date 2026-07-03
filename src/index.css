@@ -58,6 +58,12 @@ img, svg {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+
+/* Client logo marquee (3 copies of the logo set) */
+@keyframes logo-marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-33.333%, 0, 0); }
+}
 .marquee-track {
   display: flex;
   white-space: nowrap;

@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 import { HeroSection } from './components/HeroSection'
 import { FlowGroup1 } from './components/FlowGroup1'
 import { Marquee } from './components/Marquee'
+import { LogoMarquee } from './components/LogoMarquee'
 
 // Everything below the fold loads on demand
 const ServicesSection    = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })))
@@ -48,6 +49,7 @@ function App() {
       <main style={{ background: '#080808' }}>
         <Marquee />
         <HeroSection />
+        <LogoMarquee />
         <FlowGroup1 />
         <Suspense fallback={null}>
           <ServicesSection />
