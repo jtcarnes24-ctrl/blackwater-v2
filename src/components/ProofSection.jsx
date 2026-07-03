@@ -96,7 +96,6 @@ export function ProofSection() {
   const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig)
   const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig)
   const rotateX = useTransform(scrollYProgress, [0, 0.2], [15, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [0.2, 1])
   const rotateZ = useTransform(scrollYProgress, [0, 0.2], [20, 0])
   const translateY = useTransform(scrollYProgress, [0, 0.2], [-700, 500])
 
@@ -160,7 +159,7 @@ export function ProofSection() {
       </div>
 
       {/* Parallax rows */}
-      <motion.div style={{ rotateX, rotateZ, translateY, opacity, position: 'relative', zIndex: 1, willChange: 'transform, opacity' }}>
+      <motion.div style={{ rotateX, rotateZ, translateY, position: 'relative', zIndex: 1, willChange: 'transform' }}>
         <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
           {firstRow.map((product, i) => (
             <ProductCardHover product={product} translate={translateX} key={product.title + i} />

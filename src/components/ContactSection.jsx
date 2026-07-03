@@ -31,7 +31,7 @@ function CalendlyEmbed() {
 
 export function ContactSection() {
   return (
-    <section id="contact" style={{ background: '#C8D746', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.1)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#ffffff', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.1)', position: 'relative', overflow: 'hidden' }}>
       <style>{`
         @media (max-width: 480px) {
           .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }

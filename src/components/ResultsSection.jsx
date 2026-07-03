@@ -33,10 +33,10 @@ const stats = [
 
 export function ResultsSection() {
   return (
-    <section id="results" style={{ background: '#080808', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.1)' }}>
+    <section id="results" style={{ background: '#ffffff', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
         <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(242,237,228,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}>
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}>
           The Numbers
         </motion.p>
         {['RESULTS THAT', 'SPEAK'].map((line, i) => (
@@ -44,7 +44,7 @@ export function ResultsSection() {
             <motion.h2
               variants={clipReveal}
               transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#f2ede4', textTransform: 'uppercase', margin: 0 }}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#080808', textTransform: 'uppercase', margin: 0 }}
             >
               {line}
             </motion.h2>
@@ -79,10 +79,10 @@ export function ResultsSection() {
             variants={fadeUp}
             transition={{ duration: 0.6, ease: easeOut }}
           >
-            <div style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)', fontWeight: 700, letterSpacing: '-0.04em', color: '#f2ede4', lineHeight: 1, marginBottom: '0.75rem' }}>
+            <div style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)', fontWeight: 700, letterSpacing: '-0.04em', color: '#080808', lineHeight: 1, marginBottom: '0.75rem' }}>
               <Counter target={s.target} duration={s.duration} format={s.format} />
             </div>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(242,237,228,0.45)', letterSpacing: '0.08em', lineHeight: 1.6, whiteSpace: 'pre-line', textTransform: 'uppercase', fontWeight: 600 }}>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(8,8,8,0.45)', letterSpacing: '0.08em', lineHeight: 1.6, whiteSpace: 'pre-line', textTransform: 'uppercase', fontWeight: 600 }}>
               {s.label}
             </p>
           </motion.div>
@@ -96,7 +96,7 @@ export function ResultsSection() {
         viewport={viewport}
         style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}
       >
-        <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
+        <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
           Apply Now →
         </LiquidButton>
       </motion.div>
