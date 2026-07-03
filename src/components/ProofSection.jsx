@@ -50,7 +50,7 @@ function ProductCardHover({ product, translate }) {
           <div style={{
             position: 'absolute', inset: 0, borderRadius: '12px',
             background: 'rgba(0,0,0,0.82)',
-            opacity: hovered ? 1 : 0,
+            opacity: hovered ? 1 : 0.3,
             transition: 'opacity 0.25s ease',
             pointerEvents: 'none',
           }} />
