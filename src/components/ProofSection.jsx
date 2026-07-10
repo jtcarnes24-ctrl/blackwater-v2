@@ -187,7 +187,7 @@ export function ProofSection() {
           transition={{ duration: 0.5 }}
           viewport={viewport}
         >
-          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
+          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer">
             Apply Now →
           </LiquidButton>
         </motion.div>

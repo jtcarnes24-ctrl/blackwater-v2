@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'The Method', href: '#method' },
   { label: 'Our Services', href: '#services' },
   { label: 'Results', href: '#results' },
-  { label: 'Apply Now', href: 'https://calendly.com/blkwtrenterprises/45', external: true },
+  { label: 'Apply Now', href: 'https://calendly.com/blackwatermrkting/45', external: true },
 ]
 
 export function Nav() {
@@ -58,10 +58,10 @@ export function Nav() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '1.5rem clamp(1.5rem, 5vw, 4rem)',
-        background: (scrolled && !open) ? 'rgba(8,8,8,0.7)' : 'transparent',
+        background: (scrolled && !open) ? 'rgba(242,237,228,0.85)' : 'transparent',
         backdropFilter: (scrolled && !open) ? 'blur(12px)' : 'none',
         WebkitBackdropFilter: (scrolled && !open) ? 'blur(12px)' : 'none',
-        borderBottom: (scrolled && !open) ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+        borderBottom: (scrolled && !open) ? '1px solid rgba(8,8,8,0.08)' : '1px solid transparent',
         transition: 'background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease',
       }}>
         <a href="#" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
@@ -72,7 +72,7 @@ export function Nav() {
           {scrolled && !open && (
             <div className="nav-book-call">
               <LiquidButton
-                href="https://calendly.com/blkwtrenterprises/45"
+                href="https://calendly.com/blackwatermrkting/45"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ padding: '0.6rem 1.4rem', fontSize: '0.72rem' }}
@@ -88,9 +88,9 @@ export function Nav() {
             style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px', display: 'flex', flexDirection: 'column', gap: '6px', zIndex: 101, position: 'relative', }}
           >
             <motion.span animate={open ? { width: 26, rotate: 45, y: 9 } : { width: 28, rotate: 0, y: 0 }}
-              style={{ display: 'block', height: '1.5px', background: '#fff', transformOrigin: 'center', transition: 'all 0.3s ease' }} />
+              style={{ display: 'block', height: '1.5px', background: '#080808', transformOrigin: 'center', transition: 'all 0.3s ease' }} />
             <motion.span animate={open ? { width: 26, rotate: -45, y: -3 } : { width: 20, rotate: 0, y: 0 }}
-              style={{ display: 'block', height: '1.5px', background: '#fff', transformOrigin: 'center', transition: 'all 0.3s ease' }} />
+              style={{ display: 'block', height: '1.5px', background: '#080808', transformOrigin: 'center', transition: 'all 0.3s ease' }} />
           </button>
         </div>
       </nav>
@@ -104,7 +104,7 @@ export function Nav() {
             transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99,
-              background: '#080808',
+              background: '#f2ede4',
               display: 'flex', flexDirection: 'column',
               justifyContent: 'center',
               padding: 'clamp(2rem, 8vw, 6rem)',
@@ -123,13 +123,13 @@ export function Nav() {
                   transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
                   style={{
                     fontSize: 'clamp(2.5rem, 7vw, 6rem)', fontWeight: 700,
-                    letterSpacing: '-0.03em', color: '#f2ede4',
+                    letterSpacing: '-0.03em', color: '#080808',
                     textDecoration: 'none', lineHeight: 1.1,
                     cursor: 'pointer', textTransform: 'uppercase',
                     transition: 'color 0.2s',
                   }}
                   onMouseEnter={e => e.target.style.color = '#C8D746'}
-                  onMouseLeave={e => e.target.style.color = '#f2ede4'}
+                  onMouseLeave={e => e.target.style.color = '#080808'}
                 >
                   {link.label}
                 </motion.a>
@@ -139,7 +139,7 @@ export function Nav() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.4 }}
               transition={{ delay: 0.5 }}
-              style={{ marginTop: '3rem', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff' }}
+              style={{ marginTop: '3rem', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#080808' }}
             >
               BlackWater Marketing © 2026
             </motion.p>

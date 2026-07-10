@@ -91,7 +91,7 @@ export function HeroSection() {
             textTransform: 'uppercase', color: '#C8D746',
             fontWeight: 600, marginBottom: '1rem',
           }}>
-            The AI-Powered Ads Agency
+            Meta &amp; TikTok Ads Agency
           </p>
           <div className="hero-bar" style={{
             width: '28px', height: '2px', background: '#C8D746', marginBottom: '1rem',
@@ -114,10 +114,10 @@ export function HeroSection() {
             lineHeight: 1.5, maxWidth: '32ch',
             marginBottom: '2rem',
           }}>
-            Meta &amp; TikTok campaigns run by AI systems that test more creatives, kill losers faster, and scale winners around the clock.
+            Meta &amp; TikTok campaigns built to test more creatives, kill losers faster, and scale winners around the clock.
           </p>
           <div className="hero-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer">
+            <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer">
               Apply Now →
             </LiquidButton>
             <LiquidButton href="#services">Our Services</LiquidButton>

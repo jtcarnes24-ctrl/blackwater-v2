@@ -39,8 +39,8 @@ export function ResultsSection() {
           style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}>
           The Numbers
         </motion.p>
-        {['RESULTS THAT', 'SPEAK'].map((line, i) => (
-          <div key={line} style={{ overflow: 'hidden' }}>
+        {['RESULTS THAT', <span className="emph">speak</span>].map((line, i) => (
+          <div key={i} style={{ overflow: 'hidden' }}>
             <motion.h2
               variants={clipReveal}
               transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
@@ -96,7 +96,7 @@ export function ResultsSection() {
         viewport={viewport}
         style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}
       >
-        <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
+        <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
           Apply Now →
         </LiquidButton>
       </motion.div>

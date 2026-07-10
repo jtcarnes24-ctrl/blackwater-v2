@@ -21,7 +21,7 @@ function CalendlyEmbed() {
       {inView && (
         <div
           className="calendly-inline-widget"
-          data-url="https://calendly.com/blkwtrenterprises/45"
+          data-url="https://calendly.com/blackwatermrkting/45"
           style={{ minWidth: '280px', height: '700px' }}
         />
       )}
@@ -55,8 +55,8 @@ export function ContactSection() {
           Ready When You Are
         </motion.p>
 
-        {['STOP GUESSING.', 'START SCALING.'].map((line, i) => (
-          <div key={line} style={{ overflow: 'hidden' }}>
+        {['STOP GUESSING.', <span key="s">START <span className="emph">scaling</span>.</span>].map((line, i) => (
+          <div key={i} style={{ overflow: 'hidden' }}>
             <motion.h2
               variants={clipReveal}
               transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
@@ -88,7 +88,7 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
           style={{ marginTop: '2.5rem' }}
         >
-          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
+          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
             Apply Now →
           </LiquidButton>
         </motion.div>
@@ -119,7 +119,7 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut }}
           style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '3.5rem' }}
         >
-          <LiquidButton href="https://calendly.com/blkwtrenterprises/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
+          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
             Apply Now →
           </LiquidButton>
           <LiquidButton href="mailto:blkwtrenterprises@gmail.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>

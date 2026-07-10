@@ -22,8 +22,8 @@ export function ServicesSection() {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5rem', flexWrap: 'wrap', gap: '2rem' }}>
         <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
-            {['OUR', 'SERVICES'].map((line, i) => (
-            <div key={line} style={{ overflow: 'hidden' }}>
+            {['OUR', <span className="emph">services</span>].map((line, i) => (
+            <div key={i} style={{ overflow: 'hidden' }}>
               <motion.h2
                 variants={clipReveal}
                 transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
@@ -37,7 +37,7 @@ export function ServicesSection() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3, ease: easeOut }} viewport={viewport}>
           <LiquidButton
-            href="https://calendly.com/blkwtrenterprises/45"
+            href="https://calendly.com/blackwatermrkting/45"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: '#080808', borderColor: '#080808' }}

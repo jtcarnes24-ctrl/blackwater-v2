@@ -39,7 +39,7 @@ export function FounderSection() {
   const photoY = useTransform(scrollYProgress, [0, 1], [-30, 30])
 
   return (
-    <section ref={sectionRef} id="founder" style={{ background: '#080808', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
+    <section ref={sectionRef} id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
 
       {/* ── Name + Photo hero (desktop only — mobile uses the compact header in the bio block below) ── */}
       <div className="founder-hero" style={{
@@ -116,7 +116,7 @@ export function FounderSection() {
       </div>
 
       {/* ── Bio ── */}
-      <div style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(242,237,228,0.06)' }}>
+      <div style={{ padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
         <motion.div
           variants={staggerContainer(0.12, 0.05)}
           initial="hidden"
@@ -162,7 +162,7 @@ export function FounderSection() {
                     style={{
                       fontSize: 'clamp(1.8rem, 9vw, 2.6rem)', fontWeight: 700,
                       letterSpacing: '-0.03em', lineHeight: 0.98,
-                      color: '#f2ede4', textTransform: 'uppercase', margin: 0,
+                      color: '#080808', textTransform: 'uppercase', margin: 0,
                     }}
                   >{line}</motion.h2>
                 </div>
@@ -183,7 +183,7 @@ export function FounderSection() {
                     style={{
                       fontSize: 'clamp(2.8rem, 5.5vw, 6rem)', fontWeight: 700,
                       letterSpacing: '-0.03em', lineHeight: 0.92,
-                      color: '#f2ede4', textTransform: 'uppercase', margin: 0,
+                      color: '#080808', textTransform: 'uppercase', margin: 0,
                     }}
                   >{line}</motion.h2>
                 </div>
@@ -198,7 +198,7 @@ export function FounderSection() {
                   transition={{ duration: 0.6, ease: easeOut }}
                   style={{
                     fontSize: 'clamp(0.92rem, 1.5vw, 1.08rem)',
-                    color: 'rgba(242,237,228,0.55)',
+                    color: 'rgba(8,8,8,0.55)',
                     lineHeight: 1.78,
                     marginTop: i === 0 ? 0 : '1.2rem',
                   }}
@@ -211,10 +211,10 @@ export function FounderSection() {
                 style={{ marginTop: '2.5rem' }}
               >
                 <LiquidButton
-                  href="https://calendly.com/blkwtrenterprises/45"
+                  href="https://calendly.com/blackwatermrkting/45"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ background: '#f2ede4', color: '#080808' }}
+                  style={{ background: '#080808', color: '#f2ede4' }}
                 >
                   Apply Now →
                 </LiquidButton>

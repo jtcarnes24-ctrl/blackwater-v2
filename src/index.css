@@ -30,6 +30,16 @@ h1, h2, h3, h4 {
   font-family: 'Syne', sans-serif;
 }
 
+/* Editorial serif-italic emphasis (orza-style) — drop on a single word to break
+   up a bold sans heading. Reads best on Title/sentence-case words, not ALL-CAPS. */
+.emph {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 #root {
   width: 100%;
   margin: 0;

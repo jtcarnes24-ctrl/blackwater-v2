@@ -13,9 +13,11 @@ import { LogoMarquee } from './components/LogoMarquee'
 // Everything below the fold loads on demand
 const ServicesSection    = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })))
 const ResultsSection     = lazy(() => import('./components/ResultsSection').then(m => ({ default: m.ResultsSection })))
+const SayGoodbye         = lazy(() => import('./components/SayGoodbye').then(m => ({ default: m.SayGoodbye })))
 const ProofSection       = lazy(() => import('./components/ProofSection').then(m => ({ default: m.ProofSection })))
 const FlowGroup2         = lazy(() => import('./components/FlowGroup2').then(m => ({ default: m.FlowGroup2 })))
 const FounderSection     = lazy(() => import('./components/FounderSection').then(m => ({ default: m.FounderSection })))
+const FAQSection         = lazy(() => import('./components/FAQSection').then(m => ({ default: m.FAQSection })))
 const ContactSection     = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })))
 
 function App() {
@@ -45,17 +47,19 @@ function App() {
     <>
       <div className="noise" />
       <Nav />
-      <main style={{ background: '#080808' }}>
+      <main style={{ background: '#f2ede4' }}>
         <Marquee />
         <HeroSection />
         <LogoMarquee />
         <Suspense fallback={null}>
           <ResultsSection />
+          <SayGoodbye />
           <ServicesSection />
           <FlowGroup1 />
           <ProofSection />
           <FlowGroup2 />
           <FounderSection />
+          <FAQSection />
           <ContactSection />
         </Suspense>
       </main>
