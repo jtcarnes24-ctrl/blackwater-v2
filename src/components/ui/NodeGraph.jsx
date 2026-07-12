@@ -35,7 +35,7 @@ function Dot({ pathId, dur, begin, color = LIME }) {
   )
 }
 
-export function NodeGraph({ result = '$100K+ GENERATED' }) {
+export function NodeGraph({ result = '$1M+ GENERATED' }) {
   const reduce = useReducedMotion()
 
   return (

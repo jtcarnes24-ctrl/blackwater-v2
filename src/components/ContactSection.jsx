@@ -78,7 +78,7 @@ export function ContactSection() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
-          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(8,8,8,0.45)', lineHeight: 1.6, marginTop: '0.85rem' }}
+          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(8,8,8,0.62)', lineHeight: 1.6, marginTop: '0.85rem' }}
         >
           "I don't take on clients I can't actually help." — Jack Carnes
         </motion.p>
@@ -122,7 +122,7 @@ export function ContactSection() {
           <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
             Apply Now →
           </LiquidButton>
-          <LiquidButton href="mailto:blkwtrenterprises@gmail.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>
+          <LiquidButton href="mailto:jack@blackwatermrkting.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>
             Send an Email
           </LiquidButton>
         </motion.div>
@@ -135,7 +135,7 @@ export function ContactSection() {
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>Powered by Performance</p>
           <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
-          <a href="https://www.instagram.com/roasjc/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @roasjc</a>
+          <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @jackcrns</a>
           <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
         </div>
       </div>

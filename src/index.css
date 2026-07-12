@@ -127,7 +127,9 @@ img, svg {
 /* Mobile */
 @media (max-width: 768px) {
   .method-grid {
-    grid-template-columns: 1fr;
+    /* !important: the component sets gridTemplateColumns inline, which beats
+       this rule and left phones with two clipped columns */
+    grid-template-columns: 1fr !important;
     gap: 2rem;
   }
 

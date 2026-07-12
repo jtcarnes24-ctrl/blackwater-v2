@@ -112,7 +112,7 @@ export function FlowGroup2() {
 
           {/* Animated system diagram: services -> BlackWater -> results */}
           <div style={{ width: '100%', maxWidth: '1044px', margin: '0 auto' }}>
-            <NodeGraph result="$100K+ GENERATED" />
+            <NodeGraph result="$1M+ GENERATED" />
           </div>
 
           {/* Supporting copy below */}

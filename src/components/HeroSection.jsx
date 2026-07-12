@@ -114,7 +114,7 @@ export function HeroSection() {
             lineHeight: 1.5, maxWidth: '32ch',
             marginBottom: '2rem',
           }}>
-            Meta &amp; TikTok campaigns built to test more creatives, kill losers faster, and scale winners around the clock.
+            More customers. Lower costs. Revenue that keeps climbing, month after month.
           </p>
           <div className="hero-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer">

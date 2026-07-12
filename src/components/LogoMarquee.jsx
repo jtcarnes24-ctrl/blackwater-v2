@@ -36,7 +36,8 @@ export function LogoMarquee() {
           <img
             key={i}
             src={logo.src}
-            alt="Client logo"
+            alt=""
+            aria-hidden="true"
             width={logo.width}
             height={logo.height}
             decoding="async"

@@ -64,7 +64,7 @@ export function Nav() {
         borderBottom: (scrolled && !open) ? '1px solid rgba(8,8,8,0.08)' : '1px solid transparent',
         transition: 'background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease',
       }}>
-        <a href="#" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
+        <a href="/" aria-label="BlackWater Marketing" style={{ display: 'flex', alignItems: 'center' }}>
           <img src="/logo-transparent.png" alt="BlackWater Marketing" style={{ height: '72px', width: '72px', objectFit: 'contain' }} />
         </a>
 
