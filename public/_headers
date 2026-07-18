@@ -4,4 +4,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://assets.calendly.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://calendly.com https://assets.calendly.com; frame-src https://calendly.com; worker-src blob: 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://assets.calendly.com https://*.leadpipe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://calendly.com https://assets.calendly.com https://*.leadpipe.com https://api.sitelytics.tech; frame-src https://calendly.com; worker-src blob: 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';
