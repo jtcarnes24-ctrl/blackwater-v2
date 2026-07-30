@@ -3,9 +3,9 @@ import FlowArt, { FlowSection } from './ui/FlowArt'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 
 const pillars = [
-  { num: '01', title: 'Built on What Works', desc: 'The Method was built by studying the top-performing strategies across the industry and combining them into one. No guesswork. No borrowed ideas. Just what works, distilled.' },
-  { num: '02', title: 'Engineered for Performance', desc: 'Every decision has a reason behind it. The structure is designed to get results efficiently, so your ad spend works harder from day one, not after months of trial and error.' },
-  { num: '03', title: 'Applied Consistently', desc: "The Method isn't adjusted per campaign. It's the foundation. That consistency is what creates predictable, repeatable results for every client we work with." },
+  { num: '01', title: 'A Method, Not a Template', desc: 'Built by studying the top-performing strategies across the industry and keeping only what actually produces results. Every campaign runs on the same foundation, so performance is repeatable instead of lucky.' },
+  { num: '02', title: 'Audiences Built on Real Intent', desc: 'Most agencies pick interests and hope. We use intent data to build and target audiences already in the market for what you sell, then feed it into lookalikes. Very few agencies work this way.' },
+  { num: '03', title: 'Creators On Demand', desc: 'Winning ads take volume, and volume takes people on camera. We pull from a network of UGC creators to get brands real content at the pace testing actually requires. No casting, no filming on your end.' },
 ]
 
 export function FlowGroup1() {
