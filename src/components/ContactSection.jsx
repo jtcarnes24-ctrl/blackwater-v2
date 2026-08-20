@@ -10,7 +10,7 @@ import { useApply } from './ui/ApplyModal'
 export function ContactSection() {
   const { openApply } = useApply()
   return (
-    <section id="contact" style={{ background: '#ffffff', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.1)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#080808', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
       <style>{`
         @media (max-width: 480px) {
           .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
@@ -24,12 +24,12 @@ export function ContactSection() {
         initial="hidden"
         whileInView="show"
         viewport={viewport}
-        style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)', paddingBottom: 'clamp(3rem, 8vw, 6rem)', borderBottom: '1px solid rgba(8,8,8,0.1)' }}
+        style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)', paddingBottom: 'clamp(3rem, 8vw, 6rem)', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
       >
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}
         >
           Ready When You Are
         </motion.p>
@@ -39,7 +39,7 @@ export function ContactSection() {
             <motion.h2
               variants={clipReveal}
               transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#080808', textTransform: 'uppercase', margin: 0 }}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#f2ede4', textTransform: 'uppercase', margin: 0 }}
             >
               {line}
             </motion.h2>
@@ -49,7 +49,7 @@ export function ContactSection() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '1.05rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.6, maxWidth: '48ch', marginTop: '1.75rem' }}
+          style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, maxWidth: '48ch', marginTop: '1.75rem' }}
         >
           You've seen the numbers. You've seen the method. The only thing left is your account.
         </motion.p>
@@ -57,7 +57,7 @@ export function ContactSection() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
-          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(8,8,8,0.62)', lineHeight: 1.6, marginTop: '0.85rem' }}
+          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginTop: '0.85rem' }}
         >
           "I don't take on clients I can't actually help." — Jack Carnes
         </motion.p>
@@ -67,19 +67,19 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
           style={{ marginTop: '2.5rem' }}
         >
-          <LiquidButton onClick={openApply} style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
+          <LiquidButton onClick={openApply} style={{ padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
             Apply Now →
           </LiquidButton>
         </motion.div>
       </motion.div>
 
       <div style={{ paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
+        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>Powered by Performance</p>
-          <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
-          <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>IG: @jackcrns</a>
-          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(8,8,8,0.2)', paddingBottom: '1px' }}>Privacy Policy</a>
+          <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+          <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
+          <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @jackcrns</a>
+          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>Privacy Policy</a>
         </div>
       </div>
       </div>

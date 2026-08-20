@@ -11,7 +11,7 @@ export function FlowSection({ id, className, style = {}, children, 'aria-label':
       id={id}
       data-flow-section
       aria-label={ariaLabel}
-      style={{ position: 'relative', minHeight: '100vh', width: '100%', overflow: 'hidden' }}
+      style={{ position: 'relative', width: '100%', overflow: 'hidden' }}
       className={className}
     >
       <div
@@ -22,8 +22,7 @@ export function FlowSection({ id, className, style = {}, children, 'aria-label':
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          gap: '1.5rem',
-          minHeight: '100vh',
+          gap: '2.5rem',
           width: '100%',
           padding: 'clamp(2rem,8vw,4vw) clamp(1.5rem,8vw,7rem)',
           ...style,
