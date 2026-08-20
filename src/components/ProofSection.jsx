@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
 import { useApply } from './ui/ApplyModal'
@@ -14,7 +14,9 @@ const results = [
   { title: '$5,440/day', stat: '58% above prior period', thumbnail: '/results/result-5.webp' },
 ]
 
-function ProductCardHover({ product }) {
+const products = [...results, ...results, results[0], results[1], results[2], results[3], results[4], results[5], results[6]].slice(0, 15)
+
+function ProductCardHover({ product, translate }) {
   const [hovered, setHovered] = React.useState(false)
   const [isTouch, setIsTouch] = React.useState(false)
 
@@ -29,7 +31,7 @@ function ProductCardHover({ product }) {
   return (
     <motion.div
       className="proof-card"
-      style={{ height: '22rem', width: '100%', position: 'relative' }}
+      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0, willChange: 'transform' }}
       whileHover={{ y: -20 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -81,25 +83,45 @@ function ProductCardHover({ product }) {
 
 export function ProofSection() {
   const { openApply } = useApply()
+  const firstRow = products.slice(0, 5)
+  const secondRow = products.slice(5, 10)
+  const thirdRow = products.slice(10, 15)
+
+  const ref = React.useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+
+  // Springs only on the row slides (the visible "drift"); the container
+  // rotate/fade/lift tracks scroll directly — Lenis already smooths the
+  // input, so extra springs here just double the per-frame work
+  const springConfig = { stiffness: 300, damping: 30 }
+
+  const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig)
+  const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig)
+  const rotateX = useTransform(scrollYProgress, [0, 0.2], [15, 0])
+  const rotateZ = useTransform(scrollYProgress, [0, 0.2], [20, 0])
+  const translateY = useTransform(scrollYProgress, [0, 0.2], [-700, 500])
 
   return (
     <div
+      ref={ref}
       id="results-proof"
       style={{
-        paddingTop: 'clamp(5rem, 12vw, 10rem)',
-        paddingBottom: 'clamp(5rem, 12vw, 10rem)',
+        height: '300vh',
+        paddingTop: '10rem',
+        paddingBottom: '10rem',
         overflow: 'hidden',
         background: '#080808',
         borderTop: '1px solid rgba(255,255,255,0.06)',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
+        perspective: '1000px',
         WebkitFontSmoothing: 'antialiased',
       }}
     >
       <style>{`
         @media (hover: none), (max-width: 768px) {
-          .proof-card { height: 16rem !important; }
+          .proof-card { width: min(75vw, 320px) !important; height: 16rem !important; }
         }
       `}</style>
 
@@ -138,23 +160,29 @@ export function ProofSection() {
         </motion.p>
       </div>
 
-      {/* Static grid — the scroll-driven sliding/tilting rows were removed
-          Aug 19 2026 at Jack's request. Every result shown once; no repeats. */}
-      <div
-        style={{
-          maxWidth: '80rem', margin: '0 auto', width: '100%',
-          padding: '0 clamp(1.5rem, 8vw, 7rem)',
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 'clamp(1rem, 2vw, 1.75rem)',
-          position: 'relative', zIndex: 1,
-        }}
-      >
-        {results.map((product, i) => (
-          <ProductCardHover product={product} key={product.title + i} />
-        ))}
-      </div>
+      {/* Parallax rows */}
+      <motion.div style={{ rotateX, rotateZ, translateY, position: 'relative', zIndex: 1, willChange: 'transform' }}>
+        <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
+          {firstRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateX} key={product.title + i} />
+          ))}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
+          {secondRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateXReverse} key={product.title + i} />
+          ))}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', paddingLeft: '4rem' }}>
+          {thirdRow.map((product, i) => (
+            <ProductCardHover product={product} translate={translateX} key={product.title + i} />
+          ))}
+        </div>
+      </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 20, marginTop: 'clamp(3rem, 6vw, 5rem)', display: 'flex', justifyContent: 'center' }}>
+      {/* marginTop clears the parallax rows' max downward translateY (500px)
+          so this reads as a calm, static CTA below the tilted collage instead
+          of getting visually buried under the cards mid-scroll */}
+      <div style={{ position: 'relative', zIndex: 20, marginTop: 'calc(500px + 4rem)', paddingBottom: '2rem', display: 'flex', justifyContent: 'center' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
