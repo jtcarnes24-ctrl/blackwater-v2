@@ -2,6 +2,7 @@ import { motion, useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { useApply } from './ui/ApplyModal'
 
 function Counter({ target, duration = 2, format }) {
   const [value, setValue] = useState(0)
@@ -32,6 +33,7 @@ const stats = [
 ]
 
 export function ResultsSection() {
+  const { openApply } = useApply()
   return (
     <section id="results" style={{ background: '#ffffff', padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
@@ -96,7 +98,7 @@ export function ResultsSection() {
         viewport={viewport}
         style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}
       >
-        <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
+        <LiquidButton onClick={openApply} style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
           Apply Now →
         </LiquidButton>
       </motion.div>

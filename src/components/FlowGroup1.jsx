@@ -15,7 +15,7 @@ export function FlowGroup1() {
       <FlowSection
         id="about"
         aria-label="About us"
-        style={{ background: '#f2ede4', color: '#080808' }}
+        style={{ background: '#ffffff', color: '#080808' }}
       >
         <motion.p
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export function FlowGroup1() {
       <FlowSection
         id="method"
         aria-label="The Method"
-        style={{ background: '#f2ede4', color: '#080808' }}
+        style={{ background: '#ffffff', color: '#080808' }}
       >
         <motion.p
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}

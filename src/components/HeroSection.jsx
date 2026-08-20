@@ -1,7 +1,9 @@
 import { useRef, useEffect } from 'react'
 import { LiquidButton } from './ui/LiquidButton'
+import { useApply } from './ui/ApplyModal'
 
 export function HeroSection() {
+  const { openApply } = useApply()
   const ref = useRef(null)
 
   useEffect(() => {
@@ -117,7 +119,7 @@ export function HeroSection() {
             More customers. Lower costs. Revenue that keeps climbing, month after month.
           </p>
           <div className="hero-btns" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer">
+            <LiquidButton onClick={openApply}>
               Apply Now →
             </LiquidButton>
             <LiquidButton href="#services">Our Services</LiquidButton>

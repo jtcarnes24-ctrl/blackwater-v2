@@ -4,6 +4,7 @@ import FlowArt, { FlowSection } from './ui/FlowArt'
 import { NodeGraph } from './ui/NodeGraph'
 import { LiquidButton } from './ui/LiquidButton'
 import { easeOut, easeInOut, viewport } from '../lib/animations'
+import { useApply } from './ui/ApplyModal'
 
 const testimonials = [
   { quote: "Jack and the team don't just run ads and disappear. They're constantly testing stuff, sending updates, and actually explaining what's working. It feels like having another team in our business instead of another agency.", name: 'Luca Moretti' },
@@ -76,13 +77,14 @@ function TestimonialCarousel() {
 }
 
 export function FlowGroup2() {
+  const { openApply } = useApply()
   return (
     <FlowArt aria-label="Our system and testimonials">
       {/* System Section */}
       <FlowSection
         id="ai"
         aria-label="How we operate"
-        style={{ background: '#f2ede4', color: '#080808' }}
+        style={{ background: '#ffffff', color: '#080808' }}
       >
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
           <motion.p
@@ -146,7 +148,7 @@ export function FlowGroup2() {
       <FlowSection
         id="testimonials"
         aria-label="Client testimonials"
-        style={{ background: '#f2ede4', color: '#080808' }}
+        style={{ background: '#ffffff', color: '#080808' }}
       >
         <motion.p
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
@@ -179,7 +181,7 @@ export function FlowGroup2() {
           viewport={viewport}
           style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
         >
-          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#080808', borderColor: '#080808' }}>
+          <LiquidButton onClick={openApply} style={{ color: '#080808', borderColor: '#080808' }}>
             Apply Now →
           </LiquidButton>
         </motion.div>

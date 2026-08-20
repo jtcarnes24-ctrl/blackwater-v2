@@ -1,35 +1,14 @@
-import { useRef, useEffect } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { fadeUp, clipReveal, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { useApply } from './ui/ApplyModal'
 
-function CalendlyEmbed() {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '200px' })
-
-  useEffect(() => {
-    if (!inView) return
-    if (document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]')) return
-    const script = document.createElement('script')
-    script.src = 'https://assets.calendly.com/assets/external/widget.js'
-    script.async = true
-    document.body.appendChild(script)
-  }, [inView])
-
-  return (
-    <div ref={ref} style={{ marginTop: '4rem' }}>
-      {inView && (
-        <div
-          className="calendly-inline-widget"
-          data-url="https://calendly.com/blackwatermrkting/45"
-          style={{ minWidth: '280px', height: '700px' }}
-        />
-      )}
-    </div>
-  )
-}
+/* The inline Calendly embed was removed Aug 14 2026. It let anyone book a
+   call straight off the page with zero qualification, which defeats the
+   whole point of gating Apply Now behind the application modal. */
 
 export function ContactSection() {
+  const { openApply } = useApply()
   return (
     <section id="contact" style={{ background: '#ffffff', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(8,8,8,0.1)', position: 'relative', overflow: 'hidden' }}>
       <style>{`
@@ -88,49 +67,13 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
           style={{ marginTop: '2.5rem' }}
         >
-          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
+          <LiquidButton onClick={openApply} style={{ color: '#C8D746', borderColor: '#080808', background: '#080808', padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
             Apply Now →
           </LiquidButton>
         </motion.div>
       </motion.div>
 
-      <motion.div variants={staggerContainer(0.1, 0.05)} initial="hidden" whileInView="show" viewport={viewport}>
-        {[{ word: 'CONTACT', x: -60 }, { word: 'US', x: 60 }].map(({ word, x }, i) => (
-          <div key={word} style={{ overflow: 'hidden' }}>
-            <motion.h2
-              className="contact-heading"
-              initial={{ opacity: 0, x }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, ease: easeInOut, delay: i * 0.1 }}
-              viewport={viewport}
-              style={{
-                fontSize: 'clamp(2.6rem, 12vw, 13rem)', fontWeight: 700,
-                letterSpacing: '-0.04em', lineHeight: 0.88,
-                color: '#080808', textTransform: 'uppercase', margin: 0,
-              }}
-            >
-              {word}
-            </motion.h2>
-          </div>
-        ))}
-
-        <motion.div
-          variants={fadeUp}
-          transition={{ duration: 0.5, ease: easeOut }}
-          style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '3.5rem' }}
-        >
-          <LiquidButton href="https://calendly.com/blackwatermrkting/45" target="_blank" rel="noopener noreferrer" style={{ color: '#C8D746', borderColor: '#080808', background: '#080808' }}>
-            Apply Now →
-          </LiquidButton>
-          <LiquidButton href="mailto:jack@blackwatermrkting.com" style={{ color: '#080808', borderColor: 'rgba(8,8,8,0.35)' }}>
-            Send an Email
-          </LiquidButton>
-        </motion.div>
-      </motion.div>
-
-      <CalendlyEmbed />
-
-      <div style={{ marginTop: '6rem', paddingTop: '2rem', borderTop: '1px solid rgba(8,8,8,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
           <p style={{ fontSize: '0.72rem', color: 'rgba(8,8,8,0.65)', letterSpacing: '0.1em' }}>Powered by Performance</p>

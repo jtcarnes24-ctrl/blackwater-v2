@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { useApply } from './ui/ApplyModal'
 
 const PARAS = [
   `I started out running my own fitness brand, selling to weightlifters, figuring it out as I went. Pretty quickly I realized the product wasn't the hard part. Getting it in front of the right people was. That's when I went deep on ads. Not as a side skill, as the whole thing. Once you understand how paid traffic actually works, you start seeing it everywhere. Every successful brand you admire has a machine running behind it. I wanted to build that machine.`,
@@ -34,12 +35,13 @@ function BlurWord({ text, startDelay = 0, letterDelay = 0.045, style, className 
 }
 
 export function FounderSection() {
+  const { openApply } = useApply()
   const sectionRef = useRef(null)
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
   const photoY = useTransform(scrollYProgress, [0, 1], [-30, 30])
 
   return (
-    <section ref={sectionRef} id="founder" style={{ background: '#f2ede4', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
+    <section ref={sectionRef} id="founder" style={{ background: '#ffffff', borderTop: '1px solid rgba(8,8,8,0.08)' }}>
 
       {/* ── Name + Photo hero (desktop only — mobile uses the compact header in the bio block below) ── */}
       <div className="founder-hero" style={{
@@ -211,9 +213,7 @@ export function FounderSection() {
                 style={{ marginTop: '2.5rem' }}
               >
                 <LiquidButton
-                  href="https://calendly.com/blackwatermrkting/45"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={openApply}
                   style={{ background: '#080808', color: '#f2ede4' }}
                 >
                   Apply Now →

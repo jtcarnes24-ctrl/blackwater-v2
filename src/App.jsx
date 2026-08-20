@@ -3,6 +3,7 @@ import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Nav } from './components/Nav'
+import { ApplyProvider } from './components/ui/ApplyModal'
 
 gsap.registerPlugin(ScrollTrigger)
 import { HeroSection } from './components/HeroSection'
@@ -44,10 +45,10 @@ function App() {
   }, [])
 
   return (
-    <>
+    <ApplyProvider>
       <div className="noise" />
       <Nav />
-      <main style={{ background: '#f2ede4' }}>
+      <main style={{ background: '#ffffff' }}>
         <Marquee />
         <HeroSection />
         <LogoMarquee />
@@ -63,7 +64,7 @@ function App() {
           <ContactSection />
         </Suspense>
       </main>
-    </>
+    </ApplyProvider>
   )
 }
 

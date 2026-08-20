@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { clipReveal, fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
 import { LiquidButton } from './ui/LiquidButton'
+import { useApply } from './ui/ApplyModal'
 
 const services = [
   { num: '01', name: 'Meta Ads', desc: 'Scaling brands through high-performing paid advertising on Facebook and Instagram. Built to convert, optimized to grow.' },
@@ -15,6 +16,7 @@ const services = [
 ]
 
 export function ServicesSection() {
+  const { openApply } = useApply()
   const [hovered, setHovered] = useState(null)
 
   return (
@@ -37,9 +39,7 @@ export function ServicesSection() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3, ease: easeOut }} viewport={viewport}>
           <LiquidButton
-            href="https://calendly.com/blackwatermrkting/45"
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={openApply}
             style={{ color: '#080808', borderColor: '#080808' }}
           >
             Apply Now
