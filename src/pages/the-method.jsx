@@ -22,11 +22,11 @@ const systems = [
   },
   {
     label: 'Pillar Two', num: '02', title: 'Audiences Built on Real Intent',
-    lead: 'Most agencies pick interests and hope. We use intent data to build and target audiences already in the market for what you sell, then feed it into lookalikes. Very few agencies work this way.',
+    lead: 'Most agencies pick interests and hope. We work from intent data drawn from a co-operative of more than 500,000 sites worldwide, tracking over 22,000 intent topics, so we can target people already in the market for what you sell and feed that into lookalikes. Very few agencies work this way.',
     points: [
-      'Audiences built from in-market signals, not guesses',
-      'Seed lists fed into lookalike expansion',
-      'Broad targeting where the creative can carry it',
+      'Signals from a co-op of 500,000+ sites worldwide',
+      'More than 22,000 intent topics to target against',
+      'In-market seed lists fed into lookalike expansion',
       'Exclusions kept clean so spend is not duplicated',
     ],
     close: 'Targeting matters less than it used to, but starting from real intent still beats starting from a list of interests someone picked by feel.',
@@ -59,7 +59,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <MethodSystems
-        eyebrow="[ 01 / THE FOUR PILLARS ]"
         heading="How We Scale"
         emph="brands."
         standfirst="Four pillars, operated as one system. Every account we take on runs through the same framework."

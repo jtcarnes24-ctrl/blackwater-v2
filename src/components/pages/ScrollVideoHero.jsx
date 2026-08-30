@@ -142,7 +142,7 @@ export function ScrollVideoHero({ kicker, title, emph, sub }) {
       <div className="svh-scrim" aria-hidden="true" />
 
       <div className="svh-copy">
-        <p className="svh-kicker">{kicker}</p>
+        {kicker && <p className="svh-kicker">{kicker}</p>}
         <h1 className="svh-title">
           {title} <span className="emph">{emph}</span>
         </h1>

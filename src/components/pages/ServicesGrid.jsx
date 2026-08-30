@@ -152,7 +152,6 @@ export function ServicesGrid({ headingLevel = 'h1' }) {
       <div className="sg-wrap">
         <header className="sg-head">
           <div>
-            <p className="sg-eyebrow">[ Our Services ]</p>
             <Heading className="sg-h1">
               What We Do
               <span className="emph">relentlessly</span>

@@ -12,7 +12,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <PageHeader
-        eyebrow="[ The Numbers ]"
         title="Results That"
         emph="speak."
         sub="Real accounts and real outcomes. Every figure below comes from work we actually ran."

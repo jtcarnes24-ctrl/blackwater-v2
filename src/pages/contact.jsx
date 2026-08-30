@@ -10,7 +10,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <PageHeader
-        eyebrow="[ Get In Touch ]"
         title="Tell Us About Your"
         emph="brand."
         sub="Apply below. We will tell you honestly whether we are the right fit, and what we would do first."

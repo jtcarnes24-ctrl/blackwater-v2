@@ -30,13 +30,11 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <ScrollVideoHero
-        kicker="[ About BlackWater ]"
         title="Read The"
         emph="water."
         sub="A performance marketing agency for brands that would rather be measured than flattered."
       />
       <AboutManifesto
-        kicker="[ What We Believe ]"
         statement="We strip out the noise, the fluff and the ego, and replace it with numbers you can act on."
         beats={beats}
       />

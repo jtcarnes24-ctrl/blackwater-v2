@@ -142,7 +142,7 @@ export function AboutManifesto({ kicker, statement, beats }) {
 
       <div className="am-pin" ref={pinRef}>
         <div className="am-inner">
-          <p className="am-kicker">{kicker}</p>
+          {kicker && <p className="am-kicker">{kicker}</p>}
           {/* The plain string stays available to screen readers and crawlers;
               the per-character spans are hidden from the accessibility tree. */}
           <h2 className="am-statement">

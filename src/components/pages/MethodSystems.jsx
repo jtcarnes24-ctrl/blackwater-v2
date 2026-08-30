@@ -114,8 +114,8 @@ export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
         @media (min-width: 640px) { .ms-points { grid-template-columns:1fr 1fr; } }
         .ms-points li { position:relative; padding-left:1.25rem; font-family:'Space Grotesk',sans-serif;
                         font-size:.9rem; line-height:1.6; color:rgba(255,255,255,.72); }
-        .ms-points li::before { content:''; position:absolute; left:0; top:.6em;
-                                width:6px; height:1px; background:rgba(255,255,255,.5); }
+        .ms-points li::before { content:'\\2022'; position:absolute; left:0; top:0;
+                                color:rgba(255,255,255,.55); font-size:1.05em; line-height:1.6; }
 
         /* Reveal: fade + rise, matching the reference timing. */
         [data-reveal] { opacity:0; transform:translateY(24px); will-change:opacity, transform;
@@ -129,7 +129,7 @@ export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
       <div className="ms-wrap">
         <header className="ms-head" data-reveal>
           <div>
-            <p className="ms-eyebrow">{eyebrow}</p>
+            {eyebrow && <p className="ms-eyebrow">{eyebrow}</p>}
             <h1 className="ms-h1">
               {heading} <span className="emph">{emph}</span>
             </h1>
