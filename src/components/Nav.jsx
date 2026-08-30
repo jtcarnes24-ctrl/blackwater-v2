@@ -11,10 +11,6 @@ const LOGO = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKt
 const navLinks = [
   { label: 'Our Services', href: '/services/' },
   { label: 'The Method', href: '/the-method/' },
-  { label: 'Meta Ads', href: '/services/meta-ads/' },
-  { label: 'TikTok Ads', href: '/services/tiktok-ads/' },
-  { label: 'Ad Creative', href: '/services/creative-strategy/' },
-  { label: 'Results', href: '/results/' },
   { label: 'About Us', href: '/about/' },
   { label: 'Apply Now', apply: true },
 ]
@@ -22,7 +18,54 @@ const navLinks = [
 export function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [onLight, setOnLight] = useState(false)
   const { openApply } = useApply()
+
+  // Sample what is actually painted behind the bar. Pages that open on white
+  // (every service page) left the translucent white pill invisible, because
+  // the old logic only asked whether the page had scrolled.
+  useEffect(() => {
+    const luminance = (c) => {
+      const m = c.match(/[\d.]+/g)
+      if (!m) return null
+      const [r, g, b, a = 1] = m.map(Number)
+      if (a < 0.5) return null                    // transparent: keep looking
+      const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }
+      return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b)
+    }
+    const surfaceAt = (x, y) => {
+      const el = document.elementFromPoint(x, y)
+      let n = el
+      while (n && n !== document.documentElement) {
+        const l = luminance(getComputedStyle(n).backgroundColor)
+        if (l !== null) return l
+        n = n.parentElement
+      }
+      return luminance(getComputedStyle(document.body).backgroundColor) ?? 0
+    }
+    let raf = 0
+    const sample = () => {
+      raf = 0
+      // Points to the left and right of the centred pill, just below the bar.
+      const y = 46
+      const a = surfaceAt(12, y)
+      const b = surfaceAt(Math.max(0, (document.documentElement.clientWidth || window.innerWidth) - 12), y)
+      const light = ((a + b) / 2) > 0.4
+      setOnLight(light)
+    }
+    const queue = () => { if (!raf) raf = requestAnimationFrame(sample) }
+    // Run the first sample synchronously. Going through rAF meant the initial
+    // value never landed anywhere rAF is throttled, leaving the bar stuck on
+    // its dark-page default over a white page.
+    sample()
+    window.addEventListener('scroll', queue, { passive: true })
+    window.addEventListener('resize', queue)
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', queue)
+      window.removeEventListener('resize', queue)
+    }
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -126,6 +169,13 @@ export function Nav() {
         .nav-pill[data-scrolled='true'] .nav-glass {
           background: rgba(20,20,20,0.58);
         }
+        /* Over a light surface the translucent white pill and its white text
+           disappear entirely. Give it a solid dark floor instead. */
+        .nav-pill[data-on-light='true'] .nav-glass {
+          background: rgba(16,16,18,0.82);
+          border-color: rgba(255,255,255,0.16);
+          box-shadow: 0 10px 34px rgba(8,8,8,0.22);
+        }
         /* Keep the primary CTA in the pill on phones — just tighten it,
            since mobile is where most of the traffic converts. */
         @media (max-width: 560px) {
@@ -152,7 +202,7 @@ export function Nav() {
       `}</style>
 
       <div className="nav-shell">
-        <nav className="nav-pill" data-scrolled={String(scrolled && !open)}>
+        <nav className="nav-pill" data-scrolled={String(scrolled && !open)} data-on-light={String(onLight && !open)}>
           {/* Plain backdrop blur. This used to be GlassSurface, which applies
               a backdrop-filter built from three feDisplacementMap passes plus
               three feColorMatrix passes and a blur. On a fixed bar sitting over
