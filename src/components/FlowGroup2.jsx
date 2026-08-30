@@ -1,7 +1,5 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import FlowArt, { FlowSection } from './ui/FlowArt'
-import { NodeGraph } from './ui/NodeGraph'
 import { LiquidButton } from './ui/LiquidButton'
 import { easeOut, easeInOut, viewport } from '../lib/animations'
 import { useApply } from './ui/ApplyModal'
@@ -19,59 +17,22 @@ const testimonials = [
   { quote: "Shout out to the whole BlackWater crew. It never felt like one person trying to juggle everything. There was always someone available, ideas were flowing, and they treated our brand like it was their own.", name: 'Yara Ben Salem' },
 ]
 
-function TestimonialCarousel() {
-  const [index, setIndex] = useState(0)
-
-  const goPrev = () => setIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
-  const goNext = () => setIndex((i) => (i + 1) % testimonials.length)
-
-  const t = testimonials[index]
-  const arrowBtnStyle = {
-    width: '40px', height: '40px', borderRadius: '999px',
-    border: '1px solid rgba(8,8,8,0.15)', background: 'transparent',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    cursor: 'pointer', flexShrink: 0, color: '#080808',
-  }
+function TestimonialMarquee() {
+  // Two identical tracks side by side. The first scrolls exactly its own
+  // width, at which point the second sits where the first began, so the
+  // restart is invisible and the loop never shows a gap.
+  const lane = [...testimonials, ...testimonials]
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', gap: '1.5rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 4vw, 2.5rem)', width: '100%', justifyContent: 'center' }}>
-        <button type="button" aria-label="Previous testimonial" onClick={goPrev} style={arrowBtnStyle}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-
-        <div style={{ width: '100%', maxWidth: '560px', minHeight: '260px', display: 'flex', alignItems: 'center' }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                background: 'rgba(8,8,8,0.05)', border: '1px solid rgba(8,8,8,0.08)',
-                borderRadius: '4px', padding: '1.75rem', width: '100%',
-              }}
-            >
-              <p style={{ fontSize: '1.5rem', color: 'rgba(8,8,8,0.15)', fontWeight: 700, lineHeight: 1, marginBottom: '0.75rem' }}>"</p>
-              <p style={{ fontSize: '0.95rem', color: 'rgba(8,8,8,0.65)', lineHeight: 1.65, marginBottom: '1.25rem' }}>{t.quote}</p>
-              <p style={{ fontSize: '0.8rem', fontWeight: 700, color: '#080808', letterSpacing: '0.05em' }}>{t.name}</p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <button type="button" aria-label="Next testimonial" onClick={goNext} style={arrowBtnStyle}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
+    <div className="tm-viewport" aria-label="Client testimonials">
+      <div className="tm-track">
+        {lane.map((t, i) => (
+          <figure className="tm-card" key={i} aria-hidden={i >= testimonials.length}>
+            <blockquote className="tm-quote">{t.quote}</blockquote>
+            <figcaption className="tm-name">{t.name}</figcaption>
+          </figure>
+        ))}
       </div>
-
-      <p style={{ fontSize: '0.75rem', color: 'rgba(8,8,8,0.4)', letterSpacing: '0.05em', fontWeight: 600 }}>
-        {index + 1} / {testimonials.length}
-      </p>
     </div>
   )
 }
@@ -80,80 +41,59 @@ export function FlowGroup2() {
   const { openApply } = useApply()
   return (
     <FlowArt aria-label="Our system and testimonials">
-      {/* System Section */}
-      <FlowSection
-        id="ai"
-        aria-label="How we operate"
-        style={{ background: '#ffffff', color: '#080808' }}
-      >
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', width: '100%' }}>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-            style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.4)', fontWeight: 600, marginBottom: '1.5rem' }}
-          >
-            The System
-          </motion.p>
-
-          <div style={{ position: 'relative', zIndex: 1, marginBottom: '2.5rem' }}>
-            {["WE DON'T JUST", 'RUN ADS.', <>WE <span className="emph">engineer</span></>, 'THEM.'].map((line, i) => (
-              <div key={i} style={{ overflow: 'hidden' }}>
-                {/* Reveal on mount, not scroll — sits inside a GSAP-pinned section
-                    where whileInView + clip-path is unreliable */}
-                <motion.h2
-                  initial={{ clipPath: 'inset(0 0 100% 0)' }}
-                  animate={{ clipPath: 'inset(0 0 0% 0)' }}
-                  transition={{ duration: 0.75, ease: easeInOut, delay: 0.2 + i * 0.07 }}
-                  style={{ fontSize: 'clamp(2rem, 4.5vw, 4.5rem)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 0.95, color: '#080808', textTransform: 'uppercase', margin: 0 }}
-                >
-                  {line}
-                </motion.h2>
-              </div>
-            ))}
-          </div>
-
-          {/* Animated system diagram: services -> BlackWater -> results */}
-          <div style={{ width: '100%', maxWidth: '1044px', margin: '0 auto' }}>
-            <NodeGraph result="$1M+ GENERATED" />
-          </div>
-
-          {/* Supporting copy below */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: 0.35 }} viewport={viewport}
-            style={{ fontSize: '0.95rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.75, maxWidth: '60ch', margin: '2.5rem 0 1rem' }}
-          >
-            Most brands treat their ad account like a slot machine — spin, panic, repeat. We don't. Everything we do runs on one system: launch more creative, cut what loses fast, and pour budget into what actually wins. That's how the cost to get a customer goes down instead of up.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: 0.42 }} viewport={viewport}
-            style={{ fontSize: '0.95rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.75, maxWidth: '60ch', margin: '0 0 1rem' }}
-          >
-            We've watched brands with great products shut down because their ad account dried up and they had no system to fix it. No creative testing. No structure. Just guessing and hoping the numbers come back. They don't.
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easeOut, delay: 0.49 }} viewport={viewport}
-            style={{ fontSize: '0.95rem', color: 'rgba(8,8,8,0.6)', lineHeight: 1.75, maxWidth: '60ch', margin: 0 }}
-          >
-            Do we use AI? Where it actually helps — creative analysis, audience modeling, faster optimization. But it's a tool inside the system, not the pitch. The system is what scales you.
-          </motion.p>
-        </div>
-      </FlowSection>
-
-      {/* Testimonials */}
       <FlowSection
         id="testimonials"
         aria-label="Client testimonials"
-        style={{ background: '#ffffff', color: '#080808' }}
+        style={{ background: '#ffffff', color: '#141414' }}
       >
+        <style>{`
+          /* Breaks out of the section's horizontal padding so the cards run
+             to both screen edges. */
+          .tm-viewport {
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            overflow: hidden;
+            padding: 1.5rem 0;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+                    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+          }
+          .tm-track {
+            display: flex; width: max-content; gap: 1.25rem;
+            animation: tm-scroll 68s linear infinite;
+            will-change: transform;
+          }
+          /* Hovering anywhere on the strip holds it, and releasing resumes
+             from the same position rather than snapping back. */
+          .tm-viewport:hover .tm-track { animation-play-state: paused; }
+          @keyframes tm-scroll {
+            from { transform: translate3d(0, 0, 0); }
+            to   { transform: translate3d(-50%, 0, 0); }
+          }
+          .tm-card {
+            flex: 0 0 clamp(280px, 26vw, 400px);
+            margin: 0; padding: 1.75rem;
+            background: #141414; color: #ffffff;
+            border-radius: 16px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            gap: 1.25rem;
+          }
+          .tm-quote {
+            margin: 0; font-size: 0.95rem; line-height: 1.65;
+            color: rgba(255,255,255,0.82);
+          }
+          .tm-name {
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em;
+            color: #ffffff;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .tm-track { animation: none; }
+            .tm-viewport { overflow-x: auto; }
+          }
+        `}</style>
         <motion.p
           initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(8,8,8,0.4)', fontWeight: 600 }}
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,20,20,0.4)', fontWeight: 600 }}
         >
           Client Feedback
         </motion.p>
@@ -165,14 +105,14 @@ export function FlowGroup2() {
               whileInView={{ clipPath: 'inset(0 0 0% 0)' }}
               transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
               viewport={viewport}
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 6.5rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#080808', textTransform: 'uppercase', margin: 0 }}
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 6.5rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#141414', textTransform: 'uppercase', margin: 0 }}
             >
               {line}
             </motion.h2>
           </div>
         ))}
 
-        <TestimonialCarousel />
+        <TestimonialMarquee />
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -181,7 +121,7 @@ export function FlowGroup2() {
           viewport={viewport}
           style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
         >
-          <LiquidButton onClick={openApply} style={{ color: '#080808', borderColor: '#080808' }}>
+          <LiquidButton onClick={openApply} variant="light" style={{ color: '#141414', borderColor: '#141414' }}>
             Apply Now →
           </LiquidButton>
         </motion.div>

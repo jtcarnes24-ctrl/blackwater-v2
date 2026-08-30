@@ -31,7 +31,9 @@ function ProductCardHover({ product, translate }) {
   return (
     <motion.div
       className="proof-card"
-      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0, willChange: 'transform' }}
+      /* No will-change here: fifteen permanently promoted layers costs real
+         GPU memory, and the animated parent already gets its own layer. */
+      style={{ x: translate, height: '22rem', width: '28rem', position: 'relative', flexShrink: 0 }}
       whileHover={{ y: -20 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -83,9 +85,25 @@ function ProductCardHover({ product, translate }) {
 
 export function ProofSection() {
   const { openApply } = useApply()
-  const firstRow = products.slice(0, 5)
-  const secondRow = products.slice(5, 10)
-  const thirdRow = products.slice(10, 15)
+
+  /* Phones render nine cards across three rows instead of fifteen, and skip
+     the 3D tilt entirely. Fifteen composited layers inside a perspective,
+     each carrying its own image and a spring-driven translate, is the single
+     most expensive thing on this page, and on a phone most of them are off
+     screen the whole time anyway. */
+  const [lite, setLite] = React.useState(false)
+  React.useEffect(() => {
+    const mq = window.matchMedia('(hover: none), (max-width: 860px)')
+    const update = () => setLite(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  const per = lite ? 3 : 5
+  const firstRow = products.slice(0, per)
+  const secondRow = products.slice(5, 5 + per)
+  const thirdRow = products.slice(10, 10 + per)
 
   const ref = React.useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
@@ -95,8 +113,16 @@ export function ProofSection() {
   // input, so extra springs here just double the per-frame work
   const springConfig = { stiffness: 300, damping: 30 }
 
-  const translateX = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1000]), springConfig)
-  const translateXReverse = useSpring(useTransform(scrollYProgress, [0, 1], [0, -1000]), springConfig)
+  const rawX = useTransform(scrollYProgress, [0, 1], [0, 1000])
+  const rawXReverse = useTransform(scrollYProgress, [0, 1], [0, -1000])
+  const springX = useSpring(rawX, springConfig)
+  const springXReverse = useSpring(rawXReverse, springConfig)
+
+  // Two extra spring integrators per frame buy nothing on a phone: Lenis has
+  // already smoothed the scroll input. Declared here, after the motion values
+  // exist -- referencing them above this line is a temporal dead zone throw.
+  const translateX = lite ? rawX : springX
+  const translateXReverse = lite ? rawXReverse : springXReverse
   const rotateX = useTransform(scrollYProgress, [0, 0.2], [15, 0])
   const rotateZ = useTransform(scrollYProgress, [0, 0.2], [20, 0])
   const translateY = useTransform(scrollYProgress, [0, 0.2], [-700, 500])
@@ -110,18 +136,48 @@ export function ProofSection() {
         paddingTop: '10rem',
         paddingBottom: '10rem',
         overflow: 'hidden',
-        background: '#080808',
+        background: '#000000',
         borderTop: '1px solid rgba(255,255,255,0.06)',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        perspective: '1000px',
+        perspective: lite ? 'none' : '1000px',
         WebkitFontSmoothing: 'antialiased',
       }}
     >
       <style>{`
         @media (hover: none), (max-width: 768px) {
           .proof-card { width: min(75vw, 320px) !important; height: 16rem !important; }
+        }
+
+        .proof-fade {
+          position: absolute;
+          z-index: 10;
+          pointer-events: none;
+        }
+        /* Tall enough to swallow a whole card edge rather than just feathering
+           the last few pixels of one. */
+        .proof-fade--top,
+        .proof-fade--bottom { left: 0; right: 0; height: clamp(160px, 26vh, 340px); }
+        .proof-fade--top {
+          top: 0;
+          background: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%);
+        }
+        .proof-fade--bottom {
+          bottom: 0;
+          background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.85) 35%, rgba(0,0,0,0) 100%);
+        }
+        /* The side fades run the full height of the section, so cards leaving
+           frame sideways dissolve the same way. */
+        .proof-fade--left,
+        .proof-fade--right { top: 0; bottom: 0; width: clamp(70px, 11vw, 190px); }
+        .proof-fade--left {
+          left: 0;
+          background: linear-gradient(to right, #000 0%, rgba(0,0,0,0) 100%);
+        }
+        .proof-fade--right {
+          right: 0;
+          background: linear-gradient(to left, #000 0%, rgba(0,0,0,0) 100%);
         }
       `}</style>
 
@@ -161,7 +217,9 @@ export function ProofSection() {
       </div>
 
       {/* Parallax rows */}
-      <motion.div style={{ rotateX, rotateZ, translateY, position: 'relative', zIndex: 1, willChange: 'transform' }}>
+      <motion.div style={lite
+        ? { translateY, position: 'relative', zIndex: 1, willChange: 'transform' }
+        : { rotateX, rotateZ, translateY, position: 'relative', zIndex: 1, willChange: 'transform' }}>
         <div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '5rem', marginBottom: '5rem', paddingLeft: '4rem' }}>
           {firstRow.map((product, i) => (
             <ProductCardHover product={product} translate={translateX} key={product.title + i} />
@@ -178,6 +236,24 @@ export function ProofSection() {
           ))}
         </div>
       </motion.div>
+
+      {/* Edge fades.
+
+          The section clips with overflow:hidden, so the tilted cards were
+          being sliced off against its boundary and read as a hard straight
+          line across the black. These gradients sit above the rows (z-index
+          10) but below the header and CTA (20), so the cards dissolve into
+          the background instead of ending on an edge.
+
+          Painted, not masked: a mask would have to live on the rotated
+          element and would rotate with it, putting the fade on a slant.
+          These are plain overlays in screen space, and since the section and
+          both of its neighbours are black, fading to black reads as fading
+          to nothing. */}
+      <div aria-hidden="true" className="proof-fade proof-fade--top" />
+      <div aria-hidden="true" className="proof-fade proof-fade--bottom" />
+      <div aria-hidden="true" className="proof-fade proof-fade--left" />
+      <div aria-hidden="true" className="proof-fade proof-fade--right" />
 
       {/* marginTop clears the parallax rows' max downward translateY (500px)
           so this reads as a calm, static CTA below the tilted collage instead

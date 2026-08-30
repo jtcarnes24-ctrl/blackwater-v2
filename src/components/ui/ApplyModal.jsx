@@ -242,7 +242,7 @@ function ApplyModal({ onClose }) {
       onMouseDown={e => { if (e.target === e.currentTarget) onClose() }}
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
-        background: 'rgba(8,8,8,0.55)', backdropFilter: 'blur(6px)',
+        background: 'rgba(20,20,20,0.55)', backdropFilter: 'blur(6px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '1rem', overflowY: 'auto',
       }}
@@ -250,28 +250,28 @@ function ApplyModal({ onClose }) {
       <style>{`
         @keyframes bwa-fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
         .bwa-step{animation:bwa-fade .35s cubic-bezier(.4,0,.2,1)}
-        .bwa-input{width:100%;font-family:inherit;font-size:20px;color:#080808;background:transparent;
-          border:none;border-bottom:2px solid rgba(8,8,8,.14);padding:10px 2px;
+        .bwa-input{width:100%;font-family:inherit;font-size:20px;color:#141414;background:transparent;
+          border:none;border-bottom:2px solid rgba(20,20,20,.14);padding:10px 2px;
           transition:border-color .2s cubic-bezier(.4,0,.2,1)}
-        .bwa-input::placeholder{color:rgba(8,8,8,.28)}
-        .bwa-input:focus{outline:none;border-color:#C8D746}
+        .bwa-input::placeholder{color:rgba(20,20,20,.28)}
+        .bwa-input:focus{outline:none;border-color:#141414}
         .bwa-choice{width:100%;text-align:left;font-family:inherit;font-size:17px;font-weight:500;
-          color:#080808;background:#fff;border:1.5px solid rgba(8,8,8,.14);border-radius:14px;
+          color:#141414;background:#fff;border:1.5px solid rgba(20,20,20,.14);border-radius:14px;
           padding:16px 18px;cursor:pointer;
           transition:border-color .15s cubic-bezier(.4,0,.2,1),background .15s cubic-bezier(.4,0,.2,1),transform .12s cubic-bezier(.4,0,.2,1)}
-        .bwa-choice:hover{border-color:#080808}
+        .bwa-choice:hover{border-color:#141414}
         .bwa-choice:active{transform:scale(.99)}
-        .bwa-choice.sel{border-color:#C8D746;background:rgba(200,215,70,.14)}
+        .bwa-choice.sel{border-color:#141414;background:rgba(20,20,20,.05)}
         .bwa-next{font-family:inherit;font-size:16px;font-weight:700;letter-spacing:.02em;
-          text-transform:uppercase;color:#fff;background:#080808;border:none;border-radius:12px;
+          text-transform:uppercase;color:#fff;background:#141414;border:none;border-radius:12px;
           padding:15px 30px;cursor:pointer;transition:transform .12s cubic-bezier(.4,0,.2,1)}
         .bwa-next:active{transform:scale(.97)}
         .bwa-back{background:none;border:none;font-family:inherit;font-size:14px;color:#6b6b6b;
           cursor:pointer;padding:6px 0;display:inline-flex;align-items:center;gap:5px}
-        .bwa-back:hover{color:#080808}
+        .bwa-back:hover{color:#141414}
         .bwa-x{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;
           font-size:26px;line-height:1;color:#6b6b6b;padding:4px 8px}
-        .bwa-x:hover{color:#080808}
+        .bwa-x:hover{color:#141414}
         @media (prefers-reduced-motion:reduce){
           .bwa-step{animation:none}
           .bwa-bar-fill{transition:none}
@@ -284,15 +284,15 @@ function ApplyModal({ onClose }) {
           position: 'relative', width: '100%', maxWidth: '560px',
           background: '#ffffff', borderRadius: '18px',
           padding: 'clamp(28px,6vw,40px) clamp(22px,5vw,34px)',
-          fontFamily: "'Space Grotesk', system-ui, sans-serif", color: '#080808',
+          fontFamily: "'Space Grotesk', system-ui, sans-serif", color: '#141414',
           boxShadow: '0 24px 80px rgba(0,0,0,.35)', margin: 'auto',
         }}
       >
         <button className="bwa-x" onClick={onClose} aria-label="Close">&times;</button>
 
         {/* progress */}
-        <div style={{ height: '3px', background: 'rgba(8,8,8,.08)', borderRadius: '100px', overflow: 'hidden', marginBottom: '20px' }}>
-          <div className="bwa-bar-fill" style={{ height: '100%', width: pct + '%', background: '#C8D746', borderRadius: '100px', transition: 'width .4s cubic-bezier(.4,0,.2,1)' }} />
+        <div style={{ height: '3px', background: 'rgba(20,20,20,.08)', borderRadius: '100px', overflow: 'hidden', marginBottom: '20px' }}>
+          <div className="bwa-bar-fill" style={{ height: '100%', width: pct + '%', background: '#141414', borderRadius: '100px', transition: 'width .4s cubic-bezier(.4,0,.2,1)' }} />
         </div>
 
         {phase === 'sending' && (
@@ -302,7 +302,7 @@ function ApplyModal({ onClose }) {
         {phase === 'form' && (
           <div className="bwa-step" key={step}>
             <div style={{ fontSize: '13px', fontWeight: 500, letterSpacing: '.14em', textTransform: 'uppercase', color: '#6b6b6b', marginBottom: '14px' }}>
-              <b style={{ color: '#a9bb1e' }}>{String(step + 1).padStart(2, '0')}</b> / {String(TOTAL).padStart(2, '0')}
+              <b style={{ color: '#141414' }}>{String(step + 1).padStart(2, '0')}</b> / {String(TOTAL).padStart(2, '0')}
             </div>
 
             {step > 0 && (
@@ -369,7 +369,7 @@ function ThankYou() {
 
   return (
     <div className="bwa-step" style={{ textAlign: 'center' }}>
-      <div style={{ fontSize: '13px', fontWeight: 500, letterSpacing: '.14em', textTransform: 'uppercase', color: '#a9bb1e', marginBottom: '12px' }}>
+      <div style={{ fontSize: '13px', fontWeight: 500, letterSpacing: '.14em', textTransform: 'uppercase', color: '#141414', marginBottom: '12px' }}>
         Application received
       </div>
 
@@ -408,11 +408,11 @@ function ThankYou() {
             aria-label="Play video"
             style={{
               position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0, cursor: 'pointer',
-              background: 'rgba(8,8,8,.28)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'rgba(20,20,20,.28)', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
           >
-            <span style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#C8D746', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="22" height="24" viewBox="0 0 22 24" fill="#080808" style={{ marginLeft: '3px' }}><path d="M0 0l22 12L0 24z" /></svg>
+            <span style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#141414', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="24" viewBox="0 0 22 24" fill="#141414" style={{ marginLeft: '3px' }}><path d="M0 0l22 12L0 24z" /></svg>
             </span>
           </button>
         )}
@@ -429,7 +429,7 @@ function ThankYou() {
               src={p.src}
               alt={p.alt}
               loading="lazy"
-              style={{ width: '100%', borderRadius: '10px', display: 'block', border: '1px solid rgba(8,8,8,.1)' }}
+              style={{ width: '100%', borderRadius: '10px', display: 'block', border: '1px solid rgba(20,20,20,.1)' }}
             />
             <figcaption style={{ fontSize: '12px', color: '#6b6b6b', marginTop: '6px' }}>{p.alt}</figcaption>
           </figure>
@@ -438,7 +438,7 @@ function ThankYou() {
 
       <p style={{ fontSize: '13px', color: '#6b6b6b', marginTop: '16px' }}>
         Questions before we talk? Email{' '}
-        <a href="mailto:jack@blackwatermrkting.com" style={{ color: '#080808' }}>jack@blackwatermrkting.com</a>
+        <a href="mailto:jack@blackwatermrkting.com" style={{ color: '#141414' }}>jack@blackwatermrkting.com</a>
       </p>
     </div>
   )

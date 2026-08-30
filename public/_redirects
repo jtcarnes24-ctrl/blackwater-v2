@@ -1,1 +1,7 @@
-/* /index.html 200
+# The old `/* /index.html 200` catch-all made every URL return the homepage
+# with a 200, which is a soft-404 pattern — Google can index junk URLs as
+# real pages. This is a multi-page build now, so Cloudflare serves the real
+# file for each route and falls through to 404.html for anything unknown.
+/home              /            301
+/index.html        /            301
+/services.html     /services/   301

@@ -51,8 +51,8 @@ export function SayGoodbye() {
   return (
     <section ref={setRootEl} style={{ background: '#ffffff', padding: 'clamp(4rem, 10vw, 8rem) clamp(1.5rem, 8vw, 7rem)' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'clamp(0.5rem, 3vw, 2.5rem)', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 'clamp(1.9rem, 4.5vw, 3.4rem)', letterSpacing: '-0.02em', color: '#080808', margin: 0, whiteSpace: 'nowrap' }}>
-          Say goodbye to<span style={{ color: '#C8D746' }}>...</span>
+        <h2 style={{ fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 'clamp(1.9rem, 4.5vw, 3.4rem)', letterSpacing: '-0.02em', color: '#141414', margin: 0, whiteSpace: 'nowrap' }}>
+          Say goodbye to<span style={{ color: '#db8140' }}>...</span>
         </h2>
 
         <div style={{
@@ -76,9 +76,12 @@ export function SayGoodbye() {
                   fontFamily: "'Syne', sans-serif", fontWeight: 700,
                   fontSize: 'calc(var(--row) * 0.6)', letterSpacing: '-0.02em', lineHeight: 1,
                   whiteSpace: 'nowrap',
+                  /* The centre line is the statement, so it stays solid ink.
+                     The lines sliding in above and below carry the orange,
+                     which reads as motion rather than emphasis. */
                   ...(active
-                    ? { backgroundImage: 'linear-gradient(90deg, #C8D746, #2f8f5f)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }
-                    : { color: 'rgba(8,8,8,0.22)' }),
+                    ? { color: '#141414' }
+                    : { color: 'rgba(219,129,64,0.42)' }),
                 }}>
                   {p}
                 </div>

@@ -36,7 +36,7 @@ export function FlowSection({ id, className, style = {}, children, 'aria-label':
 
 function FlowArt({ children, 'aria-label': ariaLabel }) {
   return (
-    <div aria-label={ariaLabel} style={{ width: '100%', overflowX: 'hidden' }}>
+    <div aria-label={ariaLabel} style={{ width: '100%' }}>
       {children}
     </div>
   )

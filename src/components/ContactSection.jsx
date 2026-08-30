@@ -10,7 +10,7 @@ import { useApply } from './ui/ApplyModal'
 export function ContactSection() {
   const { openApply } = useApply()
   return (
-    <section id="contact" style={{ background: '#080808', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#141414', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
       <style>{`
         @media (max-width: 480px) {
           .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
@@ -34,30 +34,29 @@ export function ContactSection() {
           Ready When You Are
         </motion.p>
 
-        {['STOP GUESSING.', <span key="s">START <span className="emph">scaling</span>.</span>].map((line, i) => (
-          <div key={i} style={{ overflow: 'hidden' }}>
-            <motion.h2
-              variants={clipReveal}
-              transition={{ duration: 0.8, ease: easeInOut, delay: i * 0.08 }}
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 6rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.92, color: '#f2ede4', textTransform: 'uppercase', margin: 0 }}
-            >
-              {line}
-            </motion.h2>
-          </div>
-        ))}
-
-        <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '1.05rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, maxWidth: '48ch', marginTop: '1.75rem' }}
-        >
-          You've seen the numbers. You've seen the method. The only thing left is your account.
-        </motion.p>
+        {/* The closing line is now the headline itself. It used to sit small
+            under "STOP GUESSING. START scaling.", which was a second slogan
+            competing with it for the same job. */}
+        <div style={{ overflow: 'hidden' }}>
+          <motion.h2
+            className="contact-heading"
+            variants={clipReveal}
+            transition={{ duration: 0.8, ease: easeInOut }}
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontSize: 'clamp(2.5rem, 6vw, 6rem)',
+              fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.95,
+              color: '#ffffff', margin: 0,
+            }}
+          >
+            Learn to read the <span className="emph">water</span>.
+          </motion.h2>
+        </div>
 
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
-          style={{ fontSize: '0.85rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginTop: '0.85rem' }}
+          style={{ fontSize: '0.95rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginTop: '1.75rem', maxWidth: '48ch' }}
         >
           "I don't take on clients I can't actually help." — Jack Carnes
         </motion.p>
@@ -65,7 +64,7 @@ export function ContactSection() {
         <motion.div
           variants={fadeUp}
           transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
-          style={{ marginTop: '2.5rem' }}
+          style={{ marginTop: '2.25rem' }}
         >
           <LiquidButton onClick={openApply} style={{ padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
             Apply Now →
