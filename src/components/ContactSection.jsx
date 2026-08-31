@@ -10,7 +10,7 @@ import { useApply } from './ui/ApplyModal'
 export function ContactSection() {
   const { openApply } = useApply()
   return (
-    <section id="contact" style={{ background: '#141414', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
+    <section id="contact" style={{ background: '#080808', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
       <style>{`
         @media (max-width: 480px) {
           .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
