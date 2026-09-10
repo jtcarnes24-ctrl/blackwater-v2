@@ -45,6 +45,31 @@ export function Footer() {
                    font-family:'Space Grotesk',sans-serif; font-size:.8rem; color:rgba(255,255,255,.55); }
         .ft-base a { color:rgba(255,255,255,.55); text-decoration:none; }
         .ft-base a:hover { color:#fff; }
+
+        /* Full-bleed wordmark. Cancels the footer's own side padding with
+           matching negative margins so the type reaches both viewport edges,
+           and eats the bottom padding so it sits flush on the floor.
+           Font is the preloader's Playfair italic, deliberately, so the
+           curtain at the top of the visit and the sign-off at the bottom
+           are the same mark. */
+        .ft-wordmark {
+          margin: clamp(2.5rem,6vw,4rem) calc(-1 * clamp(1.5rem,5vw,4rem)) -2.5rem;
+          overflow: hidden;
+          line-height: 0;
+        }
+        .ft-wordmark span {
+          display: block;
+          font-family: 'Playfair Display', serif;
+          font-style: italic;
+          font-weight: 500;
+          font-size: 20.5vw;
+          line-height: 0.78;
+          letter-spacing: -0.025em;
+          color: #f2f0ec;
+          white-space: nowrap;
+          text-align: center;
+          user-select: none;
+        }
       `}</style>
 
       <div className="ft-grid">
@@ -65,6 +90,8 @@ export function Footer() {
           <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer">Instagram</a>
         </span>
       </div>
+
+      <div className="ft-wordmark" aria-hidden="true"><span>BlackWater</span></div>
     </footer>
   )
 }
