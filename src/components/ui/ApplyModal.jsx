@@ -1,42 +1,15 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react'
+import {
+  DEFAULT_COUNTRY,
+  countryOptions,
+  countryFromInput,
+  formatPhone,
+  phoneError,
+  phoneForSubmit,
+} from '../../lib/phone'
 
 const W3F_KEY = '080307e5-0079-4ded-b1fc-9a111fa9ceda'
 
-
-/* ── Phone: US/Canada (NANP) formatting + real validation ───────────────
-   A weak "at least 7 digits" check let junk like 0000000000 through. These
-   two functions enforce a real 10-digit NANP number and format it as the
-   visitor types. Kept in sync with the standalone landing page. */
-function phoneDigits(raw) {
-  let d = String(raw || '').replace(/\D/g, '')
-  if (d.length === 11 && d[0] === '1') d = d.slice(1)
-  return d.slice(0, 10)
-}
-
-function formatPhone(raw) {
-  const d = phoneDigits(raw)
-  if (d.length <= 3) return d
-  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`
-  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
-}
-
-function phoneError(raw) {
-  const d = phoneDigits(raw)
-  if (!d) return 'Please enter your phone number.'
-  if (d.length < 10) return 'That number is too short. Enter all 10 digits.'
-  if (/^(\d)\1{9}$/.test(d)) return 'That doesn\u2019t look like a real phone number.'
-  if ('01234567890123456789'.includes(d)) return 'That doesn\u2019t look like a real phone number.'
-  if ('09876543210987654321'.includes(d)) return 'That doesn\u2019t look like a real phone number.'
-  const npa = d.slice(0, 3)
-  const nxx = d.slice(3, 6)
-  if (npa[0] === '0' || npa[0] === '1') return 'An area code cannot start with 0 or 1.'
-  if (npa[1] === '1' && npa[2] === '1') return 'That isn\u2019t a valid area code.'
-  if (npa === '555') return 'That isn\u2019t a valid area code.'
-  if (nxx[0] === '0' || nxx[0] === '1') return 'That doesn\u2019t look like a real phone number.'
-  if (nxx[1] === '1' && nxx[2] === '1') return 'That doesn\u2019t look like a real phone number.'
-  if (nxx === '555') return 'That doesn\u2019t look like a real phone number.'
-  return ''
-}
 
 /* ── Question definitions ───────────────────────────────────────────────
    Qualifiers run first so unqualified traffic self-selects out before we
@@ -93,6 +66,15 @@ const STEPS = [
 ]
 
 const TOTAL = STEPS.length
+const COUNTRIES = countryOptions()
+
+/* Strip everything that is not a digit, keeping a single leading + so the
+   formatter can tell "international" from "national". */
+function keepDialable(raw) {
+  const v = String(raw || '')
+  const plus = v.trim().charAt(0) === '+'
+  return (plus ? '+' : '') + v.replace(/\D/g, '')
+}
 
 /* ── Context ──────────────────────────────────────────────────────────── */
 const ApplyContext = createContext({ openApply: () => {} })
@@ -119,6 +101,7 @@ function ApplyModal({ onClose }) {
   const [error, setError] = useState('')
   const [phase, setPhase] = useState('form') // form | sending | done
   const [selected, setSelected] = useState(null)
+  const [phoneCountry, setPhoneCountry] = useState(DEFAULT_COUNTRY)
 
   const inputRef = useRef(null)
   const panelRef = useRef(null)
@@ -126,10 +109,20 @@ function ApplyModal({ onClose }) {
   const lastPartial = useRef('')
   const answersRef = useRef(answers)
   const stepRef = useRef(step)
+  const countryRef = useRef(phoneCountry)
   answersRef.current = answers
   stepRef.current = step
 
+  /* Mirrored into a ref via an effect rather than during render, so the
+     submit handler always sends the country the visitor actually picked. */
+  useEffect(() => { countryRef.current = phoneCountry }, [phoneCountry])
+
   const current = STEPS[step]
+  /* Only NANP gets a worked example; inventing one for 240 other countries
+     would mean shipping numbers that may not be valid there. */
+  const phonePlaceholder = (phoneCountry === 'US' || phoneCountry === 'CA')
+    ? '(515) 867-5309'
+    : 'Your phone number'
 
   /* Lock the page behind the modal. Lenis runs its own rAF loop and will
      keep scrolling the body under the overlay unless it is explicitly
@@ -218,7 +211,7 @@ function ApplyModal({ onClose }) {
       setError('That email doesn’t look right.'); return false
     }
     if (current.inputType === 'tel') {
-      const pErr = phoneError(v)
+      const pErr = phoneError(v, phoneCountry)
       if (pErr) { setError(pErr); return false }
     }
     if (current.inputType === 'url' && !/\./.test(v)) {
@@ -251,7 +244,12 @@ function ApplyModal({ onClose }) {
     fd.append('access_key', W3F_KEY)
     fd.append('from_name', 'BlackWater Website Application')
     fd.append('subject', 'New BlackWater application — website')
-    STEPS.forEach(s => fd.append(s.name, answersRef.current[s.name] || ''))
+    STEPS.forEach(s => {
+      const v = answersRef.current[s.name] || ''
+      /* Phone goes out as +1 712 328 4410: readable, and dial-ready from
+         any country without guessing what the digits meant. */
+      fd.append(s.name, s.inputType === 'tel' ? phoneForSubmit(v, countryRef.current) : v)
+    })
     if (answersRef.current.Email) fd.append('replyto', answersRef.current.Email)
     try {
       const r = await fetch('https://api.web3forms.com/submit', {
@@ -290,6 +288,13 @@ function ApplyModal({ onClose }) {
           border:none;border-bottom:2px solid rgba(20,20,20,.14);padding:10px 2px;
           transition:border-color .2s cubic-bezier(.4,0,.2,1)}
         .bwa-input::placeholder{color:rgba(20,20,20,.28)}
+        .bwa-select{width:100%;font-family:inherit;font-size:15px;color:#141414;background:#fff;
+          border:1.5px solid rgba(20,20,20,.14);border-radius:12px;padding:12px 14px;
+          margin-bottom:14px;cursor:pointer;appearance:none;
+          background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+          background-repeat:no-repeat;background-position:right 14px center;
+          transition:border-color .15s cubic-bezier(.4,0,.2,1)}
+        .bwa-select:focus{outline:none;border-color:#141414}
         .bwa-input:focus{outline:none;border-color:#141414}
         .bwa-choice{width:100%;text-align:left;font-family:inherit;font-size:17px;font-weight:500;
           color:#141414;background:#fff;border:1.5px solid rgba(20,20,20,.14);border-radius:14px;
@@ -351,18 +356,37 @@ function ApplyModal({ onClose }) {
 
             {current.type === 'text' ? (
               <>
+                {current.inputType === 'tel' && (
+                  <select
+                    className="bwa-select"
+                    aria-label="Country"
+                    value={phoneCountry}
+                    onChange={e => {
+                      const c = e.target.value
+                      setPhoneCountry(c)
+                      /* Reformat what is already typed for the new country
+                         rather than leaving it in the old country's shape. */
+                      setAnswers(a => ({ ...a, [current.name]: formatPhone(a[current.name] || '', c) }))
+                      setError('')
+                    }}
+                  >
+                    {COUNTRIES.map(c => (
+                      <option key={c.code} value={c.code}>{c.name} ({c.dial})</option>
+                    ))}
+                  </select>
+                )}
                 <input
                   ref={inputRef}
                   className="bwa-input"
                   type={current.inputType}
                   inputMode={current.inputType === 'tel' ? 'tel' : undefined}
-                  placeholder={current.placeholder}
+                  placeholder={current.inputType === 'tel' ? phonePlaceholder : current.placeholder}
                   value={answers[current.name] || ''}
-                  maxLength={current.inputType === 'tel' ? 14 : undefined}
+                  maxLength={current.inputType === 'tel' ? 22 : undefined}
                   onChange={e => {
                     const raw = e.target.value
                     if (current.inputType === 'tel') {
-                      /* Formats to (515) 867-5309 as they type. Backspacing over a
+                      /* Formats as they type, per country. Backspacing over a
                          "(", ")", " " or "-" leaves the digits unchanged, so the field
                          would stall unless that keystroke eats a digit instead. Read
                          inputType rather than comparing lengths: a paste can also be
@@ -372,9 +396,13 @@ function ApplyModal({ onClose }) {
                       const isDelete = nat && typeof nat.inputType === 'string'
                         ? nat.inputType.indexOf('delete') === 0
                         : raw.length < prev.length
-                      let d = phoneDigits(raw)
-                      if (isDelete && d === phoneDigits(prev)) d = d.slice(0, -1)
-                      setAnswers(a => ({ ...a, [current.name]: formatPhone(d) }))
+                      let cleaned = keepDialable(raw)
+                      if (isDelete && cleaned === keepDialable(prev)) cleaned = cleaned.slice(0, -1)
+                      /* Typing a + means the visitor is dialling internationally,
+                         so the picker follows the number instead of fighting it. */
+                      const c = countryFromInput(cleaned, phoneCountry)
+                      if (c !== phoneCountry) setPhoneCountry(c)
+                      setAnswers(a => ({ ...a, [current.name]: formatPhone(cleaned, c) }))
                     } else {
                       setAnswers(a => ({ ...a, [current.name]: raw }))
                     }
