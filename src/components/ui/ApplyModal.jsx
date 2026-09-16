@@ -3,6 +3,41 @@ import { createContext, useContext, useState, useEffect, useRef, useCallback } f
 const W3F_KEY = '080307e5-0079-4ded-b1fc-9a111fa9ceda'
 
 
+/* ── Phone: US/Canada (NANP) formatting + real validation ───────────────
+   A weak "at least 7 digits" check let junk like 0000000000 through. These
+   two functions enforce a real 10-digit NANP number and format it as the
+   visitor types. Kept in sync with the standalone landing page. */
+function phoneDigits(raw) {
+  let d = String(raw || '').replace(/\D/g, '')
+  if (d.length === 11 && d[0] === '1') d = d.slice(1)
+  return d.slice(0, 10)
+}
+
+function formatPhone(raw) {
+  const d = phoneDigits(raw)
+  if (d.length <= 3) return d
+  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`
+}
+
+function phoneError(raw) {
+  const d = phoneDigits(raw)
+  if (!d) return 'Please enter your phone number.'
+  if (d.length < 10) return 'That number is too short. Enter all 10 digits.'
+  if (/^(\d)\1{9}$/.test(d)) return 'That doesn\u2019t look like a real phone number.'
+  if ('01234567890123456789'.includes(d)) return 'That doesn\u2019t look like a real phone number.'
+  if ('09876543210987654321'.includes(d)) return 'That doesn\u2019t look like a real phone number.'
+  const npa = d.slice(0, 3)
+  const nxx = d.slice(3, 6)
+  if (npa[0] === '0' || npa[0] === '1') return 'An area code cannot start with 0 or 1.'
+  if (npa[1] === '1' && npa[2] === '1') return 'That isn\u2019t a valid area code.'
+  if (npa === '555') return 'That isn\u2019t a valid area code.'
+  if (nxx[0] === '0' || nxx[0] === '1') return 'That doesn\u2019t look like a real phone number.'
+  if (nxx[1] === '1' && nxx[2] === '1') return 'That doesn\u2019t look like a real phone number.'
+  if (nxx === '555') return 'That doesn\u2019t look like a real phone number.'
+  return ''
+}
+
 /* ── Question definitions ───────────────────────────────────────────────
    Qualifiers run first so unqualified traffic self-selects out before we
    ask for contact details. Contact fields are last, which also means the
@@ -54,7 +89,7 @@ const STEPS = [
   },
   { name: 'Name',  type: 'text', inputType: 'text',  q: 'What’s your name?',        placeholder: 'First and last' },
   { name: 'Email', type: 'text', inputType: 'email', q: 'Best email to reach you?',      placeholder: 'you@business.com' },
-  { name: 'Phone', type: 'text', inputType: 'tel',   q: 'And your phone number?',        placeholder: '(000) 000-0000' },
+  { name: 'Phone', type: 'text', inputType: 'tel',   q: 'And your phone number?',        placeholder: '(515) 867-5309' },
 ]
 
 const TOTAL = STEPS.length
@@ -182,8 +217,9 @@ function ApplyModal({ onClose }) {
     if (current.inputType === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
       setError('That email doesn’t look right.'); return false
     }
-    if (current.inputType === 'tel' && v.replace(/\D/g, '').length < 7) {
-      setError('Please enter a valid phone number.'); return false
+    if (current.inputType === 'tel') {
+      const pErr = phoneError(v)
+      if (pErr) { setError(pErr); return false }
     }
     if (current.inputType === 'url' && !/\./.test(v)) {
       setError('Paste your full website link.'); return false
@@ -322,7 +358,28 @@ function ApplyModal({ onClose }) {
                   inputMode={current.inputType === 'tel' ? 'tel' : undefined}
                   placeholder={current.placeholder}
                   value={answers[current.name] || ''}
-                  onChange={e => { setAnswers(a => ({ ...a, [current.name]: e.target.value })); setError('') }}
+                  maxLength={current.inputType === 'tel' ? 14 : undefined}
+                  onChange={e => {
+                    const raw = e.target.value
+                    if (current.inputType === 'tel') {
+                      /* Formats to (515) 867-5309 as they type. Backspacing over a
+                         "(", ")", " " or "-" leaves the digits unchanged, so the field
+                         would stall unless that keystroke eats a digit instead. Read
+                         inputType rather than comparing lengths: a paste can also be
+                         shorter than what it replaces, and that must NOT lose a digit. */
+                      const prev = answers[current.name] || ''
+                      const nat = e.nativeEvent
+                      const isDelete = nat && typeof nat.inputType === 'string'
+                        ? nat.inputType.indexOf('delete') === 0
+                        : raw.length < prev.length
+                      let d = phoneDigits(raw)
+                      if (isDelete && d === phoneDigits(prev)) d = d.slice(0, -1)
+                      setAnswers(a => ({ ...a, [current.name]: formatPhone(d) }))
+                    } else {
+                      setAnswers(a => ({ ...a, [current.name]: raw }))
+                    }
+                    setError('')
+                  }}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); next() } }}
                 />
                 <div style={{ marginTop: '26px' }}>
