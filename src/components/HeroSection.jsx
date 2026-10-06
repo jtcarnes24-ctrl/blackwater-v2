@@ -20,6 +20,13 @@ const HERO_LOGOS = [
   { src: '/client-logos/logo-soho.png',   w: 45 }, { src: '/client-logos/logo-noise.png', w: 41 },
   { src: '/client-logos/logo-salt.png',   w: 24 }, { src: '/client-logos/logo-chiaki.png', w: 48 },
   { src: '/client-logos/logo-krypt.png',  w: 59 },
+  /* Added Oct 5 2026. Beloved and RPR are trimmed to their alpha bounding box
+     and exported at 3x the 22px display height, same as the Aug batch. DABV
+     ships as SVG: its source had width="100%", preserveAspectRatio="none" and
+     fill="currentColor", none of which survive being dropped into an <img>,
+     so this copy pins a real size and an explicit fill. */
+  { src: '/client-logos/logo-beloved.png', w: 54 }, { src: '/client-logos/logo-rpr.png', w: 101 },
+  { src: '/client-logos/logo-dabv.svg',    w: 89 },
 ]
 const HERO_LOGO_LOOP = [...HERO_LOGOS, ...HERO_LOGOS, ...HERO_LOGOS]
 
