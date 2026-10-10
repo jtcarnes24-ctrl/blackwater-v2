@@ -7,6 +7,12 @@ import {
   phoneError,
   phoneForSubmit,
 } from '../../lib/phone'
+import {
+  websiteError,
+  websiteForSubmit,
+  instagramError,
+  instagramForSubmit,
+} from '../../lib/url'
 
 const W3F_KEY = '080307e5-0079-4ded-b1fc-9a111fa9ceda'
 
@@ -24,6 +30,13 @@ const STEPS = [
     placeholder: 'yourbrand.com',
   },
   {
+    name: 'Instagram',
+    type: 'text',
+    inputType: 'url',
+    q: 'What’s your Instagram?',
+    placeholder: 'instagram.com/yourbrand',
+  },
+  {
     name: 'Business Type',
     type: 'choice',
     q: 'What kind of business are you running?',
@@ -39,7 +52,10 @@ const STEPS = [
     type: 'choice',
     q: 'What’s your current monthly revenue?',
     options: [
-      'Under $10k a month',
+      'Not selling yet',
+      'Under $1k a month',
+      '$1k to $5k a month',
+      '$5k to $10k a month',
       '$10k to $30k a month',
       '$30k to $50k a month',
       '$50k to $100k a month',
@@ -214,8 +230,13 @@ function ApplyModal({ onClose }) {
       const pErr = phoneError(v, phoneCountry)
       if (pErr) { setError(pErr); return false }
     }
-    if (current.inputType === 'url' && !/\./.test(v)) {
-      setError('Paste your full website link.'); return false
+    if (current.name === 'Website') {
+      const wErr = websiteError(v)
+      if (wErr) { setError(wErr); return false }
+    }
+    if (current.name === 'Instagram') {
+      const iErr = instagramError(v)
+      if (iErr) { setError(iErr); return false }
     }
     setError('')
     return true
@@ -248,7 +269,11 @@ function ApplyModal({ onClose }) {
       const v = answersRef.current[s.name] || ''
       /* Phone goes out as +1 712 328 4410: readable, and dial-ready from
          any country without guessing what the digits meant. */
-      fd.append(s.name, s.inputType === 'tel' ? phoneForSubmit(v, countryRef.current) : v)
+      let out = v
+      if (s.inputType === 'tel') out = phoneForSubmit(v, countryRef.current)
+      else if (s.name === 'Website') out = websiteForSubmit(v)
+      else if (s.name === 'Instagram') out = instagramForSubmit(v)
+      fd.append(s.name, out)
     })
     if (answersRef.current.Email) fd.append('replyto', answersRef.current.Email)
     try {
