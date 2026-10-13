@@ -24,7 +24,6 @@ const pages = {
   about: 'about/index.html',
   results: 'results/index.html',
   contact: 'contact/index.html',
-  story: 'story/index.html',
 }
 
 export default defineConfig({
