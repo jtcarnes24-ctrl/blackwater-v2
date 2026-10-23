@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import { ThinkingOrb } from 'thinking-orbs'
 import { LiquidButton } from '../ui/LiquidButton'
 import { useApply } from '../ui/ApplyModal'
 
@@ -12,44 +11,45 @@ import { useApply } from '../ui/ApplyModal'
  * category label, an animated orb, a two-line uppercase
  * heading, and a short paragraph.
  *
- * The orbs are thinking-orbs (MIT, zero runtime deps, plain 2D canvas).
- * Each card gets its own state so the marks read as seven different things
- * rather than one logo repeated, and every instance pauses itself when
- * scrolled offscreen.
+ * The orbs are looping 3D renders (glass, metal, liquid) in public/orbs/,
+ * cut from their backdrops to true alpha and saved as animated WebP, so they
+ * sit on the section with no box behind them. Each card gets a different
+ * one so the marks read as seven different things rather than one logo
+ * repeated. Under reduced motion a single still frame is served instead.
  */
 const SERVICES = [
   {
-    label: 'Paid Ads', orb: 'working', href: '/services/paid-ads/',
+    label: 'Paid Ads', orb: 'iridescent', href: '/services/paid-ads/',
     h1: 'Turn Attention Into', h2: 'Paying Customers.',
     p: 'Meta, TikTok and Google campaigns built, managed and scaled. Structure first, creative second, and scaling only once cost per result earns it.',
   },
   {
-    label: 'Funnel Creation & Optimization', orb: 'solving', href: '/services/funnels/',
+    label: 'Funnel Creation & Optimization', orb: 'ribbon', href: '/services/funnels/',
     h1: 'A Path From Click', h2: 'To Customer.',
     p: 'The steps between the ad and the purchase, designed deliberately rather than assembled by accident. Most brands lose more money here than in the ad account.',
   },
   {
-    label: 'Ad Creative Generation', orb: 'composing', href: '/services/creative-strategy/',
+    label: 'Ad Creative Generation', orb: 'prism', href: '/services/creative-strategy/',
     h1: 'Creative Is The', h2: 'Targeting Now.',
     p: 'Angles, hooks, scripts and concepts. Broad targeting plus a strong signal beats interest stacks, which makes the ad itself the thing deciding who sees it.',
   },
   {
-    label: 'Email & SMS Marketing', orb: 'listening', href: '/services/email-sms/',
+    label: 'Email & SMS Marketing', orb: 'pearl', href: '/services/email-sms/',
     h1: 'Own The Audience', h2: 'You Already Paid For.',
     p: 'Flows and campaigns that earn revenue from people who already know you. The cheapest customer you will ever get is the one you have bought once already.',
   },
   {
-    label: 'B2B Marketing', orb: 'connecting', href: '/services/b2b-marketing/',
+    label: 'B2B Marketing', orb: 'chrome', href: '/services/b2b-marketing/',
     h1: 'Reach The Accounts', h2: 'That Actually Buy.',
     p: 'Longer cycles, smaller lists, bigger contracts. B2B rewards precision and patience, not the volume tactics that work for consumer brands.',
   },
   {
-    label: 'CRM & Conversion Optimization', orb: 'searching', href: '/services/crm-cro/',
+    label: 'CRM & Conversion Optimization', orb: 'gold', href: '/services/crm-cro/',
     h1: 'Fix The Leaks', h2: 'Before You Scale.',
     p: 'Pipeline hygiene, lead routing and conversion rate. Pouring more traffic into a funnel that leaks just makes the leak more expensive.',
   },
   {
-    label: 'Web Design & Landing Pages', orb: 'shaping', href: '/services/landing-pages/',
+    label: 'Web Design & Landing Pages', orb: 'rock', href: '/services/landing-pages/',
     h1: 'Stop Leaking The', h2: 'Traffic You Buy.',
     p: 'Conversion-focused pages built for paid traffic. Halving cost per acquisition is often a page problem rather than a campaign problem.',
   },
@@ -145,8 +145,9 @@ export function ServicesGrid({
         .sg-label { display:flex; align-items:center; gap:.6rem; margin-bottom:clamp(2rem,4vw,3rem); }
         /* Fixed box so a card's heading sits on the same baseline as its
            neighbours no matter which orb state is inside it. */
-        .sg-orb { height:72px; display:flex; align-items:center;
+        .sg-orb { height:96px; display:flex; align-items:center;
                   margin:0 0 clamp(1.6rem,3vw,2.4rem); }
+        .sg-orb img { display:block; width:96px; height:96px; background:none; }
         .sg-swatch { width:9px; height:9px; background:#14477f; flex:none; }
         .sg-label span { font-family:'Space Grotesk',sans-serif; font-size:.62rem; font-weight:600;
                          letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.62); }
@@ -202,7 +203,10 @@ export function ServicesGrid({
                 <span>{s.label}</span>
               </div>
               <div className="sg-orb" aria-hidden="true">
-                <ThinkingOrb state={s.orb} size={64} theme="dark" />
+                <picture>
+                  <source srcSet={`/orbs/${s.orb}-still.webp`} media="(prefers-reduced-motion: reduce)" />
+                  <img src={`/orbs/${s.orb}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />
+                </picture>
               </div>
               <h3 className="sg-title">
                 <span>{s.h1}</span>
