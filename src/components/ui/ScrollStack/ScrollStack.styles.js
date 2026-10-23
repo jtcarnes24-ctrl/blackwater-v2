@@ -85,11 +85,14 @@ export const SS_CSS = `.scroll-stack-scroller {
 .scroll-stack-card--light {
   height: auto;
   min-height: 17rem;
-  background: #ffffff;
-  color: #141414;
+  /* Same black as the page (Oct 23 2026, Jack: no white backgrounds); the
+     hairline border is what keeps each card readable as it stacks. */
+  background: #080808;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: clamp(20px, 2.4vw, 34px);
   padding: clamp(1.75rem, 3.4vw, 3rem);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -100,7 +103,7 @@ export const SS_CSS = `.scroll-stack-scroller {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: rgba(20, 20, 20, 0.38);
+  color: rgba(255, 255, 255, 0.45);
   margin: 0;
 }
 
@@ -117,7 +120,7 @@ export const SS_CSS = `.scroll-stack-scroller {
 .scroll-stack-card--light .ss-desc {
   font-size: clamp(0.88rem, 1.05vw, 1rem);
   line-height: 1.65;
-  color: rgba(20, 20, 20, 0.62);
+  color: rgba(255, 255, 255, 0.7);
   max-width: 60ch;
   margin: 0;
 }

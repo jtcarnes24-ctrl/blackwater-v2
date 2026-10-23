@@ -7,22 +7,20 @@ import { ResultsSection } from '../components/ResultsSection'
 import { ServicesSection } from '../components/ServicesSection'
 import { FlowGroup1 } from '../components/FlowGroup1'
 import { ProofSection } from '../components/ProofSection'
-import { FlowGroup2 } from '../components/FlowGroup2'
-import { FounderSection } from '../components/FounderSection'
+import { FounderLanyard } from '../components/FounderLanyard'
 import { FAQSection } from '../components/FAQSection'
 import { ContactSection } from '../components/ContactSection'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Layout showPreloader>
+    <Layout showPreloader dark>
       <HeroSection />
-      <ResultsSection />
+      <ResultsSection dark />
       <ServicesSection />
       <FlowGroup1 />
       <ProofSection />
-      <FlowGroup2 />
-      <FounderSection />
-      <FAQSection />
+      <FounderLanyard />
+      <FAQSection dark />
       <ContactSection />
     </Layout>
   </StrictMode>

@@ -17,9 +17,18 @@ const faqs = [
   },
 ]
 
-function FAQRow({ item, isOpen, onToggle }) {
+
+/* Light by default (other pages); the homepage passes `dark`, where every
+   section sits on the same #080808 with white type. */
+const tone = (dark) => ({
+  ink: dark ? '#ffffff' : '#141414',
+  bg: dark ? '#080808' : '#ffffff',
+  a: (x) => (dark ? `rgba(255,255,255,${x})` : `rgba(20,20,20,${x})`),
+})
+
+function FAQRow({ item, isOpen, onToggle, t }) {
   return (
-    <div style={{ borderTop: '1px solid rgba(20,20,20,0.12)' }}>
+    <div style={{ borderTop: `1px solid ${t.a(0.12)}` }}>
       <button
         type="button"
         onClick={onToggle}
@@ -34,7 +43,7 @@ function FAQRow({ item, isOpen, onToggle }) {
           fontFamily: "'Syne', sans-serif",
           fontSize: 'clamp(1.15rem, 2.4vw, 1.4rem)',
           fontWeight: 700, letterSpacing: '-0.01em',
-          color: '#141414', lineHeight: 1.25,
+          color: t.ink, lineHeight: 1.25,
         }}>
           {item.q}
         </span>
@@ -42,9 +51,9 @@ function FAQRow({ item, isOpen, onToggle }) {
           aria-hidden="true"
           style={{
             flexShrink: 0, width: '40px', height: '40px', borderRadius: '999px',
-            border: '1px solid rgba(20,20,20,0.2)',
+            border: `1px solid ${t.a(0.2)}`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#141414',
+            color: t.ink,
           }}
         >
           <motion.svg
@@ -72,7 +81,7 @@ function FAQRow({ item, isOpen, onToggle }) {
             <p style={{
               fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 'clamp(0.95rem, 1.6vw, 1.08rem)',
-              color: 'rgba(20,20,20,0.65)', lineHeight: 1.75,
+              color: t.a(0.65), lineHeight: 1.75,
               maxWidth: '62ch', paddingBottom: 'clamp(1.4rem, 3vw, 2rem)',
             }}>
               {item.a}
@@ -84,7 +93,8 @@ function FAQRow({ item, isOpen, onToggle }) {
   )
 }
 
-export function FAQSection() {
+export function FAQSection({ dark = false }) {
+  const t = tone(dark)
   // -1, not 0: every answer starts closed, so the list reads as a list of
   // questions rather than opening on one the reader did not ask.
   const [openIndex, setOpenIndex] = useState(-1)
@@ -94,7 +104,7 @@ export function FAQSection() {
       id="faq"
       aria-label="Frequently asked questions"
       style={{
-        background: '#ffffff',
+        background: t.bg,
         padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)',
       }}
     >
@@ -113,7 +123,7 @@ export function FAQSection() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             gap: '0.6rem', fontFamily: "'Space Grotesk', sans-serif",
             fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: 'rgba(20,20,20,0.55)', fontWeight: 600, marginBottom: '1.5rem',
+            color: t.a(0.55), fontWeight: 600, marginBottom: '1.5rem',
           }}
         >
           <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#85929d', display: 'inline-block' }} />
@@ -128,7 +138,7 @@ export function FAQSection() {
             fontFamily: "'Syne', sans-serif",
             fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
             fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.02,
-            color: '#141414', textAlign: 'center', margin: 0,
+            color: t.ink, textAlign: 'center', margin: 0,
           }}
         >
           Frequently Asked <span className="emph">Questions</span><span style={{ color: '#85929d' }}>.</span>
@@ -141,7 +151,7 @@ export function FAQSection() {
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: 'clamp(1rem, 1.8vw, 1.15rem)',
-            color: 'rgba(20,20,20,0.65)', lineHeight: 1.6, textAlign: 'center',
+            color: t.a(0.65), lineHeight: 1.6, textAlign: 'center',
             maxWidth: '48ch', margin: '1.5rem auto 0',
           }}
         >
@@ -152,7 +162,7 @@ export function FAQSection() {
         <motion.div
           variants={fadeUp}
           transition={{ duration: 0.6, ease: easeOut, delay: 0.1 }}
-          style={{ marginTop: 'clamp(3rem, 6vw, 5rem)', borderBottom: '1px solid rgba(20,20,20,0.12)' }}
+          style={{ marginTop: 'clamp(3rem, 6vw, 5rem)', borderBottom: `1px solid ${t.a(0.12)}` }}
         >
           {faqs.map((item, i) => (
             <FAQRow
@@ -160,6 +170,7 @@ export function FAQSection() {
               item={item}
               isOpen={openIndex === i}
               onToggle={() => setOpenIndex(openIndex === i ? -1 : i)}
+              t={t}
             />
           ))}
         </motion.div>

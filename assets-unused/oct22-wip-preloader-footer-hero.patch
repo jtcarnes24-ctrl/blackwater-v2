@@ -1,0 +1,983 @@
+diff --git a/src/components/ContactSection.jsx b/src/components/ContactSection.jsx
+deleted file mode 100644
+index 366cfb2..0000000
+--- a/src/components/ContactSection.jsx
++++ /dev/null
+@@ -1,87 +0,0 @@
+-import { motion } from 'framer-motion'
+-import { fadeUp, clipReveal, staggerContainer, easeOut, easeInOut, viewport } from '../lib/animations'
+-import { LiquidButton } from './ui/LiquidButton'
+-import { useApply } from './ui/ApplyModal'
+-
+-/* The inline Calendly embed was removed Aug 14 2026. It let anyone book a
+-   call straight off the page with zero qualification, which defeats the
+-   whole point of gating Apply Now behind the application modal. */
+-
+-export function ContactSection() {
+-  const { openApply } = useApply()
+-  return (
+-    <section id="contact" style={{ background: '#080808', padding: 'clamp(5rem, 14vw, 12rem) clamp(1.5rem, 8vw, 7rem)', borderTop: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden' }}>
+-      <style>{`
+-        @media (max-width: 480px) {
+-          .contact-heading { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
+-        }
+-      `}</style>
+-      <div style={{ position: 'relative', zIndex: 1 }}>
+-
+-      {/* ── Closing CTA ── */}
+-      <motion.div
+-        variants={staggerContainer(0.1, 0.05)}
+-        initial="hidden"
+-        whileInView="show"
+-        viewport={viewport}
+-        style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)', paddingBottom: 'clamp(3rem, 8vw, 6rem)', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
+-      >
+-        <motion.p
+-          variants={fadeUp}
+-          transition={{ duration: 0.5, ease: easeOut }}
+-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}
+-        >
+-          Ready When You Are
+-        </motion.p>
+-
+-        {/* The closing line is now the headline itself. It used to sit small
+-            under "STOP GUESSING. START scaling.", which was a second slogan
+-            competing with it for the same job. */}
+-        <div style={{ overflow: 'hidden' }}>
+-          <motion.h2
+-            className="contact-heading"
+-            variants={clipReveal}
+-            transition={{ duration: 0.8, ease: easeInOut }}
+-            style={{
+-              fontFamily: "'Syne', sans-serif",
+-              fontSize: 'clamp(2.5rem, 6vw, 6rem)',
+-              fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.95,
+-              color: '#ffffff', margin: 0,
+-            }}
+-          >
+-            Learn to read the <span className="emph">water</span>.
+-          </motion.h2>
+-        </div>
+-
+-        <motion.p
+-          variants={fadeUp}
+-          transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
+-          style={{ fontSize: '0.95rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginTop: '1.75rem', maxWidth: '48ch' }}
+-        >
+-          "I don't take on clients I can't actually help." — Jack Carnes
+-        </motion.p>
+-
+-        <motion.div
+-          variants={fadeUp}
+-          transition={{ duration: 0.5, ease: easeOut, delay: 0.2 }}
+-          style={{ marginTop: '2.25rem' }}
+-        >
+-          <LiquidButton onClick={openApply} style={{ padding: '1.1rem 2.6rem', fontSize: '0.85rem' }}>
+-            Apply Now →
+-          </LiquidButton>
+-        </motion.div>
+-      </motion.div>
+-
+-      <div style={{ paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+-        <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
+-        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+-          <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>Powered by Performance</p>
+-          <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
+-          <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @jackcrns</a>
+-          <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>Privacy Policy</a>
+-        </div>
+-      </div>
+-      </div>
+-    </section>
+-  )
+-}
+diff --git a/src/components/Footer.jsx b/src/components/Footer.jsx
+index 38b7af4..4c854ea 100644
+--- a/src/components/Footer.jsx
++++ b/src/components/Footer.jsx
+@@ -1,97 +1,265 @@
++import { useState } from 'react'
++import { useApply } from './ui/ApplyModal'
++
+ /**
+- * Crawlable internal linking.
++ * Footer, rebuilt on the ESR Bespoke pattern.
++ *
++ * The movement: the footer box is `position: relative` and one viewport
++ * tall, carrying `clip-path: inset(0)`. A clip-path makes the element a
++ * containing block for `position: fixed` descendants, so the inner panel is
++ * fixed *to the footer* rather than to the viewport. The page above then
++ * slides up and off a stationary footer, like a curtain lifting, with no
++ * JavaScript driving it at all.
++ *
++ * Desktop only, exactly as the reference does it: below the breakpoint the
++ * footer is an ordinary block, because a full-height pinned panel on a phone
++ * costs a screen of scrolling and gains nothing.
+  *
+- * The nav's links live inside an AnimatePresence overlay that is only mounted
+- * while the menu is open, so a crawler parsing the page finds none of them.
+- * Without this footer every page except the homepage would be orphaned and
+- * discoverable only through the sitemap. Plain <a> tags, always in the DOM.
++ * Tone is inverted against the reference. ESR run a white footer under dark
++ * pages; these pages are white, so the footer stays near-black to keep the
++ * hard tonal flip that makes the reveal land.
++ *
++ * Still the site's crawlable internal linking. The nav's links live inside
++ * an overlay that is only mounted while the menu is open, so without these
++ * plain <a> tags every page but the homepage would be orphaned.
+  */
+-const GROUPS = [
+-  {
+-    heading: 'Services',
+-    links: [
+-      { label: 'All Services', href: '/services/' },
+-      { label: 'Paid Ads', href: '/services/paid-ads/' },
+-      { label: 'Funnel Creation', href: '/services/funnels/' },
+-      { label: 'Ad Creative', href: '/services/creative-strategy/' },
+-      { label: 'Email & SMS', href: '/services/email-sms/' },
+-      { label: 'B2B Marketing', href: '/services/b2b-marketing/' },
+-      { label: 'CRM & Conversion', href: '/services/crm-cro/' },
+-      { label: 'Web Design & Landing Pages', href: '/services/landing-pages/' },
+-    ],
+-  },
+-  {
+-    heading: 'Agency',
+-    links: [
+-      { label: 'Home', href: '/' },
+-      { label: 'The Method', href: '/the-method/' },
+-      { label: 'About Us', href: '/about/' },
+-      { label: 'Results', href: '/results/' },
+-      { label: 'Contact', href: '/contact/' },
+-    ],
+-  },
++
++const SERVICE_LINKS = [
++  { label: 'All Services', href: '/services/' },
++  { label: 'Paid Ads', href: '/services/paid-ads/' },
++  { label: 'Funnel Creation', href: '/services/funnels/' },
++  { label: 'Ad Creative', href: '/services/creative-strategy/' },
++  { label: 'Email & SMS', href: '/services/email-sms/' },
++  { label: 'B2B Marketing', href: '/services/b2b-marketing/' },
++  { label: 'CRM & Conversion', href: '/services/crm-cro/' },
++  { label: 'Web Design', href: '/services/landing-pages/' },
+ ]
+ 
++const AGENCY_LINKS = [
++  { label: 'Home', href: '/' },
++  { label: 'The Method', href: '/the-method/' },
++  { label: 'About', href: '/about/' },
++  { label: 'Results', href: '/results/' },
++  { label: 'Contact', href: '/contact/' },
++]
++
++/* Per-character roll, the way the reference animates its corner label: each
++   letter sits in a 1em mask with a copy of itself directly below, and the
++   pair slides up on hover with a stagger across the word. */
++function Roll({ text }) {
++  return (
++    <span className="bwf-roll" aria-label={text}>
++      {[...text].map((c, i) => (
++        <i key={i} data-c={c} aria-hidden="true" style={{ transitionDelay: `${i * 18}ms` }}>
++          {c === ' ' ? ' ' : c}
++        </i>
++      ))}
++    </span>
++  )
++}
++
+ export function Footer() {
++  const { openApply } = useApply()
++  const [state, setState] = useState('idle') // idle | sending | done | error
++
++  const subscribe = async (e) => {
++    e.preventDefault()
++    const email = new FormData(e.currentTarget).get('email')
++    setState('sending')
++    const fd = new FormData()
++    fd.append('access_key', '080307e5-0079-4ded-b1fc-9a111fa9ceda')
++    fd.append('from_name', 'BlackWater Footer Signup')
++    fd.append('subject', 'New footer email signup')
++    fd.append('Email', email)
++    fd.append('replyto', email)
++    try {
++      const r = await fetch('https://api.web3forms.com/submit', {
++        method: 'POST', headers: { Accept: 'application/json' }, body: fd,
++      })
++      setState((await r.json()).success ? 'done' : 'error')
++    } catch {
++      setState('error')
++    }
++  }
++
+   return (
+-    <footer style={{ background: '#080808', color: '#fff', padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem) 2.5rem' }}>
++    <footer className="bwf">
+       <style>{`
+-        .ft-grid { max-width:1240px; margin:0 auto; display:flex; flex-wrap:wrap; gap:clamp(2rem,6vw,5rem); }
+-        .ft-col h3 { font-family:'Space Grotesk',sans-serif; font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); font-weight:600; margin:0 0 1rem; }
+-        .ft-col a { display:block; font-family:'Space Grotesk',sans-serif; font-size:.95rem; color:rgba(255,255,255,.82); text-decoration:none; margin-bottom:.6rem; transition:color .2s; }
+-        .ft-col a:hover { color:#fff; }
+-        .ft-base { max-width:1240px; margin:clamp(2.5rem,5vw,3.5rem) auto 0; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,.12);
+-                   display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center;
+-                   font-family:'Space Grotesk',sans-serif; font-size:.8rem; color:rgba(255,255,255,.55); }
+-        .ft-base a { color:rgba(255,255,255,.55); text-decoration:none; }
+-        .ft-base a:hover { color:#fff; }
+-
+-        /* Full-bleed wordmark. Cancels the footer's own side padding with
+-           matching negative margins so the type reaches both viewport edges,
+-           and eats the bottom padding so it sits flush on the floor.
+-           Font is the preloader's Playfair italic, deliberately, so the
+-           curtain at the top of the visit and the sign-off at the bottom
+-           are the same mark. */
+-        .ft-wordmark {
+-          margin: clamp(2.5rem,6vw,4rem) calc(-1 * clamp(1.5rem,5vw,4rem)) -2.5rem;
+-          overflow: hidden;
+-          line-height: 0;
++        /* The reveal. A clip-path turns the footer into the containing block
++           for its fixed child, which is the whole trick. */
++        .bwf { position:relative; background:#080808; height:100svh; clip-path:inset(0); }
++        .bwf-inner { position:fixed; inset:0; }
++
++        .bwf-inner { background:#080808; color:#ffffff; overflow:hidden;
++                     padding:5rem clamp(1.25rem,2.6vw,2rem) clamp(1.25rem,2.4vw,2rem);
++                     display:grid; grid-template-rows:1fr auto 1fr; gap:0; min-height:100svh;
++                     font-family:'Space Grotesk',sans-serif; }
++        @media (min-width:900px) { .bwf-inner { padding-top:7rem; } }
++
++        .bwf-row { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(1.25rem,2.5vw,2rem); min-width:0; }
++        .bwf-row > * { min-width:0; }
++        @media (min-width:900px) { .bwf-row { grid-template-columns:repeat(12,1fr); } }
++        .bwf-bottom { align-items:end; }
++
++        /* Everything is set in the same small uppercase register the
++           reference uses, which is what gives it the technical feel. */
++        .bwf a, .bwf p, .bwf div, .bwf span, .bwf input, .bwf button {
++          font-size:.66rem; letter-spacing:.05em; text-transform:uppercase; line-height:1.45; }
++        @media (min-width:900px) {
++          .bwf a, .bwf p, .bwf div, .bwf span, .bwf input, .bwf button {
++            font-size:.78rem; letter-spacing:.06em; line-height:1.55; }
+         }
+-        .ft-wordmark span {
+-          display: block;
+-          font-family: 'Playfair Display', serif;
+-          font-style: italic;
+-          font-weight: 500;
+-          font-size: 20.5vw;
+-          line-height: 0.78;
+-          letter-spacing: -0.025em;
+-          color: #f2f0ec;
+-          white-space: nowrap;
+-          text-align: center;
+-          user-select: none;
++        .bwf a { color:#ffffff; text-decoration:none;
++                 transition:opacity .3s cubic-bezier(.19,1,.22,1); }
++        .bwf-dim { opacity:.5; }
++        .bwf-links a { display:block; opacity:.5; }
++        .bwf-links a:hover, .bwf-links a:focus-visible { opacity:1; }
++        .bwf-label { opacity:.5; margin:0 0 .5rem; }
++
++        .bwf-c1 { grid-column:span 4; } .bwf-c2 { grid-column:span 4; }
++        .bwf-c3 { grid-column:span 2; } .bwf-c4 { grid-column:span 2; }
++        @media (min-width:900px) {
++          .bwf-c1 { grid-column:1 / span 3; }
++          .bwf-c2 { grid-column:4 / span 4; }
++          .bwf-c3 { grid-column:9 / span 2; }
++          .bwf-c4 { grid-column:11 / span 2; }
++        }
++
++        .bwf span.bwf-roll { display:inline-flex; overflow:hidden; height:1em; line-height:1;
++                             vertical-align:bottom; }
++        .bwf .bwf-roll i { display:inline-block; position:relative; font-style:normal; white-space:pre;
++                           line-height:1; font-size:inherit; letter-spacing:inherit;
++                           transition:transform .55s cubic-bezier(.19,1,.22,1); }
++        .bwf .bwf-roll i::after { content:attr(data-c); position:absolute; left:0; top:100%; }
++        .bwf a:hover .bwf-roll i, .bwf a:focus-visible .bwf-roll i { transform:translateY(-100%); }
++
++        .bwf-legal { max-width:24ch; opacity:.5; margin:0; }
++        .bwf-est { display:inline-block; border:1px solid currentColor; border-radius:999px;
++                   padding:0 .4em; margin-right:.35em; font-size:.86em; letter-spacing:.08em; }
++
++        .bwf-form { display:flex; align-items:center; gap:.6rem; margin-top:1rem;
++                    border-bottom:1px solid rgba(255,255,255,.3); padding-bottom:.5rem;
++                    transition:border-color .3s cubic-bezier(.19,1,.22,1); max-width:22rem; }
++        .bwf-form:focus-within { border-color:#ffffff; }
++        @media (min-width:900px) { .bwf-form { gap:1rem; } }
++        .bwf-form input { flex:1; min-width:0; background:none; border:none; color:#fff;
++                          font-family:inherit; padding:0; }
++        .bwf-form input::placeholder { color:rgba(255,255,255,.45); text-transform:uppercase; }
++        .bwf-form input:focus { outline:none; }
++        .bwf-form button { background:none; border:none; color:#fff; cursor:pointer; opacity:.5;
++                           font-family:inherit; padding:0; white-space:nowrap;
++                           transition:opacity .3s cubic-bezier(.19,1,.22,1); }
++        .bwf-form button:hover:not(:disabled) { opacity:1; }
++        .bwf-form button:disabled { cursor:default; }
++        .bwf-note { opacity:.5; margin:.6rem 0 0; }
++
++        /* The wordmark sits in the middle row, left aligned, scaled off the
++           viewport the way the reference scales its logotype. */
++        .bwf-mark { grid-row:2; display:block; min-width:0; margin:clamp(2rem,5vw,0) 0; }
++        .bwf-mark > span { display:block; font-family:'Syne',sans-serif; font-weight:800;
++                         /* 10 characters of Syne 800 run about 11.5x the font size,
++                            so 6vw keeps the mark near 70% of the viewport and well
++                            inside it, in the proportion the reference uses. */
++                         font-size:clamp(1.5rem,6vw,8rem); line-height:.82; letter-spacing:-.045em;
++                         text-transform:uppercase; color:#ffffff; white-space:nowrap; user-select:none; }
++
++        .bwf-stack { display:flex; flex-direction:column; gap:clamp(1rem,2vw,2rem); }
++
++        /* Carries the closing call to action now that the section above the
++           footer is gone. Sits under the wordmark, on the same left edge. */
++        .bwf-apply { display:inline-flex; align-items:center; gap:.7rem; margin-top:clamp(1rem,3vw,2.25rem);
++                     font-family:inherit; font-size:.78rem; font-weight:700; letter-spacing:.18em;
++                     text-transform:uppercase; color:#080808; background:#ffffff; border:1px solid #ffffff;
++                     border-radius:999px; padding:1.05rem 2.4rem; cursor:pointer;
++                     transition:background .3s cubic-bezier(.19,1,.22,1), color .3s cubic-bezier(.19,1,.22,1); }
++        .bwf-apply:hover { background:transparent; color:#ffffff; }
++        @media (max-width:899px) { .bwf-apply { padding:.85rem 1.8rem; } }
++        .bwf-apply:focus-visible { outline:2px solid #ffffff; outline-offset:3px; }
++
++        @media (prefers-reduced-motion: reduce) {
++          .bwf a, .bwf .bwf-roll i, .bwf-form, .bwf-form button { transition:none; }
++          .bwf a:hover .bwf-roll i { transform:none; }
+         }
+       `}</style>
+ 
+-      <div className="ft-grid">
+-        {GROUPS.map((g) => (
+-          <nav className="ft-col" key={g.heading} aria-label={g.heading}>
+-            <h3>{g.heading}</h3>
+-            {g.links.map((l) => (
+-              <a key={l.href} href={l.href}>{l.label}</a>
+-            ))}
++      <div className="bwf-inner">
++        {/* ── top row ─────────────────────────────────────────────── */}
++        <div className="bwf-row">
++          <div className="bwf-c1">
++            <a href="/"><Roll text="BlackWater Marketing" /></a>
++          </div>
++
++          <div className="bwf-c2">
++            <p className="bwf-legal">
++              Performance Marketing.<br />
++              United States.<br />
++              <span className="bwf-est">EST.</span>2026 &copy; BlackWater.<br />
++              All rights reserved.
++            </p>
++          </div>
++
++          <nav className="bwf-c3 bwf-links" aria-label="Services">
++            {SERVICE_LINKS.map((l) => <a key={l.href} href={l.href}>{l.label}</a>)}
+           </nav>
+-        ))}
+-      </div>
+ 
+-      <div className="ft-base">
+-        <span>© 2026 BlackWater Marketing</span>
+-        <span style={{ display: 'flex', gap: '1.25rem' }}>
+-          <a href="/privacy.html">Privacy</a>
+-          <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer">Instagram</a>
+-        </span>
+-      </div>
++          <div className="bwf-c4">
++            <nav className="bwf-links" aria-label="Agency">
++              {AGENCY_LINKS.map((l) => <a key={l.href} href={l.href}>{l.label}</a>)}
++            </nav>
++
++            <form className="bwf-form" onSubmit={subscribe}>
++              <input
++                type="email" name="email" required autoComplete="email"
++                placeholder="Your email" aria-label="Email address"
++                disabled={state === 'sending' || state === 'done'}
++              />
++              <button type="submit" disabled={state === 'sending' || state === 'done'}>
++                {state === 'sending' ? 'Sending' : state === 'done' ? 'Signed up' : 'Sign up'}
++              </button>
++            </form>
++            {state === 'error' && <p className="bwf-note">That didn’t send. Email jack@blackwatermrkting.com</p>}
++          </div>
++        </div>
++
++        {/* ── wordmark ────────────────────────────────────────────── */}
++        <div className="bwf-mark">
++          <span aria-hidden="true">BlackWater</span>
++          <button type="button" className="bwf-apply" onClick={openApply}>
++            Apply Now <span aria-hidden="true">&rarr;</span>
++          </button>
++        </div>
+ 
+-      <div className="ft-wordmark" aria-hidden="true"><span>BlackWater</span></div>
++        {/* ── bottom row ──────────────────────────────────────────── */}
++        <section className="bwf-row bwf-bottom">
++          <div className="bwf-c1">
++            <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer">
++              <Roll text="@blackwatermrkting" />
++            </a>
++          </div>
++
++          <div className="bwf-c2 bwf-links" style={{ display: 'flex', gap: '1.75rem' }}>
++            <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer">@jackcrns</a>
++            <a href="/privacy.html">Privacy</a>
++          </div>
++
++          <div className="bwf-c3 bwf-stack" style={{ gridColumn: '' }}>
++            <div>
++              <div className="bwf-label">Contact</div>
++              <div className="bwf-links">
++                <a href="mailto:jack@blackwatermrkting.com">jack@blackwatermrkting.com</a>
++                <span className="bwf-dim">9am &ndash; 6pm Monday to Friday</span>
++              </div>
++            </div>
++          </div>
++
++          <div className="bwf-c4 bwf-stack">
++            <div>
++              <div className="bwf-label">Studio</div>
++              <div className="bwf-dim">United States</div>
++            </div>
++          </div>
++        </section>
++      </div>
+     </footer>
+   )
+ }
+diff --git a/src/components/HeroSection.jsx b/src/components/HeroSection.jsx
+index 04b4bfd..08b3a38 100644
+--- a/src/components/HeroSection.jsx
++++ b/src/components/HeroSection.jsx
+@@ -137,18 +137,22 @@ export function HeroSection() {
+           kept being served from cache. Give new artwork a NEW filename. The drone clip that used to sit
+           over it was removed Aug 27 2026 at Jack's request; the two encodes
+           (7.3MB combined) went with it. */}
+-      <img
+-        src="/hero/hero-wave-1920.jpg"
+-        srcSet="/hero/hero-wave-860.jpg 860w, /hero/hero-wave-1280.jpg 1280w, /hero/hero-wave-1920.jpg 1920w, /hero/hero-wave-2560.jpg 2560w"
+-        sizes="100vw"
+-        width="1920" height="1280"
+-        alt="" aria-hidden="true" fetchPriority="high" decoding="async"
++      {/* Oct 22 2026: hero is a looping ocean-horizon clip (Pexels 5280092, free
++          licence), trimmed to 15s, no audio. 960px file for phones, 1920px for
++          everything else, poster = first frame so nothing flashes while it loads. */}
++      <video
++        autoPlay muted loop playsInline preload="auto"
++        poster="/hero/hero-ocean-poster.jpg"
++        aria-hidden="true"
+         style={{
+           position: 'absolute', inset: 0, zIndex: 0,
+           width: '100%', height: '100%',
+           objectFit: 'cover', objectPosition: 'center 45%',
+         }}
+-      />
++      >
++        <source src="/hero/hero-ocean-960.mp4" type="video/mp4" media="(max-width: 767px)" />
++        <source src="/hero/hero-ocean-1920.mp4" type="video/mp4" />
++      </video>
+ 
+       {/* Scrim. Heavier than the previous hero needed: this frame is mostly
+           bright whitewater, and the headline is white with no text-shadow
+@@ -172,7 +176,7 @@ export function HeroSection() {
+         textAlign: 'center',
+         pointerEvents: 'none',
+       }}>
+-        <div style={{ textAlign: 'center', maxWidth: '900px', width: '100%' }}>
++        <div style={{ textAlign: 'center', maxWidth: 'min(1280px, 92vw)', width: '100%' }}>
+           <p className="hero-eyebrow" style={{
+             fontFamily: "'Space Grotesk', sans-serif",
+             fontSize: '0.72rem', letterSpacing: '0.2em',
+@@ -187,10 +191,15 @@ export function HeroSection() {
+           }} />
+           <div style={{ overflow: 'hidden', marginBottom: '2.5rem' }}>
+             <h1 className="hero-h1" style={{
++              /* Same cut as the oversized BLACKWATER wordmark in the footer,
++                 so the mark reads identically top and bottom of the page. */
+               fontFamily: "'Syne', sans-serif",
+-              fontSize: 'clamp(2.6rem, 7vw, 6.5rem)',
+-              fontWeight: 700, lineHeight: 0.92,
+-              letterSpacing: '-0.03em', color: HERO_INK,
++              /* 10 characters of Syne 800 run about 11.5x the font size, so
++                 the vw cap keeps "BLACKWATER" inside the block at every
++                 width rather than being clipped by the reveal wrapper. */
++              fontSize: 'min(7.1vw, 6.3rem)',
++              fontWeight: 800, lineHeight: 0.9,
++              letterSpacing: '-0.045em', color: HERO_INK,
+               textTransform: 'uppercase', margin: 0,
+             }}>
+               BLACKWATER<br />MARKETING
+@@ -231,7 +240,7 @@ export function HeroSection() {
+             <LiquidButton onClick={openApply} variant="solid">
+               Apply Now →
+             </LiquidButton>
+-            <LiquidButton href="#services" style={{ background: 'rgba(20,20,20,0.35)' }}>
++            <LiquidButton href="#services" variant="light">
+               Our Services
+             </LiquidButton>
+           </div>
+diff --git a/src/components/ui/Preloader.jsx b/src/components/ui/Preloader.jsx
+index 298a526..73225b2 100644
+--- a/src/components/ui/Preloader.jsx
++++ b/src/components/ui/Preloader.jsx
+@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
+ 
+ /* Intro curtain, modelled on the one Jack liked at orza.io.
+ 
+-   Theirs is a serif-italic wordmark that slides up out of a clipped box with
+-   a coloured dot popping in beside it, then the curtain lifts and the page's
+-   own entrance animations run. Same idea here, using the site's existing
+-   Playfair italic and a cream wordmark on the brand black.
++   Theirs is a wordmark that slides up out of a clipped box with a coloured
++   dot popping in beside it, then the curtain lifts and the page's own
++   entrance animations run. Same idea here, set in the same Syne cut as the
++   hero and the footer wordmark so all three read as one mark.
+ 
+    The hero's entrance animations are held until this finishes, otherwise they
+    play behind the curtain and the reader never sees them. That gate is the
+@@ -49,46 +49,72 @@ export function Preloader() {
+ 
+   if (gone) return null
+ 
++  if (gone) return null
++
+   return (
+     <div className={`preloader${lifting ? ' is-lifting' : ''}`} aria-hidden="true">
+       <style>{`
++        /* Modelled on the reference's intro: a full-screen black panel on a
++           twelve column grid with items-end, so the wordmark sits on the
++           bottom-left rather than floating in the middle, with the small
++           lockup above it where their "ESR BESPOKE" label sits. The letters
++           resolve in place rather than the whole word sliding. */
+         .preloader {
+           position: fixed; inset: 0; z-index: 200;
+-          background: #000000;
+-          display: flex; align-items: center; justify-content: center;
++          background: #080808;
++          display: grid; grid-template-columns: repeat(12, 1fr);
++          align-content: end;
++          padding: clamp(1.25rem, 2.6vw, 2rem);
+           transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+                       opacity 0.55s ease 0.2s;
+         }
+         .preloader.is-lifting { transform: translateY(-100%); opacity: 0; }
+ 
+-        /* Clips the wordmark so it rises out of nothing rather than sliding
+-           across the screen. */
+-        .preloader-inner {
+-          display: flex; align-items: baseline; gap: 8px;
+-          overflow: hidden; padding-bottom: 0.12em;
++        .preloader-label {
++          grid-column: 1 / span 6;
++          font-family: 'Space Grotesk', sans-serif;
++          font-size: .72rem; font-weight: 600; letter-spacing: .06em;
++          text-transform: uppercase; color: #ffffff;
++          margin: 0 0 clamp(1.25rem, 3vw, 2.5rem);
++          opacity: 0; animation: pre-fade .6s ease .15s forwards;
+         }
++
+         .preloader-word {
+-          font-family: 'Playfair Display', serif;
+-          font-style: italic; font-weight: 500;
+-          font-size: clamp(40px, 7vw, 78px);
+-          color: #f2f0ec; letter-spacing: -0.01em;
+-          display: inline-block;
+-          transform: translateY(110%);
+-          animation: pre-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
++          grid-column: 1 / span 12;
++          display: flex; margin: 0;
++          font-family: 'Syne', sans-serif;
++          font-weight: 800; text-transform: uppercase;
++          letter-spacing: -0.045em; line-height: 0.82;
++          font-size: min(7.1vw, 6.3rem);
++          color: #ffffff;
++        }
++        /* Each letter is masked to its own box and rises into it, so the
++           mark assembles character by character. */
++        .preloader-word span {
++          display: inline-block; overflow: hidden; white-space: pre;
+         }
+-        .preloader-dot {
+-          width: clamp(9px, 1.3vw, 14px); height: clamp(9px, 1.3vw, 14px);
+-          border-radius: 50%; background: #f2f0ec;
+-          transform: scale(0);
+-          animation: pre-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.72s forwards;
++        .preloader-word i {
++          display: inline-block; font-style: normal;
++          transform: translateY(105%);
++          animation: pre-rise .8s cubic-bezier(.19, 1, .22, 1) forwards;
+         }
++
+         @keyframes pre-rise { to { transform: translateY(0); } }
+-        @keyframes pre-pop  { to { transform: scale(1); } }
++        @keyframes pre-fade { to { opacity: .5; } }
++
++        @media (prefers-reduced-motion: reduce) {
++          .preloader-word i, .preloader-label { animation: none; transform: none; opacity: .5; }
++        }
+       `}</style>
+-      <div className="preloader-inner">
+-        <span className="preloader-word">{WORD}</span>
+-        <span className="preloader-dot" />
+-      </div>
++
++      <p className="preloader-label">BlackWater Marketing</p>
++      <h1 className="preloader-word">
++        {[...WORD].map((c, i) => (
++          <span key={i}>
++            <i style={{ animationDelay: `${0.12 + i * 0.045}s` }}>{c}</i>
++          </span>
++        ))}
++      </h1>
+     </div>
+   )
+ }
+diff --git a/src/index.css b/src/index.css
+index 767ba9b..0d1a025 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -157,7 +157,10 @@ img, svg {
+ }
+ 
+ @media (max-width: 480px) {
++  /* 10vw overflowed its block: "BLACKWATER" in Syne 800 runs about 11.5x
++     the font size, so the mark needs to stay under a twelfth of the
++     available width to sit inside the 92vw hero block. */
+   .hero-h1 {
+-    font-size: clamp(2.2rem, 10vw, 3.5rem) !important;
++    font-size: min(7.2vw, 3.5rem) !important;
+   }
+ }
+diff --git a/src/pages/about.jsx b/src/pages/about.jsx
+index 0480053..e338102 100644
+--- a/src/pages/about.jsx
++++ b/src/pages/about.jsx
+@@ -7,7 +7,6 @@ import { AboutManifesto } from '../components/pages/AboutManifesto'
+ import { ResultsSection } from '../components/ResultsSection'
+ import { FounderSection } from '../components/FounderSection'
+ import { FAQSection } from '../components/FAQSection'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ /* Positioning statements only — no performance figures or client claims here.
+    The verified numbers live in ResultsSection, which renders below. */
+@@ -41,7 +40,6 @@ createRoot(document.getElementById('root')).render(
+       <ResultsSection />
+       <FounderSection />
+       <FAQSection />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/b2b-marketing.jsx b/src/pages/b2b-marketing.jsx
+index 1cee5da..736ec36 100644
+--- a/src/pages/b2b-marketing.jsx
++++ b/src/pages/b2b-marketing.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -53,7 +52,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/contact.jsx b/src/pages/contact.jsx
+index ee180be..e08bab6 100644
+--- a/src/pages/contact.jsx
++++ b/src/pages/contact.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { PageHeader } from '../components/pages/PageHeader'
+-import { ContactSection } from '../components/ContactSection'
+ import { FAQSection } from '../components/FAQSection'
+ 
+ createRoot(document.getElementById('root')).render(
+@@ -14,7 +13,6 @@ createRoot(document.getElementById('root')).render(
+         emph="brand."
+         sub="Apply below. We will tell you honestly whether we are the right fit, and what we would do first."
+       />
+-      <ContactSection />
+       <FAQSection />
+     </Layout>
+   </StrictMode>
+diff --git a/src/pages/creative-strategy.jsx b/src/pages/creative-strategy.jsx
+index e82c403..88faaf4 100644
+--- a/src/pages/creative-strategy.jsx
++++ b/src/pages/creative-strategy.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -53,7 +52,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/crm-cro.jsx b/src/pages/crm-cro.jsx
+index 95eaa93..9d7b605 100644
+--- a/src/pages/crm-cro.jsx
++++ b/src/pages/crm-cro.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -53,7 +52,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/email-sms.jsx b/src/pages/email-sms.jsx
+index a207646..610ae7a 100644
+--- a/src/pages/email-sms.jsx
++++ b/src/pages/email-sms.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -54,7 +53,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/funnels.jsx b/src/pages/funnels.jsx
+index d3c74b4..d7bebbd 100644
+--- a/src/pages/funnels.jsx
++++ b/src/pages/funnels.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -53,7 +52,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/home.jsx b/src/pages/home.jsx
+index e3bc0e6..6f94e07 100644
+--- a/src/pages/home.jsx
++++ b/src/pages/home.jsx
+@@ -10,7 +10,6 @@ import { ProofSection } from '../components/ProofSection'
+ import { FlowGroup2 } from '../components/FlowGroup2'
+ import { FounderSection } from '../components/FounderSection'
+ import { FAQSection } from '../components/FAQSection'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ createRoot(document.getElementById('root')).render(
+   <StrictMode>
+@@ -23,7 +22,6 @@ createRoot(document.getElementById('root')).render(
+       <FlowGroup2 />
+       <FounderSection />
+       <FAQSection />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/landing-pages.jsx b/src/pages/landing-pages.jsx
+index fed78cf..85e2eac 100644
+--- a/src/pages/landing-pages.jsx
++++ b/src/pages/landing-pages.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -101,7 +100,6 @@ createRoot(document.getElementById('root')).render(
+         work={work}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/meta-ads.jsx b/src/pages/meta-ads.jsx
+index fc6c1ae..db12bf9 100644
+--- a/src/pages/meta-ads.jsx
++++ b/src/pages/meta-ads.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -54,7 +53,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/paid-ads.jsx b/src/pages/paid-ads.jsx
+index 39d70bd..46321a5 100644
+--- a/src/pages/paid-ads.jsx
++++ b/src/pages/paid-ads.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -54,7 +53,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/results.jsx b/src/pages/results.jsx
+index 02b408f..9e0a834 100644
+--- a/src/pages/results.jsx
++++ b/src/pages/results.jsx
+@@ -6,7 +6,6 @@ import { PageHeader } from '../components/pages/PageHeader'
+ import { ResultsSection } from '../components/ResultsSection'
+ import { ProofSection } from '../components/ProofSection'
+ import { FlowGroup2 } from '../components/FlowGroup2'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ createRoot(document.getElementById('root')).render(
+   <StrictMode>
+@@ -19,7 +18,6 @@ createRoot(document.getElementById('root')).render(
+       <ResultsSection />
+       <ProofSection />
+       <FlowGroup2 />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/services.jsx b/src/pages/services.jsx
+index 4965cf1..6d57116 100644
+--- a/src/pages/services.jsx
++++ b/src/pages/services.jsx
+@@ -3,13 +3,11 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicesGrid } from '../components/pages/ServicesGrid'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ createRoot(document.getElementById('root')).render(
+   <StrictMode>
+     <Layout>
+       <ServicesGrid />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/testing-scaling.jsx b/src/pages/testing-scaling.jsx
+index 712b743..6fdd6f8 100644
+--- a/src/pages/testing-scaling.jsx
++++ b/src/pages/testing-scaling.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -53,7 +52,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/the-method.jsx b/src/pages/the-method.jsx
+index 7beb60b..bc55823 100644
+--- a/src/pages/the-method.jsx
++++ b/src/pages/the-method.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { MethodSystems } from '../components/pages/MethodSystems'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ /* Lead copy is Jack's existing four pillars, taken verbatim from FlowGroup1.
+    The supporting bullets and closing lines describe how the work is run; they
+@@ -64,7 +63,6 @@ createRoot(document.getElementById('root')).render(
+         standfirst="Four pillars, operated as one system. Every account we take on runs through the same framework."
+         systems={systems}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/tiktok-ads.jsx b/src/pages/tiktok-ads.jsx
+index 18353e9..e9a9bd9 100644
+--- a/src/pages/tiktok-ads.jsx
++++ b/src/pages/tiktok-ads.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -54,7 +53,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )
+diff --git a/src/pages/tracking-setup.jsx b/src/pages/tracking-setup.jsx
+index d146ceb..6cc75ae 100644
+--- a/src/pages/tracking-setup.jsx
++++ b/src/pages/tracking-setup.jsx
+@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
+ import '../index.css'
+ import { Layout } from '../Layout'
+ import { ServicePage } from '../components/pages/ServicePage'
+-import { ContactSection } from '../components/ContactSection'
+ 
+ const sections = [
+   {
+@@ -55,7 +54,6 @@ createRoot(document.getElementById('root')).render(
+         sections={sections}
+         faqs={faqs}
+       />
+-      <ContactSection />
+     </Layout>
+   </StrictMode>
+ )

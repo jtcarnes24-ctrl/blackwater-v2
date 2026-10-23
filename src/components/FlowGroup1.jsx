@@ -20,7 +20,7 @@ export function FlowGroup1() {
       <FlowSection
         id="about"
         aria-label="About us"
-        style={{ background: '#000000', color: '#ffffff' }}
+        style={{ background: '#080808', color: '#ffffff' }}
       >
         {/* A real box, not display:contents. useScroll measures the target's
             rect, and an element with no box always reports zero, which left
@@ -80,7 +80,7 @@ export function FlowGroup1() {
       <FlowSection
         id="method"
         aria-label="The Method"
-        style={{ background: '#000000', color: '#ffffff', padding: 0 }}
+        style={{ background: '#080808', color: '#ffffff', padding: 0 }}
       >
         <div style={{ padding: 'clamp(4rem, 9vw, 7rem) 0 0' }}>
           {/* The orange tile mark was removed Aug 27 2026. Jack is reworking

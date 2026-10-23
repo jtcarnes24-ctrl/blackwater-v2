@@ -58,7 +58,7 @@ export function FlowGroup2() {
           viewport={viewport}
           style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}
         >
-          <LiquidButton onClick={openApply} variant="light" style={{ color: '#141414', borderColor: '#141414' }}>
+          <LiquidButton onClick={openApply} variant="light">
             Apply Now →
           </LiquidButton>
         </motion.div>

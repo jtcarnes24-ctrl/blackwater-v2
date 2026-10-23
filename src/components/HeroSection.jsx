@@ -2,7 +2,9 @@ import { useRef, useEffect } from 'react'
 import { LiquidButton } from './ui/LiquidButton'
 import { useApply } from './ui/ApplyModal'
 
-/* The orb was retired Aug 2026 when the hero became a photograph. */
+/* The orb was retired Aug 2026 when the hero became a photograph; the
+   photograph gave way to a scroll-driven rock, then to the coast
+   scroll-through below (both Oct 23 2026). */
 
 /* Same client logos as the standalone marquee, rendered small and knocked out
    to white so they sit on the photograph. Widths are the real aspect ratio at
@@ -30,210 +32,297 @@ const HERO_LOGOS = [
 ]
 const HERO_LOGO_LOOP = [...HERO_LOGOS, ...HERO_LOGOS, ...HERO_LOGOS]
 
-// The photograph is dark, so hero copy stays white even though the rest of
-// the site is now white-dominant with dark text.
-const HERO_INK = '#ffffff'
+/* Scroll-through hero. A 20s, 1080p Dreamina drone shot Jack made (Oct 23
+   2026): it descends over white marble sea arches on black water, flies
+   through the central arch and glides out into the mist. Exported as 240
+   frames (12 per second), 1600px for desktop and a 540px portrait crop for
+   phones, drawn to a canvas. A <video> is not used because seeking is jerky
+   in most browsers and Cloudflare's asset hosting ignores Range requests,
+   which leaves a video unseekable. Each draw blends the two frames either
+   side of the scroll position, so 12fps scrubs as smoothly as 60.
 
+   The page holds still while the scroll plays the clip. Nothing on screen
+   but the scene and a few words:
+     p 0    to 0.06   BLACKWATER, blurring away
+     clip 4  to 8s    01  A method, not a template
+     clip 8  to 12s   02  Audiences built on real intent
+     clip 12 to 16s   03  Creators on demand
+     clip 16 to 18.5s 04  Testing on a schedule
+     p 0.86 to 1      the clip has settled; the final hero fades in, laid out
+                      after cyphercapital.com (headline top left under the
+                      header logo, an underlined link, logos and Apply below)
+   The clip runs over the first 88% of the pin and holds its last frame. */
+const FRAMES = 240
+const CLIP_SECONDS = 20
+const CLIP_END = 0.88
+const REVEAL = [0.86, 0.95]
+const frameSrc = (set, i) => `/hero/coast/${set}/${String(i + 1).padStart(3, '0')}.webp`
+const clamp01 = (v) => Math.min(Math.max(v, 0), 1)
+const smooth = (a, b, v) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t) }
+
+// The Method, as on /the-method, trimmed to one line each.
+const BEATS = [
+  { from: 4,  to: 8,    num: '01', title: 'A method, not a template',
+    line: 'Every campaign runs on the same foundation, so performance is repeatable instead of lucky.' },
+  { from: 8,  to: 12,   num: '02', title: 'Audiences built on real intent',
+    line: 'We target people already in the market for what you sell, then feed them into lookalikes.' },
+  { from: 12, to: 16,   num: '03', title: 'Creators on demand',
+    line: 'A network of UGC creators gets you real content at the pace testing requires. No filming on your end.' },
+  { from: 16, to: 18.5, num: '04', title: 'Testing on a schedule',
+    line: 'New creative goes live every week, winners get more budget, and anything that stops working comes off.' },
+]
+
+// Frame load order: first frame, then coarse to fine, so an early scroll
+// already has frames spread across the whole clip.
+function loadOrder(n) {
+  const seen = new Set([0]), order = [0]
+  for (let step = 32; step >= 1; step = step >> 1)
+    for (let i = 0; i < n; i += step) if (!seen.has(i)) { seen.add(i); order.push(i) }
+  return order
+}
 
 export function HeroSection() {
   const { openApply } = useApply()
   const ref = useRef(null)
+  const canvasRef = useRef(null)
+  const titleRef = useRef(null)
+  const beatRefs = useRef([])
+  const revealRef = useRef(null)
+  const skipRef = useRef(null)
+  const cueRef = useRef(null)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    /* Coalesced to one write per frame. Scroll events can fire several times
-       between paints, and each of these writes invalidates style on a fixed
-       element that sits above everything else. */
-    let raf = 0
+    const section = ref.current, canvas = canvasRef.current
+    if (!section || !canvas) return
+    const ctx = canvas.getContext('2d')
+    const set = window.innerWidth < 768 ? 'm' : 'd'
+    const frames = new Array(FRAMES).fill(null)
+    let p = 0, raf = 0, cw = 0, ch = 0
+
+    const size = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      cw = canvas.width = Math.round(canvas.clientWidth * dpr)
+      ch = canvas.height = Math.round(canvas.clientHeight * dpr)
+    }
+    const nearest = (i) => {
+      for (let d = 0; d < FRAMES; d++) {
+        if (frames[i - d]) return frames[i - d]
+        if (frames[i + d]) return frames[i + d]
+      }
+      return null
+    }
+    const cover = (img, alpha) => {
+      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
+      const dw = img.naturalWidth * s, dh = img.naturalHeight * s
+      ctx.globalAlpha = alpha
+      ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh)
+    }
+    const draw = () => {
+      const f = clamp01(p / CLIP_END) * (FRAMES - 1)
+      const i = Math.floor(f), t = f - i
+      const a = nearest(i)
+      if (!a) { ctx.fillStyle = '#080808'; ctx.fillRect(0, 0, cw, ch); return }
+      cover(a, 1)
+      const b = frames[i + 1]
+      if (b && t > 0.01) cover(b, t)
+      ctx.globalAlpha = 1
+    }
+
     const apply = () => {
       raf = 0
-      const progress = Math.min(window.scrollY / (window.innerHeight * 0.8), 1)
-      el.style.setProperty('--scroll-y', `${progress * -120}px`)
-      el.style.setProperty('--scroll-o', `${Math.max(0, 1 - progress * 1.6)}`)
+      const r = section.getBoundingClientRect()
+      const run = r.height - window.innerHeight
+      p = run > 0 ? clamp01(-r.top / run) : 0
+      const sec = clamp01(p / CLIP_END) * CLIP_SECONDS
+
+      const tOut = smooth(0, 0.06, p)
+      if (titleRef.current) {
+        titleRef.current.style.opacity = `${1 - tOut}`
+        titleRef.current.style.filter = `blur(${tOut * 18}px)`
+        titleRef.current.style.transform = `scale(${1 + tOut * 0.08})`
+      }
+      if (cueRef.current) cueRef.current.style.opacity = `${1 - smooth(0, 0.03, p)}`
+
+      BEATS.forEach((b, k) => {
+        const el = beatRefs.current[k]
+        if (!el) return
+        const o = smooth(b.from, b.from + 0.8, sec) * (1 - smooth(b.to - 0.8, b.to, sec))
+        el.style.opacity = `${o}`
+        el.style.transform = `translateY(${(1 - o) * 18}px)`
+        el.style.filter = `blur(${(1 - o) * 6}px)`
+      })
+
+      const rv = smooth(REVEAL[0], REVEAL[1], p)
+      if (revealRef.current) {
+        revealRef.current.style.opacity = `${rv}`
+        revealRef.current.style.transform = `translateY(${(1 - rv) * 24}px)`
+        revealRef.current.style.pointerEvents = rv > 0.6 ? 'auto' : 'none'
+        revealRef.current.style.visibility = rv < 0.01 ? 'hidden' : 'visible'
+      }
+      if (skipRef.current) {
+        const so = 1 - smooth(REVEAL[0] - 0.08, REVEAL[0], p)
+        skipRef.current.style.opacity = `${so}`
+        skipRef.current.style.pointerEvents = so > 0.2 ? 'auto' : 'none'
+      }
+      draw()
     }
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(apply) }
-    apply()
+
+    const onResize = () => { size(); onScroll() }
+
+    let cancelled = false
+    const order = loadOrder(FRAMES)
+    const loadNext = (k) => {
+      if (cancelled || k >= order.length) return
+      const i = order[k], im = new Image()
+      im.decoding = 'async'
+      im.onload = () => { frames[i] = im; onScroll(); loadNext(k + 4) }
+      im.onerror = () => loadNext(k + 4)
+      im.src = frameSrc(set, i)
+    }
+    // Four requests in flight at a time.
+    for (let k = 0; k < 4; k++) loadNext(k)
+
+    size(); apply()
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
     return () => {
+      cancelled = true
       if (raf) cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
     }
   }, [])
 
+  // Jumps to where the clip has settled and the normal hero is showing.
+  const skip = () => {
+    const s = ref.current
+    if (!s) return
+    const run = s.offsetHeight - window.innerHeight
+    const y = s.getBoundingClientRect().top + window.scrollY + run * 0.97
+    if (window.__lenis) window.__lenis.scrollTo(y, { duration: 1.2 })
+    else window.scrollTo({ top: y, behavior: 'smooth' })
+  }
+
   return (
-    <section ref={ref} style={{
-      position: 'relative', minHeight: '100dvh', display: 'flex',
-      flexDirection: 'column', overflow: 'hidden', background: 'var(--ink)',
-      contain: 'layout style',
-    }}>
+    <section ref={ref} className="hero-run" aria-label="BlackWater Marketing">
       <style>{`
-        @keyframes hero-line { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes hero-bar  { from { opacity:0; transform:scaleX(0); } to { opacity:1; transform:scaleX(1); } }
-        @keyframes hero-fade { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .hero-run { position:relative; height:780svh; background:#080808; }
+        .hero-stage { position:sticky; top:0; height:100svh; overflow:hidden; background:#080808; }
+        .hero-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+        /* Keeps white type readable over the white rock: darker at the very
+           top and bottom, clear through the middle of the scene. */
+        .hero-shade { position:absolute; inset:0; pointer-events:none;
+          background:linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 26%, rgba(0,0,0,0) 58%, rgba(0,0,0,.6) 100%); }
 
-        .hero-content {
-          transform: translateY(var(--scroll-y, 0px));
-          opacity: var(--scroll-o, 1);
-          will-change: transform, opacity;
-        }
-        .hero-eyebrow { animation: hero-fade 0.6s ease 0.05s both; }
-        .hero-bar     { animation: hero-bar  0.6s cubic-bezier(0.76,0,0.24,1) 0.15s both; transform-origin: center; }
-        .hero-h1      { animation: hero-line 0.85s cubic-bezier(0.76,0,0.24,1) 0.25s both; }
-        .hero-tagline { animation: hero-fade 0.7s ease 0.4s both; }
-        .hero-btns    { animation: hero-fade 0.6s ease 0.65s both; }
-        .hero-trust   { animation: hero-fade 0.7s ease 0.55s both; }
+        .hx-title { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+          pointer-events:none; will-change:opacity, filter, transform; }
+        .hx-word { font-family:'Syne',sans-serif; font-weight:700; text-transform:uppercase; color:#fff;
+          font-size:min(11vw, 11rem); letter-spacing:-.03em; line-height:.9; margin:0;
+          animation: hx-in 1.1s cubic-bezier(.22,1,.36,1) .2s both; }
+        /* "Water" in the Playfair italic accent, matching the loader. Sized up
+           a touch because the italic's capitals sit smaller than Syne's. */
+        .hx-accent { font-family:'Playfair Display',serif; font-style:italic; font-weight:500;
+                     text-transform:none; letter-spacing:-.01em; font-size:1.12em; margin-left:.04em; }
+        html:not(.site-ready) .hx-word { animation-play-state:paused; }
+        @keyframes hx-in { from { opacity:0; filter:blur(14px); } to { opacity:1; filter:blur(0); } }
 
-        /* Must sit AFTER every animation shorthand above: the shorthand resets
-           animation-play-state to running, so declaring the pause earlier had
-           no effect and the hero played behind the curtain. */
-        /* Held until the intro curtain lifts, or these play behind it and
-           the reader never sees the entrance. <html> gets .site-ready from
-           the Preloader when it finishes. */
-        .hero-eyebrow, .hero-bar, .hero-h1, .hero-tagline, .hero-trust, .hero-btns {
-          animation-play-state: paused;
-        }
-        html.site-ready .hero-eyebrow, html.site-ready .hero-bar,
-        html.site-ready .hero-h1, html.site-ready .hero-tagline,
-        html.site-ready .hero-trust, html.site-ready .hero-btns {
-          animation-play-state: running;
-        }
+        .hx-beat { position:absolute; left:clamp(1.25rem,4vw,3.5rem); bottom:clamp(5rem,14vh,9rem);
+          max-width:min(30rem, 86vw); opacity:0; pointer-events:none; will-change:opacity, transform, filter; }
+        .hx-num { font-family:'Space Grotesk',sans-serif; font-size:.7rem; font-weight:600; letter-spacing:.3em;
+          color:rgba(255,255,255,.6); margin:0 0 .8rem; }
+        .hx-beat h2 { font-family:'Syne',sans-serif; font-weight:700; text-transform:uppercase; color:#fff;
+          font-size:clamp(1.6rem,3.6vw,3.2rem); line-height:.95; letter-spacing:-.02em; margin:0 0 1rem; }
+        .hx-beat p { font-family:'Space Grotesk',sans-serif; font-size:clamp(.9rem,1.1vw,1.02rem); line-height:1.6;
+          color:rgba(255,255,255,.82); margin:0; }
 
-        /* The strip is masked to the copy width rather than the viewport, so
-           logos appear and vanish in line with where the text starts and ends
-           instead of running to the screen edge. */
-        .hero-marquee {
-          overflow: hidden; width: 100%;
-          -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
-                  mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
-        }
-        .hero-marquee-track {
-          display: flex; align-items: center; gap: 3.25rem;
-          width: max-content;
-          animation: hero-logo-scroll 42s linear infinite;
-          will-change: transform;
-        }
-        @keyframes hero-logo-scroll {
-          from { transform: translate3d(0,0,0); }
-          to   { transform: translate3d(-33.333%,0,0); }
-        }
-        .hero-marquee img {
-          height: 22px; width: auto; object-fit: contain;
-          /* knock the logos out to flat white */
-          filter: brightness(0) invert(1);
-          opacity: 0.72;
+        .hx-cue, .hx-skip { position:absolute; bottom:clamp(1.25rem,3vh,2rem); margin:0; background:none; border:0;
+          font-family:'Space Grotesk',sans-serif; font-size:.62rem; font-weight:600; letter-spacing:.3em;
+          text-transform:uppercase; color:rgba(255,255,255,.6); }
+        .hx-cue { left:0; right:0; text-align:center; pointer-events:none; }
+        .hx-skip { right:clamp(1rem,2.4vw,2rem); cursor:pointer; padding:.5rem 0; }
+        .hx-skip:hover, .hx-skip:focus-visible { color:#fff; }
+        .hx-skip:focus-visible { outline:1px solid #fff; outline-offset:4px; }
+
+        /* ---- Final hero, laid out after cyphercapital.com ---- */
+        .hl { position:absolute; inset:0; opacity:0; visibility:hidden; will-change:opacity, transform; }
+        .hl-top { position:absolute; left:clamp(1rem,2.6vw,2rem); right:clamp(1rem,2.6vw,2rem);
+                  top:calc(clamp(64px,6.2vw,88px) + clamp(1.5rem,4vh,2.5rem)); }
+        .hl-h1 { font-family:'Syne',sans-serif; font-weight:700; text-transform:uppercase; color:#fff;
+                 font-size:clamp(2.2rem,4.6vw,4.6rem); line-height:.98; letter-spacing:-.03em; margin:0; max-width:21ch; }
+        .hl-h1 .emph { font-size:1.08em; }
+        .hl-link { display:inline-block; margin-top:clamp(2rem,5vh,3.25rem); padding-bottom:.9rem;
+                   border-bottom:1px solid currentColor; color:#fff; text-decoration:none;
+                   font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:500; letter-spacing:-.02em; }
+        .hl-link:hover { opacity:.7; }
+        .hl-link:focus-visible { outline:1px solid #fff; outline-offset:4px; }
+        .hl-foot { position:absolute; left:clamp(1rem,2.6vw,2rem); right:clamp(1rem,2.6vw,2rem);
+                   bottom:clamp(1.25rem,3vh,2rem); display:flex; justify-content:space-between; align-items:flex-end; gap:1.5rem; }
+        .hl-trust { pointer-events:none; width:min(320px, 60vw); min-width:0; overflow:hidden; }
+        .hl-trust p { font-family:'Space Grotesk',sans-serif; font-size:.6rem; letter-spacing:.22em;
+                      text-transform:uppercase; color:rgba(255,255,255,.65); font-weight:600; margin:0 0 .8rem; }
+
+        .hero-marquee { overflow:hidden; width:100%;
+          -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
+                  mask-image:linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%); }
+        .hero-marquee-track { display:flex; align-items:center; gap:3.25rem; width:max-content;
+          animation:hero-logo-scroll 42s linear infinite; will-change:transform; }
+        @keyframes hero-logo-scroll { from { transform:translate3d(0,0,0); } to { transform:translate3d(-33.333%,0,0); } }
+        .hero-marquee img { height:22px; width:auto; object-fit:contain; filter:brightness(0) invert(1); opacity:.72; }
+
+        @media (max-width:767px) {
+          .hx-beat { bottom:clamp(4.5rem,12vh,7rem); }
+          /* Centred, it collides with Skip intro on a narrow screen. */
+          .hx-cue { left:clamp(1rem,2.4vw,2rem); right:auto; text-align:left; }
+          .hl-h1 { font-size:10.5vw; }
+          .hl-foot { flex-direction:column; align-items:stretch; }
+          .hl-trust { width:100%; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .hero-marquee-track { animation: none; }
+          .hero-marquee-track { animation:none; }
+          .hx-word { animation:none; }
         }
-
       `}</style>
 
-      {/* The hero is a single photograph.
+      <div className="hero-stage">
+        <canvas ref={canvasRef} className="hero-canvas" aria-hidden="true" />
+        <div className="hero-shade" aria-hidden="true" />
 
-          Filenames carry the subject ("wave"), not just a size. The first
-          swap reused hero-<size>.jpg for completely different artwork, and
-          Cloudflare serves assets with max-age=14400 -- so the old picture
-          kept being served from cache. Give new artwork a NEW filename. The drone clip that used to sit
-          over it was removed Aug 27 2026 at Jack's request; the two encodes
-          (7.3MB combined) went with it. */}
-      <img
-        src="/hero/hero-wave-1920.jpg"
-        srcSet="/hero/hero-wave-860.jpg 860w, /hero/hero-wave-1280.jpg 1280w, /hero/hero-wave-1920.jpg 1920w, /hero/hero-wave-2560.jpg 2560w"
-        sizes="100vw"
-        width="1920" height="1280"
-        alt="" aria-hidden="true" fetchPriority="high" decoding="async"
-        style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          width: '100%', height: '100%',
-          objectFit: 'cover', objectPosition: 'center 45%',
-        }}
-      />
+        <div ref={titleRef} className="hx-title" aria-hidden="true">
+          <p className="hx-word">Black<span className="hx-accent">Water</span></p>
+        </div>
 
-      {/* Scrim. Heavier than the previous hero needed: this frame is mostly
-          bright whitewater, and the headline is white with no text-shadow
-          behind it (those were removed Aug 26), so the scrim is the only thing
-          separating the two. Tuned against this frame specifically: heavier
-          and the whitewater crushes to flat black, lighter and the headline
-          sits on foam. Re-tune if the photograph changes. The sky sits pale behind the headline, so the copy needs its
-          own floor rather than relying on text-shadow alone. */}
-      <div aria-hidden="true" style={{
-        position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-        background:
-          'linear-gradient(180deg, rgba(20,20,20,0.50) 0%, rgba(20,20,20,0.38) 32%, rgba(20,20,20,0.42) 62%, rgba(20,20,20,0.66) 100%)',
-      }} />
-
-      {/* Hero content */}
-      <div className="hero-content" style={{
-        position: 'relative', zIndex: 10,
-        padding: 'clamp(7rem, 12vw, 9rem) clamp(1.5rem, 5vw, 4rem) clamp(3rem, 6vw, 5rem)',
-        flex: 1, display: 'flex', alignItems: 'center',
-        justifyContent: 'center', flexDirection: 'column',
-        textAlign: 'center',
-        pointerEvents: 'none',
-      }}>
-        <div style={{ textAlign: 'center', maxWidth: '900px', width: '100%' }}>
-          <p className="hero-eyebrow" style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: '0.72rem', letterSpacing: '0.2em',
-            textTransform: 'uppercase', color: 'rgba(255,255,255,0.82)',
-            fontWeight: 600, marginBottom: '1rem',
-          }}>
-            Full-Stack E-Commerce Partner
-          </p>
-          <div className="hero-bar" style={{
-            width: '28px', height: '2px', background: 'rgba(255,255,255,0.75)',
-            marginBottom: '1.25rem', marginLeft: 'auto', marginRight: 'auto',
-          }} />
-          <div style={{ overflow: 'hidden', marginBottom: '2.5rem' }}>
-            <h1 className="hero-h1" style={{
-              fontFamily: "'Syne', sans-serif",
-              fontSize: 'clamp(2.6rem, 7vw, 6.5rem)',
-              fontWeight: 700, lineHeight: 0.92,
-              letterSpacing: '-0.03em', color: HERO_INK,
-              textTransform: 'uppercase', margin: 0,
-            }}>
-              BLACKWATER<br />MARKETING
-            </h1>
+        {BEATS.map((b, k) => (
+          <div key={b.num} ref={(el) => { beatRefs.current[k] = el }} className="hx-beat">
+            <p className="hx-num">{b.num} / The Method</p>
+            <h2>{b.title}</h2>
+            <p>{b.line}</p>
           </div>
-          <p className="hero-tagline" style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 'clamp(1rem, 1.8vw, 1.35rem)',
-            fontWeight: 500, color: HERO_INK,
-            lineHeight: 1.5, maxWidth: '54ch',
-            margin: '0 auto 2.75rem',
-          }}>
-            We scale e-commerce brands the way they should be scaled. With data behind
-            every decision and nothing left to guesswork.
-          </p>
-          <div className="hero-trust" style={{ marginBottom: '2.5rem', pointerEvents: 'none' }}>
-            <p style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.62)', fontWeight: 600, marginBottom: '1.1rem',
-            }}>
-              Trusted by
-            </p>
-            <div className="hero-marquee">
-              <div className="hero-marquee-track">
-                {HERO_LOGO_LOOP.map((logo, i) => (
-                  <img key={i} src={logo.src} alt="" aria-hidden="true"
-                       width={logo.w} height={22} decoding="async" />
-                ))}
+        ))}
+
+        <p ref={cueRef} className="hx-cue" aria-hidden="true">Scroll to explore</p>
+        <button ref={skipRef} type="button" className="hx-skip" onClick={skip}>Skip intro ↓</button>
+
+        <div ref={revealRef} className="hl">
+          <div className="hl-top">
+            <h1 className="hl-h1">
+              Scaling <span style={{ whiteSpace: 'nowrap' }}>e-commerce</span> brands with data, not <span className="emph">guesswork</span>
+            </h1>
+            <a className="hl-link" href="#services">Explore our services</a>
+          </div>
+          <div className="hl-foot">
+            <div className="hl-trust">
+              <p>Trusted by</p>
+              <div className="hero-marquee">
+                <div className="hero-marquee-track">
+                  {HERO_LOGO_LOOP.map((logo, i) => (
+                    <img key={i} src={logo.src} alt="" aria-hidden="true"
+                         width={logo.w} height={22} decoding="async" />
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="hero-btns" style={{
-            display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center',
-            pointerEvents: 'auto',
-          }}>
-            <LiquidButton onClick={openApply} variant="solid">
-              Apply Now →
-            </LiquidButton>
-            <LiquidButton href="#services" style={{ background: 'rgba(20,20,20,0.35)' }}>
-              Our Services
-            </LiquidButton>
+            <LiquidButton onClick={openApply} variant="solid">Apply Now →</LiquidButton>
           </div>
         </div>
       </div>

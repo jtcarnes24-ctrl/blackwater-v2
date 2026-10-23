@@ -4,44 +4,21 @@ import { useRef } from 'react'
  * Liquid-glass button.
  *
  * variant:
- *   'dark'  (default) — frosted glass for placement on #141414 / dark imagery
- *   'light'           — frosted glass for placement on cream / white sections
- *   'solid'           — opaque white pill, the primary/highest-emphasis action
+ *   'dark'  (default) — white pill, for placement on dark sections or imagery
+ *   'light'           — near-black pill, for placement on white sections
+ *   'solid'           — white pill, the primary/highest-emphasis action
  *
- * The glass look is three stacked layers: a blurred+saturated backdrop, a
- * translucent tint, and a top-edge specular highlight that brightens on hover.
- * Browsers without backdrop-filter fall back to the tint alone, which still
- * reads as a normal translucent button.
+ * One flat fill per variant. The frosted-glass treatment it used to carry
+ * (backdrop blur, translucent tint, inset top edge and drop shadow) is gone.
  */
 
 const VARIANTS = {
-  dark: {
-    color: '#ffffff',
-    background: 'rgba(255,255,255,0.07)',
-    borderColor: 'rgba(255,255,255,0.22)',
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.28)',
-    hoverBackground: 'rgba(255,255,255,0.15)',
-    hoverBorder: 'rgba(255,255,255,0.45)',
-    highlight: 'linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0) 55%)',
-  },
-  light: {
-    color: '#141414',
-    background: 'rgba(20,20,20,0.05)',
-    borderColor: 'rgba(20,20,20,0.16)',
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 24px rgba(20,20,20,0.08)',
-    hoverBackground: 'rgba(20,20,20,0.10)',
-    hoverBorder: 'rgba(20,20,20,0.34)',
-    highlight: 'linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 55%)',
-  },
-  solid: {
-    color: '#141414',
-    background: 'rgba(255,255,255,0.94)',
-    borderColor: 'rgba(255,255,255,0.9)',
-    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.8), 0 8px 26px rgba(0,0,0,0.22)',
-    hoverBackground: '#ffffff',
-    hoverBorder: '#ffffff',
-    highlight: 'linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%)',
-  },
+  dark:  { color: '#080808', background: '#ffffff', borderColor: '#ffffff',
+           hoverBackground: '#dadedf', hoverBorder: '#dadedf' },
+  light: { color: '#ffffff', background: '#141414', borderColor: '#141414',
+           hoverBackground: '#080808', hoverBorder: '#080808' },
+  solid: { color: '#080808', background: '#ffffff', borderColor: '#ffffff',
+           hoverBackground: '#dadedf', hoverBorder: '#dadedf' },
 }
 
 export function LiquidButton({
@@ -81,10 +58,7 @@ export function LiquidButton({
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: v.borderColor,
-    boxShadow: v.boxShadow,
-    backdropFilter: 'blur(14px) saturate(180%)',
-    WebkitBackdropFilter: 'blur(14px) saturate(180%)',
-    transition: 'background 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease',
+    transition: 'background 0.25s ease, border-color 0.25s ease, transform 0.2s ease',
     ...style,
   }
 
@@ -114,15 +88,6 @@ export function LiquidButton({
       onMouseUp={e => { e.currentTarget.style.transform = 'scale(1.03)' }}
       {...rest}
     >
-      {/* Specular top edge — purely decorative, sits under the label */}
-      <span
-        aria-hidden="true"
-        style={{
-          position: 'absolute', inset: 0, zIndex: -1,
-          borderRadius: 'inherit', pointerEvents: 'none',
-          background: v.highlight,
-        }}
-      />
       {children}
     </Tag>
   )
