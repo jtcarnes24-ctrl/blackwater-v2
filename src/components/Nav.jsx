@@ -34,6 +34,19 @@ const SECONDARY = [
   { label: 'Landing Pages', href: '/services/landing-pages/' },
 ]
 
+/* Drawn arrow. The ↗ character it replaces is rendered as an emoji on
+   iPhones, which read as decoration rather than "this goes somewhere". */
+function Arrow({ diagonal = false }) {
+  return (
+    <svg className="mnu-arrow" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+         fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      {diagonal
+        ? <><path d="M5 11 11 5" /><path d="M6 5h5v5" /></>
+        : <><path d="M3 8h10" /><path d="M9 4l4 4-4 4" /></>}
+    </svg>
+  )
+}
+
 export function Nav() {
   const [open, setOpen] = useState(false)
   const [tone, setTone] = useState('on-dark')
@@ -151,8 +164,18 @@ export function Nav() {
         .mnu .mnu-secondary { margin:clamp(2.5rem,7vh,4.5rem) 0 clamp(2.5rem,7vh,4.5rem); }
         .mnu-secondary a { display:inline-block; padding:.28rem 0; font-size:1rem; color:inherit; text-decoration:none; }
         .mnu-primary a:hover, .mnu-secondary a:hover { opacity:.55; }
-        .mnu-rows { border-top:1px solid rgba(24,24,24,.12); }
-        .mnu-row { display:flex; justify-content:space-between; align-items:flex-start; width:100%;
+        /* Apply is the one action that matters in this panel, so it is a
+           solid button rather than another text row. */
+        .mnu-apply { display:flex; align-items:center; justify-content:center; gap:.6rem; width:100%;
+                     padding:1.05rem 1.25rem; border:0; border-radius:999px; background:#141414; color:#fff;
+                     font:inherit; font-size:.82rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+                     cursor:pointer; transition:background .25s ease; }
+        .mnu-apply:hover { background:#000; }
+        .mnu-apply .mnu-arrow { transition:transform .3s cubic-bezier(.22,1,.36,1); }
+        .mnu-apply:hover .mnu-arrow { transform:translateX(3px); }
+        .mnu-apply:focus-visible { outline:2px solid #141414; outline-offset:3px; }
+        .mnu-cta .mnu-row { margin-top:1rem; border-top:1px solid rgba(24,24,24,.12); }
+        .mnu-row { display:flex; justify-content:space-between; align-items:center; width:100%;
                    padding:.75rem 0; border:0; border-bottom:1px solid rgba(24,24,24,.12); background:none;
                    font:inherit; color:inherit; text-align:left; text-decoration:none; cursor:pointer; }
         .mnu-row small { display:block; font-size:.75rem; color:rgba(24,24,24,.5); margin-top:.15rem; }
@@ -166,6 +189,8 @@ export function Nav() {
           .hdr { grid-template-columns:1fr auto; }
           .hdr-menu { justify-self:end; }
           .hdr-apply { display:none; }
+          /* Phones show the mark alone. */
+          .hdr-word { display:none; }
           .mnu { width:100vw; min-width:0; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -202,14 +227,13 @@ export function Nav() {
             </li>
           ))}
         </ul>
-        <div className="mnu-rows mnu-item" style={{ transitionDelay: open ? '520ms' : '0ms' }}>
-          <button type="button" className="mnu-row" onClick={apply}>
-            <span>Apply to work with us<small>Tell us about your brand</small></span>
-            <span aria-hidden="true">↗</span>
+        <div className="mnu-cta mnu-item" style={{ transitionDelay: open ? '520ms' : '0ms' }}>
+          <button type="button" className="mnu-apply" onClick={apply}>
+            Apply to work with us <Arrow />
           </button>
           <a className="mnu-row" href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer">
             <span>@blackwatermrkting<small>Follow along on Instagram</small></span>
-            <span aria-hidden="true">↗</span>
+            <Arrow diagonal />
           </a>
         </div>
       </nav>
