@@ -254,6 +254,8 @@ export function ProofSection() {
                    backface-visibility:hidden; -webkit-backface-visibility:hidden;
                    box-shadow:0 10px 30px rgba(0,0,0,.5); }
         .pm-front { background:#fff; }
+        /* Fourteen moving shadows is a lot of painting for a phone. */
+        @media (max-width:767px), (hover:none) { .pm-face { box-shadow:none; } }
         .pm-front img { width:100%; height:100%; object-fit:cover; display:block; }
         .pm-back { transform:rotateY(180deg); background:#0d0d0d; border:1px solid rgba(255,255,255,.18);
                    display:flex; flex-direction:column; align-items:center; justify-content:center;

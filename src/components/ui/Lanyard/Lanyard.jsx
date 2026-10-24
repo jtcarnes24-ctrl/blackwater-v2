@@ -1,6 +1,7 @@
 // React Bits "Lanyard" (JS + CSS variant), pasted by Jack Oct 23 2026.
 // Unmodified apart from dropping the 'use client' directive, which only means
-// something to Next.js.
+// something to Next.js, and one added prop: maxPixelRatio (default 2, the
+// original cap), so phones can render the scene at a lower density.
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -723,6 +724,7 @@ const Lanyard = ({
   breeze = 0.5,
   interactive = true,
   intro = true,
+  maxPixelRatio = 2,
   className = '',
   style
 }) => {
@@ -750,7 +752,8 @@ const Lanyard = ({
     elasticity,
     breeze,
     interactive,
-    intro
+    intro,
+    maxPixelRatio
   };
 
   useEffect(() => {
@@ -1247,7 +1250,7 @@ const Lanyard = ({
     const resize = () => {
       view.width = Math.max(1, container.clientWidth);
       view.height = Math.max(1, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, settingsRef.current.maxPixelRatio));
       renderer.setSize(view.width, view.height, false);
       apply();
       render();

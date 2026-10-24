@@ -70,7 +70,16 @@ export function Nav() {
       const l = (surfaceAt(12, 92) + surfaceAt(w - 12, 92)) / 2
       setTone(l > 0.4 ? 'on-light' : 'on-dark')
     }
-    const queue = () => { if (!raf) raf = requestAnimationFrame(sample) }
+    // Sampling forces the browser to work out layout (elementFromPoint plus
+    // computed styles up the tree), so it runs at most every 140ms rather
+    // than on every scroll frame. The trailing call still catches where the
+    // scroll comes to rest.
+    let last = 0, timer = 0
+    const queue = () => {
+      const wait = 140 - (performance.now() - last)
+      if (wait <= 0) { last = performance.now(); if (!raf) raf = requestAnimationFrame(sample) }
+      else if (!timer) timer = setTimeout(() => { timer = 0; last = performance.now(); if (!raf) raf = requestAnimationFrame(sample) }, wait)
+    }
     sample()
     window.addEventListener('scroll', queue, { passive: true })
     window.addEventListener('resize', queue)
@@ -79,6 +88,7 @@ export function Nav() {
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     return () => {
       if (raf) cancelAnimationFrame(raf)
+      clearTimeout(timer)
       mo.disconnect()
       window.removeEventListener('scroll', queue)
       window.removeEventListener('resize', queue)

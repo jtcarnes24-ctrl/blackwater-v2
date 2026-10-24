@@ -96,13 +96,23 @@ export function HeroSection() {
     if (!section || !canvas) return
     const ctx = canvas.getContext('2d')
     const set = window.innerWidth < 768 ? 'm' : 'd'
+    // Phones and touch devices get a lighter version of the same scene:
+    // canvas capped at 1.5x (the phone frames are only 540px wide, so 2x
+    // drew pixels that were never there), and no animated blur on the type,
+    // which a phone has to re-rasterise on every scroll frame.
+    const lite = window.matchMedia('(max-width: 767px), (hover: none)').matches
     const frames = new Array(FRAMES).fill(null)
     let p = 0, raf = 0, cw = 0, ch = 0
+    // What is on the canvas now, so a scroll that changes nothing draws
+    // nothing. Without this the hero repainted itself on every scroll frame
+    // all the way down the page, long after it had scrolled out of view.
+    let lastKey = -1, drawnExact = false, dirty = true
 
     const size = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2)
       cw = canvas.width = Math.round(canvas.clientWidth * dpr)
       ch = canvas.height = Math.round(canvas.clientHeight * dpr)
+      dirty = true
     }
     const nearest = (i) => {
       for (let d = 0; d < FRAMES; d++) {
@@ -117,10 +127,12 @@ export function HeroSection() {
       ctx.globalAlpha = alpha
       ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh)
     }
+    const frameAt = () => clamp01(p / CLIP_END) * (FRAMES - 1)
     const draw = () => {
-      const f = clamp01(p / CLIP_END) * (FRAMES - 1)
+      const f = frameAt()
       const i = Math.floor(f), t = f - i
       const a = nearest(i)
+      drawnExact = a === frames[i]
       if (!a) { ctx.fillStyle = '#080808'; ctx.fillRect(0, 0, cw, ch); return }
       cover(a, 1)
       const b = frames[i + 1]
@@ -133,12 +145,17 @@ export function HeroSection() {
       const r = section.getBoundingClientRect()
       const run = r.height - window.innerHeight
       p = run > 0 ? clamp01(-r.top / run) : 0
+      // Leaving or re-entering view also counts as a change (marquee on/off).
+      const key = Math.round(p * 20000) + (r.bottom > 0 ? 0 : 1e6)
+      if (key === lastKey && !dirty) return
+      lastKey = key
+      dirty = false
       const sec = clamp01(p / CLIP_END) * CLIP_SECONDS
 
       const tOut = smooth(0, 0.06, p)
       if (titleRef.current) {
         titleRef.current.style.opacity = `${1 - tOut}`
-        titleRef.current.style.filter = `blur(${tOut * 18}px)`
+        if (!lite) titleRef.current.style.filter = `blur(${tOut * 18}px)`
         titleRef.current.style.transform = `scale(${1 + tOut * 0.08})`
       }
       if (cueRef.current) cueRef.current.style.opacity = `${1 - smooth(0, 0.03, p)}`
@@ -149,7 +166,7 @@ export function HeroSection() {
         const o = smooth(b.from, b.from + 0.8, sec) * (1 - smooth(b.to - 0.8, b.to, sec))
         el.style.opacity = `${o}`
         el.style.transform = `translateY(${(1 - o) * 18}px)`
-        el.style.filter = `blur(${(1 - o) * 6}px)`
+        if (!lite) el.style.filter = `blur(${(1 - o) * 6}px)`
       })
 
       const rv = smooth(REVEAL[0], REVEAL[1], p)
@@ -158,6 +175,8 @@ export function HeroSection() {
         revealRef.current.style.transform = `translateY(${(1 - rv) * 24}px)`
         revealRef.current.style.pointerEvents = rv > 0.6 ? 'auto' : 'none'
         revealRef.current.style.visibility = rv < 0.01 ? 'hidden' : 'visible'
+        // The logo marquee only runs once it can be seen.
+        revealRef.current.classList.toggle('is-live', rv >= 0.01 && r.bottom > 0)
       }
       if (skipRef.current) {
         const so = 1 - smooth(REVEAL[0] - 0.08, REVEAL[0], p)
@@ -172,13 +191,21 @@ export function HeroSection() {
 
     let cancelled = false
     const order = loadOrder(FRAMES)
+    const store = (i) => {
+      // Redraw only if this frame belongs on screen right now.
+      if (!drawnExact || Math.abs(i - frameAt()) < 2) { dirty = true; onScroll() }
+    }
     const loadNext = (k) => {
       if (cancelled || k >= order.length) return
       const i = order[k], im = new Image()
-      im.decoding = 'async'
-      im.onload = () => { frames[i] = im; onScroll(); loadNext(k + 4) }
-      im.onerror = () => loadNext(k + 4)
       im.src = frameSrc(set, i)
+      // decode() unpacks the image off the main thread before it is ever
+      // drawn. Drawing an undecoded image decodes it on the spot, which was
+      // a stall in the middle of a scroll on slower phones.
+      im.decode()
+        .then(() => { if (cancelled) return; frames[i] = im; store(i) })
+        .catch(() => {})
+        .finally(() => loadNext(k + 4))
     }
     // Four requests in flight at a time.
     for (let k = 0; k < 4; k++) loadNext(k)
@@ -226,6 +253,9 @@ export function HeroSection() {
                      text-transform:none; letter-spacing:-.01em; font-size:1.12em; margin-left:.04em; }
         html:not(.site-ready) .hx-word { animation-play-state:paused; }
         @keyframes hx-in { from { opacity:0; filter:blur(14px); } to { opacity:1; filter:blur(0); } }
+        @media (max-width:767px), (hover:none) {
+          @keyframes hx-in { from { opacity:0; } to { opacity:1; } }
+        }
 
         .hx-beat { position:absolute; left:clamp(1.25rem,4vw,3.5rem); bottom:clamp(5rem,14vh,9rem);
           max-width:min(30rem, 86vw); opacity:0; pointer-events:none; will-change:opacity, transform, filter; }
@@ -268,6 +298,7 @@ export function HeroSection() {
         .hero-marquee-track { display:flex; align-items:center; gap:3.25rem; width:max-content;
           animation:hero-logo-scroll 42s linear infinite; will-change:transform; }
         @keyframes hero-logo-scroll { from { transform:translate3d(0,0,0); } to { transform:translate3d(-33.333%,0,0); } }
+        .hl:not(.is-live) .hero-marquee-track { animation-play-state:paused; }
         .hero-marquee img { height:22px; width:auto; object-fit:contain; filter:brightness(0) invert(1); opacity:.72; }
 
         @media (max-width:767px) {

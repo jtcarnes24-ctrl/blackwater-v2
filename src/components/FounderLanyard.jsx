@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Lanyard from './ui/Lanyard/Lanyard'
 
 /* Homepage founder section (Oct 23 2026): Jack's ID card hangs from a
@@ -122,15 +122,59 @@ async function buildArt() {
     spaced(sx, 'BLACKWATER', x0 + 92, 100, 3)
   }
 
-  return { front: f.toDataURL('image/png'), back: b.toDataURL('image/png'), strap: st.toDataURL('image/png') }
+  // toBlob encodes off the main thread; toDataURL did it inline and froze
+  // the page for a moment on phones. Still handed over as data: URLs because
+  // the site's security policy allows data: images but not blob: ones.
+  const encode = (c) => new Promise((resolve) => c.toBlob((blob) => {
+    const r = new FileReader()
+    r.onload = () => resolve(r.result)
+    r.readAsDataURL(blob)
+  }, 'image/jpeg', 0.92))
+  const [front, back, strap] = await Promise.all([encode(f), encode(b), encode(st)])
+  return { front, back, strap }
 }
 
 export function FounderLanyard() {
   const [art, setArt] = useState(null)
-  useEffect(() => { let on = true; buildArt().then((a) => { if (on) setArt(a) }); return () => { on = false } }, [])
+  const ref = useRef(null)
+  // Phones: lower render density, and no breeze, so the card settles and the
+  // lanyard stops rendering instead of animating for as long as it is on screen.
+  const [lite] = useState(() => typeof window !== 'undefined'
+    && window.matchMedia('(max-width: 899px), (hover: none)').matches)
+
+  // Building the card art and starting the 3D scene is one heavy burst of
+  // work. At page load it landed on top of the hero; started only on
+  // approach, it landed mid-scroll (a measured ~150ms hitch at phone speed).
+  // So it runs in the background a few seconds after the page settles, in
+  // two idle slices, or straight away if someone gets close before that.
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    let on = true, started = false, timer = 0
+    const idle = (fn) => (window.requestIdleCallback
+      ? window.requestIdleCallback(fn, { timeout: 2000 })
+      : setTimeout(fn, 1))
+    const start = () => {
+      if (started) return
+      started = true
+      io.disconnect(); clearTimeout(timer)
+      buildArt().then((a) => idle(() => { if (on) setArt(a) }))
+    }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) start() }, { rootMargin: '150% 0px' })
+    io.observe(el)
+    const afterLoad = () => { timer = setTimeout(() => idle(start), 3500) }
+    if (document.documentElement.classList.contains('site-ready')) afterLoad()
+    else {
+      const mo = new MutationObserver(() => {
+        if (document.documentElement.classList.contains('site-ready')) { mo.disconnect(); afterLoad() }
+      })
+      mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    }
+    return () => { on = false; io.disconnect(); clearTimeout(timer) }
+  }, [])
 
   return (
-    <section id="founder" className="fl" aria-labelledby="fl-title">
+    <section ref={ref} id="founder" className="fl" aria-labelledby="fl-title">
       <style>{`
         .fl { background:#080808; color:#fff; position:relative; overflow:hidden;
               display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center;
@@ -176,6 +220,8 @@ export function FounderLanyard() {
             size={0.62}
             strapLength={0.42}
             metal="silver"
+            breeze={lite ? 0 : 0.5}
+            maxPixelRatio={lite ? 1.5 : 2}
           />
         )}
         <p className="fl-hint" aria-hidden="true">Grab the card · tap to flip</p>

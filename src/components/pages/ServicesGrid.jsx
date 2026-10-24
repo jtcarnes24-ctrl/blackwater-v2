@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { LiquidButton } from '../ui/LiquidButton'
 import { useApply } from '../ui/ApplyModal'
 
@@ -69,6 +69,17 @@ export function ServicesGrid({
   const Heading = headingLevel
   const { openApply } = useApply()
   const rootRef = useRef(null)
+  // The animated orbs only play while the grid is on screen; otherwise each
+  // shows its still frame. Seven animated WebPs decoding all the time was
+  // steady background work on phones, wherever on the page you were.
+  const [live, setLive] = useState(false)
+  useEffect(() => {
+    const el = rootRef.current
+    if (!el) return
+    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), { rootMargin: '200px 0px' })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const items = limit ? SERVICES.slice(0, limit) : SERVICES
 
   useEffect(() => {
@@ -205,7 +216,7 @@ export function ServicesGrid({
               <div className="sg-orb" aria-hidden="true">
                 <picture>
                   <source srcSet={`/orbs/${s.orb}-still.webp`} media="(prefers-reduced-motion: reduce)" />
-                  <img src={`/orbs/${s.orb}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />
+                  <img src={`/orbs/${s.orb}${live ? '' : '-still'}.webp`} alt="" width="96" height="96" loading="lazy" decoding="async" />
                 </picture>
               </div>
               <h3 className="sg-title">
