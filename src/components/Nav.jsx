@@ -126,25 +126,38 @@ export function Nav() {
   return (
     <>
       <style>{`
+        /* Header after the Sonder House reference (Oct 24 2026): mark on the
+           left, the page links in small type beside it, and a white pill
+           with a round icon button on the right. Phones fold the links into
+           the MENU panel below. */
         .hdr { position:fixed; top:0; left:0; right:0; z-index:100; pointer-events:none;
-               height:clamp(64px,6.2vw,88px); padding:0 clamp(1rem,2.6vw,2rem);
-               display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
-               font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:500; letter-spacing:-.02em;
+               height:clamp(64px,6vw,84px); padding:0 clamp(1rem,2.6vw,2rem);
+               display:flex; align-items:center; gap:1rem;
+               font-family:'Inter',system-ui,sans-serif; font-size:.8rem; font-weight:400; letter-spacing:-.01em;
                color:#fff; transition:color .35s ease; }
         .hdr[data-tone='on-light'] { color:#141414; }
         .hdr a, .hdr button { pointer-events:auto; color:inherit; text-decoration:none; background:none;
                border:0; padding:.35rem 0; font:inherit; letter-spacing:inherit; cursor:pointer; }
-        .hdr-brand { justify-self:start; display:inline-flex; align-items:center; gap:.7rem; }
-        /* Bar labels in capitals, tracked out slightly so caps don't feel cramped. */
-        .hdr-word, .hdr-menu, .hdr-apply { text-transform:uppercase; letter-spacing:.06em; font-size:.9rem; }
+        .hdr-brand { display:inline-flex; align-items:center; }
         .hdr-mark { width:26px; }
-        .hdr-menu { justify-self:center; }
-        .hdr-apply { justify-self:end; }
+        .hdr-links { display:flex; gap:clamp(1rem,1.9vw,1.75rem); margin-left:clamp(3rem,12vw,12rem); list-style:none; padding:0; }
+        .hdr-links a { opacity:.86; transition:opacity .2s ease; }
+        .hdr-links a:hover { opacity:1; }
+        .hdr-spacer { flex:1; }
+        .hdr .hdr-pill { display:inline-flex; align-items:center; gap:.75rem; padding:4px 4px 4px 1rem;
+               border-radius:999px; background:#fff; color:#0b0b0b; font-size:.75rem; font-weight:500;
+               transition:background .3s ease, color .3s ease; }
+        .hdr-pill i { display:grid; place-items:center; width:30px; height:30px; border-radius:50%;
+               background:#0b0b0b; color:#fff; transition:transform .3s cubic-bezier(.22,1,.36,1); }
+        .hdr .hdr-pill:hover i { transform:rotate(45deg); }
+        .hdr[data-tone='on-light'] .hdr-pill { background:#0b0b0b; color:#fff; }
+        .hdr[data-tone='on-light'] .hdr-pill i { background:#fff; color:#0b0b0b; }
+        .hdr-menu { display:none; text-transform:uppercase; letter-spacing:.06em; font-size:.85rem; font-weight:500; }
         .hdr a:focus-visible, .hdr button:focus-visible { outline:1px solid currentColor; outline-offset:4px; }
         /* The flying preloader mark lands here, so the real one waits for it. */
-        html.bw-preloading .hdr-mark, html.bw-preloading .hdr-word,
-        html.bw-preloading .hdr-menu, html.bw-preloading .hdr-apply { opacity:0; }
-        .hdr-word, .hdr-menu, .hdr-apply { transition:opacity .5s ease .15s; }
+        html.bw-preloading .hdr-mark, html.bw-preloading .hdr-links,
+        html.bw-preloading .hdr-menu, html.bw-preloading .hdr-pill { opacity:0; }
+        .hdr-links, .hdr-menu, .hdr-pill { transition:opacity .5s ease .15s; }
 
         .mnu-scrim { position:fixed; inset:0; z-index:110; background:rgba(0,0,0,.18);
                      opacity:0; pointer-events:none; transition:opacity .5s cubic-bezier(.3,0,0,1); }
@@ -185,12 +198,12 @@ export function Nav() {
         .mnu-item { opacity:0; transform:translateY(10px); transition:opacity .4s ease, transform .5s cubic-bezier(.3,0,0,1); }
         .mnu.is-open .mnu-item { opacity:1; transform:none; }
 
+        /* Tablets and phones: links and pill fold into the MENU panel. */
+        @media (max-width:899px) {
+          .hdr-links, .hdr .hdr-pill { display:none; }
+          .hdr-menu { display:inline-block; }
+        }
         @media (max-width:767px) {
-          .hdr { grid-template-columns:1fr auto; }
-          .hdr-menu { justify-self:end; }
-          .hdr-apply { display:none; }
-          /* Phones show the mark alone. */
-          .hdr-word { display:none; }
           .mnu { width:100vw; min-width:0; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -201,13 +214,18 @@ export function Nav() {
       <header className="hdr" data-tone={tone}>
         <a href="/" className="hdr-brand" aria-label="BlackWater Marketing, home">
           <BrandMark className="hdr-mark" />
-          <span className="hdr-word">BlackWater</span>
         </a>
+        <ul className="hdr-links">
+          {PRIMARY.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+        <span className="hdr-spacer" />
+        <button type="button" className="hdr-pill" onClick={openApply}>
+          Apply now <i><Arrow diagonal /></i>
+        </button>
         <button ref={menuBtn} type="button" className="hdr-menu" aria-expanded={open} aria-controls="site-menu"
                 onClick={() => setOpen(true)}>
           Menu
         </button>
-        <button type="button" className="hdr-apply" onClick={openApply}>Apply now</button>
       </header>
 
       <div className={`mnu-scrim${open ? ' is-open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />

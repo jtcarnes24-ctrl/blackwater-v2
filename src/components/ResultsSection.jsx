@@ -92,7 +92,7 @@ export function ResultsSection({ dark = false }) {
   const t = tone(dark)
   const { openApply } = useApply()
   return (
-    <section id="results" style={{ background: t.bg, padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: `1px solid ${t.a(0.08)}` }}>
+    <section id="results" style={{ background: t.bg, padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: dark ? 'none' : `1px solid ${t.a(0.08)}` }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
         <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
           style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.a(0.5), marginBottom: '1.25rem', fontWeight: 600 }}>
