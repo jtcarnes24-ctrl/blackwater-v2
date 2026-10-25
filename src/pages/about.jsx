@@ -28,7 +28,9 @@ const beats = [
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Layout>
+    {/* Dark shell: the light sections below paint their own white, and a
+        white page showed through as a hairline under the hero. */}
+    <Layout dark>
       <ScrollVideoHero
         title="Read The"
         emph="water."

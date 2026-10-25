@@ -88,7 +88,7 @@ const tone = (dark) => ({
   a: (x) => (dark ? `rgba(255,255,255,${x})` : `rgba(20,20,20,${x})`),
 })
 
-export function ResultsSection({ dark = false }) {
+export function ResultsSection({ dark = false, heading = true }) {
   const t = tone(dark)
   const { openApply } = useApply()
   return (
@@ -98,7 +98,8 @@ export function ResultsSection({ dark = false }) {
           style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.a(0.62), marginBottom: '1.25rem', fontWeight: 600 }}>
           The Numbers
         </motion.p>
-        {['RESULTS THAT', <span className="emph">speak</span>].map((line, i) => (
+        {/* /results/ already says it in its hero, so it only keeps the eyebrow. */}
+        {heading && ['RESULTS THAT', <span className="emph">speak</span>].map((line, i) => (
           <div key={i} style={{ overflow: 'hidden' }}>
             <motion.h2
               variants={clipReveal}
@@ -112,7 +113,7 @@ export function ResultsSection({ dark = false }) {
       </motion.div>
 
       <style>{`
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 4rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: ${heading ? '4rem' : '1.5rem'}; }
         .stats-grid > * { padding: 2.5rem 2rem 2.5rem 0; }
         .stats-grid > *:not(:first-child) { padding-left: 2rem; }
         .stats-grid > *:not(:last-child) { border-right: 1px solid ${t.a(0.12)}; }
@@ -132,7 +133,7 @@ export function ResultsSection({ dark = false }) {
         whileInView="show"
         viewport={viewport}
       >
-        {stats.map((s, i) => (
+        {stats.map((s) => (
           <motion.div
             key={s.label}
             variants={fadeUp}

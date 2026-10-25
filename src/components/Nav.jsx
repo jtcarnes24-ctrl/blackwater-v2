@@ -73,15 +73,23 @@ export function Nav() {
       }
       return luminance(getComputedStyle(document.body).backgroundColor) ?? 0
     }
-    let raf = 0
+    let raf = 0, confirm = 0, pending = null, current = 'on-dark'
     const sample = () => {
       raf = 0
       // Skip while the preloader's white curtain is up, or the bar would
       // settle on dark ink for a page that opens on the dark hero.
       if (document.documentElement.classList.contains('bw-preloading')) return
       const w = document.documentElement.clientWidth || window.innerWidth
-      const l = (surfaceAt(12, 92) + surfaceAt(w - 12, 92)) / 2
-      setTone(l > 0.4 ? 'on-light' : 'on-dark')
+      const l = (surfaceAt(12, 92) + surfaceAt(w / 2, 92) + surfaceAt(w - 12, 92)) / 3
+      const next = l > 0.4 ? 'on-light' : 'on-dark'
+      if (next === current) { pending = null; return }
+      // A pinned section repositions between frames mid-scroll, and for that
+      // instant the page behind it can show through. Flip only when a second
+      // look a moment later agrees, so the bar never blinks to the wrong ink.
+      if (pending === next) { pending = null; current = next; setTone(next); return }
+      pending = next
+      clearTimeout(confirm)
+      confirm = setTimeout(() => { if (!raf) raf = requestAnimationFrame(sample) }, 120)
     }
     // Sampling forces the browser to work out layout (elementFromPoint plus
     // computed styles up the tree), so it runs at most every 140ms rather
@@ -102,6 +110,7 @@ export function Nav() {
     return () => {
       if (raf) cancelAnimationFrame(raf)
       clearTimeout(timer)
+      clearTimeout(confirm)
       mo.disconnect()
       window.removeEventListener('scroll', queue)
       window.removeEventListener('resize', queue)

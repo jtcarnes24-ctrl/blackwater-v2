@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { StatementBeats } from './StatementBeats'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,7 +16,8 @@ gsap.registerPlugin(ScrollTrigger)
  *     The section holds still for a fixed distance while the text resolves.
  *  2. An overlay that fades in with a backdrop blur as the pin releases, so
  *     the section dissolves rather than cutting.
- *  3. Follow-up statements that rise and fade on their own scrub.
+ *  3. Follow-up statements that rise and fade on their own scrub
+ *     (StatementBeats, shared with /the-method/).
  *
  * Pinning is desktop-only. On touch devices pinned sections fight the
  * browser's own scroll handling and the address-bar resize, which produces
@@ -54,7 +56,6 @@ export function AboutManifesto({ kicker, statement, beats }) {
 
     if (reduce) {
       gsap.set(root.querySelectorAll('.am-char'), { opacity: 1 })
-      gsap.set(root.querySelectorAll('.am-beat'), { opacity: 1, y: 0 })
       return
     }
 
@@ -83,18 +84,6 @@ export function AboutManifesto({ kicker, statement, beats }) {
           },
         }
       )
-
-      // Follow-up statements, each on its own scrub.
-      root.querySelectorAll('.am-beat').forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1, y: 0, ease: 'none',
-            scrollTrigger: { trigger: el, start: 'top 88%', end: 'top 45%', scrub: 0.6 },
-          }
-        )
-      })
     }, root)
 
     // A late-loading webfont changes text metrics and leaves every trigger
@@ -107,7 +96,11 @@ export function AboutManifesto({ kicker, statement, beats }) {
   }, [])
 
   return (
-    <section ref={rootRef} aria-label="About BlackWater Marketing" style={{ background: '#080808' }}>
+    // Overlaps the hero by 2px and sits above it: the hero's scaled video is
+    // its own GPU layer and leaked one row of footage past its fractional
+    // bottom edge, which showed as a light hairline between the sections.
+    <section ref={rootRef} aria-label="About BlackWater Marketing"
+      style={{ background: '#080808', position: 'relative', zIndex: 1, marginTop: '-2px' }}>
       <style>{`
         .am-pin { position:relative; min-height:100dvh; display:flex; align-items:center;
                   padding: clamp(5rem,8vw,7rem) clamp(1.5rem,5vw,4rem); overflow:hidden; }
@@ -124,20 +117,6 @@ export function AboutManifesto({ kicker, statement, beats }) {
            exposed to assistive tech and to crawlers. */
         .sr-only-text { position:absolute; width:1px; height:1px; padding:0; margin:-1px;
                         overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
-
-        .am-beats { max-width:1240px; margin:0 auto;
-                    padding: clamp(2.5rem,5vw,4rem) clamp(1.5rem,5vw,4rem) clamp(5rem,10vw,8rem); }
-        .am-beat { margin:0 0 clamp(4rem,9vw,8rem); will-change:opacity, transform;
-                   display:grid; gap:1.5rem; align-items:start; }
-        @media (min-width: 900px) {
-          .am-beat { grid-template-columns: 5fr 7fr; gap:clamp(2rem,5vw,4.5rem); }
-        }
-        .am-beat:last-child { margin-bottom:0; }
-        .am-beat h2 { font-family:'Syne',sans-serif; font-weight:800; text-transform:uppercase;
-                      font-size:clamp(1.7rem,3.6vw,3rem); line-height:1.06; letter-spacing:-.025em;
-                      color:#ffffff; margin:0; max-width:14ch; }
-        .am-beat p { font-family:'Space Grotesk',sans-serif; font-size:clamp(1.02rem,1.4vw,1.18rem);
-                     line-height:1.72; color:rgba(255,255,255,.66); margin:0; max-width:56ch; }
       `}</style>
 
       <div className="am-pin" ref={pinRef}>
@@ -152,14 +131,7 @@ export function AboutManifesto({ kicker, statement, beats }) {
         </div>
       </div>
 
-      <div className="am-beats">
-        {beats.map((b) => (
-          <div className="am-beat" key={b.h}>
-            <h2>{b.h}</h2>
-            <p>{b.p}</p>
-          </div>
-        ))}
-      </div>
+      <StatementBeats beats={beats} />
     </section>
   )
 }
