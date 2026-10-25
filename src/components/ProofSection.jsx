@@ -110,7 +110,7 @@ function FlipCard({ card, mv, w, h }) {
         whileHover={{ rotateY: 180 }}
       >
         <div className="pm-face pm-front">
-          <img src={card.img} alt="" draggable={false} />
+          <img src={card.img} alt={`${card.metric}, ${card.detail}`} width="600" height="400" loading="lazy" decoding="async" draggable={false} />
         </div>
         <div className="pm-face pm-back">
           <p className="pm-back-metric">{card.metric}</p>

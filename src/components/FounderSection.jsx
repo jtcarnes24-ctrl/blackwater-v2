@@ -44,7 +44,7 @@ const CSS = `
   }
   .fdr-eyebrow {
     font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
-    font-weight: 700; color: rgba(20,20,20,0.45);
+    font-weight: 700; color: rgba(20,20,20,0.62);
     margin: 0 0 1.1rem;
   }
   .fdr-h {
@@ -68,7 +68,7 @@ const CSS = `
   .fdr-sig {
     margin-top: 1.75rem;
     font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase;
-    font-weight: 700; color: rgba(20,20,20,0.5);
+    font-weight: 700; color: rgba(20,20,20,0.62);
   }
 
   /* ── phone layout: the whole artwork, then the words ── */

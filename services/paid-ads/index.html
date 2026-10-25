@@ -2,11 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" />
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/syne.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/playfair-italic.woff2" as="font" type="font/woff2" crossorigin />
+    <style>
+      /* Self-hosted (OFL) Google fonts, latin set: no third-party round trip,
+         and preloaded so the swap lands before first paint where it can. */
+      @font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url(/fonts/inter.woff2) format('woff2')}
+      @font-face{font-family:'Syne';font-style:normal;font-weight:700 800;font-display:swap;src:url(/fonts/syne.woff2) format('woff2')}
+      @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/fonts/space-grotesk.woff2) format('woff2')}
+      @font-face{font-family:'Playfair Display';font-style:italic;font-weight:500 600;font-display:swap;src:url(/fonts/playfair-italic.woff2) format('woff2')}
+    </style>
     <style>html,body{background:#080808;color:#fff;margin:0;padding:0}</style>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -15,8 +22,6 @@
     <link rel="manifest" href="/site.webmanifest" />
     <script src="/leadpipe.js" defer></script>
     <script src="/fbpixel.js" defer></script>
-    <noscript><img height="1" width="1" style="display:none" alt=""
-      src="https://www.facebook.com/tr?id=1723469588699987&ev=PageView&noscript=1" /></noscript>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Paid Ads Agency — Meta, TikTok & Google | BlackWater Marketing</title>
     <meta name="description" content="Meta, TikTok and Google ad management. Tracking setup, campaign structure, creative testing, and scaling judged on cost per result." />
@@ -115,6 +120,7 @@
     <meta name="theme-color" content="#080808" />
   </head>
   <body>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1723469588699987&ev=PageView&noscript=1" /></noscript>
     <div id="boot-splash"></div>
     <noscript>
       <div style="max-width:820px;margin:0 auto;padding:48px 20px;font-family:'Space Grotesk',system-ui,sans-serif;color:#f2ede4;background:#080808;line-height:1.6">

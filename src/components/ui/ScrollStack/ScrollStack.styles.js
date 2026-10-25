@@ -103,7 +103,7 @@ export const SS_CSS = `.scroll-stack-scroller {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.6);
   margin: 0;
 }
 

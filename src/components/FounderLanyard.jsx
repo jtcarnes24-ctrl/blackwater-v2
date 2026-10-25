@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import Lanyard from './ui/Lanyard/Lanyard'
 
 /* Homepage founder section (Oct 23 2026): Jack's ID card hangs from a
    lanyard you can grab, swing and flip (React Bits "Lanyard").
@@ -158,7 +157,10 @@ export function FounderLanyard() {
       if (started) return
       started = true
       io.disconnect(); clearTimeout(timer)
-      buildArt().then((a) => idle(() => { if (on) setArt(a) }))
+      // three.js is most of the homepage's JavaScript, so it is fetched here
+      // with the card art instead of blocking first load.
+      Promise.all([buildArt(), import('./ui/Lanyard/Lanyard')])
+        .then(([a, m]) => idle(() => { if (on) setArt({ ...a, Lanyard: m.default }) }))
     }
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) start() }, { rootMargin: '150% 0px' })
     io.observe(el)
@@ -193,7 +195,7 @@ export function FounderLanyard() {
         .fl-stage { position:relative; height:100svh; min-height:640px; }
         .fl-hint { position:absolute; bottom:clamp(1.25rem,4vh,2.5rem); left:0; right:0; text-align:center; margin:0;
                    font-family:'Space Grotesk',sans-serif; font-size:.6rem; letter-spacing:.28em; text-transform:uppercase;
-                   color:rgba(255,255,255,.4); pointer-events:none; }
+                   color:rgba(255,255,255,.6); pointer-events:none; }
         @media (max-width:899px) {
           .fl { grid-template-columns:1fr; min-height:0; }
           .fl-stage { order:-1; height:min(80svh, 640px); min-height:0; margin:0 calc(-1 * clamp(1.5rem,6vw,6rem)); }
@@ -210,7 +212,7 @@ export function FounderLanyard() {
 
       <div className="fl-stage">
         {art && (
-          <Lanyard
+          <art.Lanyard
             frontImage={art.front}
             backImage={art.back}
             strapImage={art.strap}

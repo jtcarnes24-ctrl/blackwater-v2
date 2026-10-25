@@ -95,7 +95,7 @@ export function ResultsSection({ dark = false }) {
     <section id="results" style={{ background: t.bg, padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: dark ? 'none' : `1px solid ${t.a(0.08)}` }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
         <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.a(0.5), marginBottom: '1.25rem', fontWeight: 600 }}>
+          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.a(0.62), marginBottom: '1.25rem', fontWeight: 600 }}>
           The Numbers
         </motion.p>
         {['RESULTS THAT', <span className="emph">speak</span>].map((line, i) => (
@@ -141,7 +141,7 @@ export function ResultsSection({ dark = false }) {
             <div style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)', fontWeight: 700, letterSpacing: '-0.04em', color: t.ink, lineHeight: 1, marginBottom: '0.75rem' }}>
               <Counter target={s.target} duration={s.duration} format={s.format} />
             </div>
-            <p style={{ fontSize: '0.75rem', color: t.a(0.45), letterSpacing: '0.08em', lineHeight: 1.6, whiteSpace: 'pre-line', textTransform: 'uppercase', fontWeight: 600 }}>
+            <p style={{ fontSize: '0.75rem', color: t.a(0.62), letterSpacing: '0.08em', lineHeight: 1.6, whiteSpace: 'pre-line', textTransform: 'uppercase', fontWeight: 600 }}>
               {s.label}
             </p>
           </motion.div>

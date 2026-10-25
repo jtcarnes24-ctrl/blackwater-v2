@@ -98,7 +98,7 @@ export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
         .ms-rail { align-self:start; }
         @media (min-width: 900px) { .ms-rail { position:sticky; top:7rem; } }
         .ms-label { font-family:'Space Grotesk',sans-serif; font-size:.68rem; font-weight:600;
-                    letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.45); margin:0; }
+                    letter-spacing:.3em; text-transform:uppercase; color:rgba(255,255,255,.6); margin:0; }
         .ms-numrow { display:flex; align-items:baseline; gap:1rem; margin-top:.75rem; }
         .ms-num { font-family:'Syne',sans-serif; font-size:clamp(2.6rem,5vw,3.4rem); font-weight:700;
                   line-height:1; color:rgba(255,255,255,.22); }
@@ -144,7 +144,7 @@ export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
                 <p className="ms-label">{s.label}</p>
                 <div className="ms-numrow">
                   <span className="ms-num">{s.num}</span>
-                  <h3 className="ms-title">{s.title}</h3>
+                  <h2 className="ms-title">{s.title}</h2>
                 </div>
               </div>
 

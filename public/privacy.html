@@ -4,8 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — BlackWater Marketing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+  <style>
+    /* Self-hosted (OFL) Google fonts, latin set: no third-party round trip,
+       and preloaded so the swap lands before first paint where it can. */
+    @font-face{font-family:'Inter';font-style:normal;font-weight:400 600;font-display:swap;src:url(/fonts/inter.woff2) format('woff2')}
+    @font-face{font-family:'Syne';font-style:normal;font-weight:700 800;font-display:swap;src:url(/fonts/syne.woff2) format('woff2')}
+    @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/fonts/space-grotesk.woff2) format('woff2')}
+    @font-face{font-family:'Playfair Display';font-style:italic;font-weight:500 600;font-display:swap;src:url(/fonts/playfair-italic.woff2) format('woff2')}
+  </style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
