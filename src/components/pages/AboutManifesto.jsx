@@ -96,11 +96,7 @@ export function AboutManifesto({ kicker, statement, beats }) {
   }, [])
 
   return (
-    // Overlaps the hero by 2px and sits above it: the hero's scaled video is
-    // its own GPU layer and leaked one row of footage past its fractional
-    // bottom edge, which showed as a light hairline between the sections.
-    <section ref={rootRef} aria-label="About BlackWater Marketing"
-      style={{ background: '#080808', position: 'relative', zIndex: 1, marginTop: '-2px' }}>
+    <section ref={rootRef} aria-label="About BlackWater Marketing" style={{ background: '#080808' }}>
       <style>{`
         .am-pin { position:relative; min-height:100dvh; display:flex; align-items:center;
                   padding: clamp(5rem,8vw,7rem) clamp(1.5rem,5vw,4rem); overflow:hidden; }

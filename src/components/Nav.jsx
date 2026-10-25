@@ -79,6 +79,10 @@ export function Nav() {
       // Skip while the preloader's white curtain is up, or the bar would
       // settle on dark ink for a page that opens on the dark hero.
       if (document.documentElement.classList.contains('bw-preloading')) return
+      // A section that knows what is behind the bar (the homepage hero while
+      // it fills the screen) says so, and the page is not measured at all.
+      const locked = document.documentElement.dataset.hdrLock
+      if (locked) { pending = null; if (current !== locked) { current = locked; setTone(locked) } return }
       const w = document.documentElement.clientWidth || window.innerWidth
       const l = (surfaceAt(12, 92) + surfaceAt(w / 2, 92) + surfaceAt(w - 12, 92)) / 3
       const next = l > 0.4 ? 'on-light' : 'on-dark'
@@ -106,7 +110,7 @@ export function Nav() {
     window.addEventListener('resize', queue)
     // Re-sample when the preloader finishes and the page underneath shows.
     const mo = new MutationObserver(queue)
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'data-hdr-lock'] })
     return () => {
       if (raf) cancelAnimationFrame(raf)
       clearTimeout(timer)

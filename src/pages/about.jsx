@@ -2,7 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Layout } from '../Layout'
-import { ScrollVideoHero } from '../components/pages/ScrollVideoHero'
+import { WordWaveHero } from '../components/pages/WordWaveHero'
+import { AboutTimeline } from '../components/pages/AboutTimeline'
 import { AboutManifesto } from '../components/pages/AboutManifesto'
 import { ResultsSection } from '../components/ResultsSection'
 import { FounderSection } from '../components/FounderSection'
@@ -31,11 +32,8 @@ createRoot(document.getElementById('root')).render(
     {/* Dark shell: the light sections below paint their own white, and a
         white page showed through as a hairline under the hero. */}
     <Layout dark>
-      <ScrollVideoHero
-        title="Read The"
-        emph="water."
-        sub="A performance marketing agency for brands that would rather be measured than flattered."
-      />
+      <WordWaveHero />
+      <AboutTimeline />
       <AboutManifesto
         statement="We strip out the noise, the fluff and the ego, and replace it with numbers you can act on."
         beats={beats}

@@ -86,17 +86,35 @@ export function HeroSection() {
     // drew pixels that were never there), and no animated blur on the type,
     // which a phone has to re-rasterise on every scroll frame.
     const lite = window.matchMedia('(max-width: 767px), (hover: none)').matches
-    const frames = new Array(FRAMES).fill(null)
-    let p = 0, raf = 0, cw = 0, ch = 0
+    /* Frames are kept as their small compressed files (about 4MB for the
+       whole phone set) and only the ones near the scroll position are
+       unpacked into bitmaps, off the main thread. Holding all 180 unpacked
+       was over 300MB on a phone; the browser threw some away under memory
+       pressure and then re-unpacked them mid-scroll, which was the stutter.
+       Every 8th frame stays unpacked as a coarse fallback for fast flicks. */
+    const blobs = new Array(FRAMES).fill(null)
+    const frames = new Array(FRAMES).fill(null)   // unpacked ImageBitmaps
+    const pending = new Set()
+    const WIN = 10, KEEP = 8
+    const pinned = (i) => i % KEEP === 0 || i === FRAMES - 1
+    let p = 0, raf = 0, cw = 0, ch = 0, decoding = 0
     // What is on the canvas now, so a scroll that changes nothing draws
     // nothing. Without this the hero repainted itself on every scroll frame
     // all the way down the page, long after it had scrolled out of view.
     let lastKey = -1, drawnExact = false, dirty = true
 
     const size = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2)
-      cw = canvas.width = Math.round(canvas.clientWidth * dpr)
-      ch = canvas.height = Math.round(canvas.clientHeight * dpr)
+      // Never wider than the frames themselves (540px on phones): extra canvas
+      // pixels only add fill work with nothing in them.
+      const cap = set === 'm' ? Math.max(1, 540 / Math.max(1, canvas.clientWidth)) : 2
+      const dpr = Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2, cap)
+      const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr)
+      // Phones fire resize as the address bar slides during a scroll. Setting
+      // a canvas's size, even to the same numbers, wipes and reallocates it,
+      // so only touch it when the size really changed.
+      if (w === cw && h === ch) return
+      cw = canvas.width = w
+      ch = canvas.height = h
       dirty = true
     }
     const nearest = (i) => {
@@ -107,8 +125,8 @@ export function HeroSection() {
       return null
     }
     const cover = (img, alpha) => {
-      const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
-      const dw = img.naturalWidth * s, dh = img.naturalHeight * s
+      const s = Math.max(cw / img.width, ch / img.height)
+      const dw = img.width * s, dh = img.height * s
       ctx.globalAlpha = alpha
       ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh)
     }
@@ -131,6 +149,17 @@ export function HeroSection() {
       ? [...revealRef.current.querySelectorAll('[data-layer]')].map((el) => [el, LAYER_Y[el.dataset.layer] ?? 0])
       : []
 
+    // Write a style only when it changes. Re-writing the same value to a
+    // dozen elements every scroll frame still makes the browser re-check them.
+    const last = new Map()
+    const put = (el, prop, v) => {
+      let m = last.get(el)
+      if (!m) { m = {}; last.set(el, m) }
+      if (m[prop] === v) return
+      m[prop] = v
+      el.style[prop] = v
+    }
+
     const apply = () => {
       raf = 0
       const r = section.getBoundingClientRect()
@@ -148,49 +177,57 @@ export function HeroSection() {
 
       const tOut = smooth(0, 0.06, p)
       if (titleRef.current) {
-        titleRef.current.style.opacity = `${1 - tOut}`
-        if (!lite) titleRef.current.style.filter = `blur(${tOut * 18}px)`
-        titleRef.current.style.transform = `scale(${1 + tOut * 0.08})`
+        put(titleRef.current, 'opacity', `${1 - tOut}`)
+        if (!lite) put(titleRef.current, 'filter', `blur(${tOut * 18}px)`)
+        put(titleRef.current, 'transform', `scale(${1 + tOut * 0.08})`)
       }
-      if (cueRef.current) cueRef.current.style.opacity = `${1 - smooth(0, 0.03, p)}`
+      if (cueRef.current) put(cueRef.current, 'opacity', `${1 - smooth(0, 0.03, p)}`)
 
       BEATS.forEach((b, k) => {
         const el = beatRefs.current[k]
         if (!el) return
         const o = smooth(b.from, b.from + 0.8, sec) * (1 - smooth(b.to - 0.8, b.to, sec))
-        el.style.opacity = `${o}`
-        el.style.transform = `translateY(${(1 - o) * 18}px)`
-        if (!lite) el.style.filter = `blur(${(1 - o) * 6}px)`
+        put(el, 'opacity', `${o}`)
+        put(el, 'transform', `translateY(${(1 - o) * 18}px)`)
+        if (!lite) put(el, 'filter', `blur(${(1 - o) * 6}px)`)
       })
 
       const rv = smooth(REVEAL[0], REVEAL[1], p)
       if (revealRef.current) {
-        revealRef.current.style.pointerEvents = rv > 0.6 ? 'auto' : 'none'
-        revealRef.current.style.visibility = rv < 0.01 ? 'hidden' : 'visible'
+        put(revealRef.current, 'pointerEvents', rv > 0.6 ? 'auto' : 'none')
+        put(revealRef.current, 'visibility', rv < 0.01 ? 'hidden' : 'visible')
         // Every piece of the final hero slides up into place on its own
         // beat as the clip settles, one after another, driven by the scroll.
         rise.forEach((el, k) => {
           const a = REVEAL[0] + k * 0.008
           const t = smooth(a, a + 0.05, p)
-          el.style.opacity = `${t}`
-          el.style.transform = `translateY(${(1 - t) * 70}px)`
+          put(el, 'opacity', `${t}`)
+          put(el, 'transform', `translateY(${(1 - t) * 70}px)`)
         })
       }
       if (skipRef.current) {
         const so = 1 - smooth(REVEAL[0] - 0.08, REVEAL[0], p)
-        skipRef.current.style.opacity = `${so}`
-        skipRef.current.style.pointerEvents = so > 0.2 ? 'auto' : 'none'
+        put(skipRef.current, 'opacity', `${so}`)
+        put(skipRef.current, 'pointerEvents', so > 0.2 ? 'auto' : 'none')
       }
       // Parallax on the way out (after the Osmo layered-parallax pattern Jack
       // sent): every layer drifts down a share of its own height, so the deep
       // layers fall behind the scroll and the copy stays closest to it.
-      canvas.style.transform = out > 0 ? `translate3d(0,${out * 70}%,0)` : ''
+      put(canvas, 'transform', out > 0 ? `translate3d(0,${out * 70}%,0)` : '')
       // Phones stack the copy in one column, so full-strength layers slide over
       // each other; there the text layers move at about a third.
       const k = lite ? 0.35 : 1
-      layers.forEach(([el, y]) => { el.style.transform = out > 0 ? `translate3d(0,${out * y * k}%,0)` : '' })
-      if (fadeRef.current) fadeRef.current.style.opacity = `${Math.min(1, out * 1.6)}`
-      draw()
+      layers.forEach(([el, y]) => put(el, 'transform', out > 0 ? `translate3d(0,${out * y * k}%,0)` : ''))
+      if (fadeRef.current) put(fadeRef.current, 'opacity', `${Math.min(1, out * 1.6)}`)
+      // While the stage fills the screen the header is always over dark
+      // footage, so it is told so and skips measuring the page (Nav.jsx).
+      const lock = r.top <= 0 && r.bottom >= window.innerHeight ? 'on-dark' : ''
+      if (document.documentElement.dataset.hdrLock !== lock) {
+        if (lock) document.documentElement.dataset.hdrLock = lock
+        else delete document.documentElement.dataset.hdrLock
+      }
+      // While the stage is off screen there is nothing to paint.
+      if (r.bottom > 0) { draw(); unpackAround(Math.round(frameAt())) }
     }
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(apply) }
 
@@ -202,26 +239,54 @@ export function HeroSection() {
       // Redraw only if this frame belongs on screen right now.
       if (!drawnExact || Math.abs(i - frameAt()) < 2) { dirty = true; onScroll() }
     }
+    const unpack = (i) => {
+      if (frames[i] || pending.has(i) || !blobs[i] || decoding >= 3) return
+      pending.add(i); decoding++
+      createImageBitmap(blobs[i])
+        .then((bm) => { if (cancelled) { bm.close(); return } frames[i] = bm; store(i) })
+        .catch(() => {})
+        .finally(() => { pending.delete(i); decoding--; if (!cancelled) unpackAround(Math.round(frameAt())) })
+    }
+    // Keep a window of unpacked frames around the scroll position, nearest
+    // first, and let go of the rest.
+    const unpackAround = (c) => {
+      for (let d = 0; d <= WIN; d++) { unpack(c + d); unpack(c - d) }
+      for (let i = 0; i < FRAMES; i++) {
+        if (frames[i] && !pinned(i) && Math.abs(i - c) > WIN + 6) { frames[i].close(); frames[i] = null }
+      }
+    }
     const loadNext = (k) => {
       if (cancelled || k >= order.length) return
-      const i = order[k], im = new Image()
-      im.src = frameSrc(set, i)
-      // decode() unpacks the image off the main thread before it is ever
-      // drawn. Drawing an undecoded image decodes it on the spot, which was
-      // a stall in the middle of a scroll on slower phones.
-      im.decode()
-        .then(() => { if (cancelled) return; frames[i] = im; store(i) })
+      const i = order[k]
+      fetch(frameSrc(set, i))
+        .then((res) => (res.ok ? res.blob() : null))
+        .then((b) => {
+          if (cancelled || !b) return
+          blobs[i] = b
+          if (pinned(i) || Math.abs(i - frameAt()) <= WIN) unpack(i)
+        })
         .catch(() => {})
         .finally(() => loadNext(k + 4))
     }
     // Four requests in flight at a time.
     for (let k = 0; k < 4; k++) loadNext(k)
+    // The coarse fallback frames are unpacked as their files land; top up
+    // any that were skipped while the decoder was busy.
+    const topUp = setInterval(() => {
+      if (cancelled) return
+      for (let i = 0; i < FRAMES; i += KEEP) unpack(i)
+      unpack(FRAMES - 1)
+      if (blobs.every(Boolean) && frames.filter((f, i) => f && pinned(i)).length >= Math.ceil(FRAMES / KEEP)) clearInterval(topUp)
+    }, 400)
 
     size(); apply()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
     return () => {
       cancelled = true
+      clearInterval(topUp)
+      frames.forEach((f) => f && f.close())
+      delete document.documentElement.dataset.hdrLock
       if (raf) cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
