@@ -667,3 +667,12 @@ export function playGlass(canvas, logo, { tileCss, maxDpr = 2, onDone } = {}) {
   raf = requestAnimationFrame(tick)
   return { stop() { stopped = true; cancelAnimationFrame(raf); renderer.dispose() } }
 }
+
+// Frame-exact renderer for exports (the animated avatar GIF, Nov 2 2026):
+// returns draw(T, outro) that paints the reveal at time T seconds.
+export function glassStill(canvas, logo, tileCss) {
+  const renderer = createRenderer(canvas, { preserve: true })
+  if (!renderer) throw new Error('no WebGL 2')
+  renderer.setLogo(logo)
+  return (T, outro = 0) => renderer.render(frameAt(T, LOOK, outro), canvas.width, canvas.height, tileCss)
+}

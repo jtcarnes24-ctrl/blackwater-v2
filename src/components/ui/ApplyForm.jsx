@@ -16,6 +16,20 @@ import {
 
 const W3F_KEY = '080307e5-0079-4ded-b1fc-9a111fa9ceda'
 
+/* ── Qualification (Jack, Nov 3 2026) ──────────────────────────────────
+   Like a Meta form's conditional logic: anyone doing under $10k a month in
+   revenue, or able to put under $1k a month into ads, is not a fit for the
+   agency yet. They skip the phone question and finish on the Brand Command
+   System offer ($94/month on Whop: the course plus the community) instead
+   of the call booking. Every business type can qualify. */
+const COURSE_URL = ''          // ← Whop checkout link for the $94/month plan
+const COURSE_PRICE = '$94/month'
+const UNDER_REVENUE = ['Not selling yet', 'Under $1k a month', '$1k to $5k a month', '$5k to $10k a month']
+const UNDER_SPEND = ['$0', 'Under $1k a month']
+const isQualified = (a) =>
+  !UNDER_REVENUE.includes(a['Monthly Revenue']) && !UNDER_SPEND.includes(a['Ad Spend'])
+const answeredGate = (a) => Boolean(a['Monthly Revenue'] && a['Ad Spend'])
+
 
 /* ── Question definitions ───────────────────────────────────────────────
    Qualifiers run first so unqualified traffic self-selects out before we
@@ -66,9 +80,10 @@ const STEPS = [
   {
     name: 'Ad Spend',
     type: 'choice',
-    q: 'What’s your current monthly ad spend?',
+    q: 'How much can you put into ads each month?',
     options: [
       '$0',
+      'Under $1k a month',
       '$1k to $5k a month',
       '$5k to $10k a month',
       '$10k to $30k a month',
@@ -81,7 +96,6 @@ const STEPS = [
   { name: 'Phone', type: 'text', inputType: 'tel',   q: 'And your phone number?',        placeholder: '(515) 867-5309' },
 ]
 
-const TOTAL = STEPS.length
 const COUNTRIES = countryOptions()
 
 /* Strip everything that is not a digit, keeping a single leading + so the
@@ -115,7 +129,12 @@ export default function ApplyModal({ onClose }) {
      submit handler always sends the country the visitor actually picked. */
   useEffect(() => { countryRef.current = phoneCountry }, [phoneCountry])
 
-  const current = STEPS[step]
+  /* Not qualified: the phone step drops out. The gate questions come before
+     every contact step, so the step index is stable when the path changes. */
+  const fit = !answeredGate(answers) || isQualified(answers)
+  const FLOW = fit ? STEPS : STEPS.filter((s) => s.name !== 'Phone')
+  const TOTAL = FLOW.length
+  const current = FLOW[step]
   /* Only NANP gets a worked example; inventing one for 240 other countries
      would mean shipping numbers that may not be valid there. */
   const phonePlaceholder = (phoneCountry === 'US' || phoneCountry === 'CA')
@@ -163,7 +182,7 @@ export default function ApplyModal({ onClose }) {
 
   /* Keep the selected-choice highlight in sync when stepping back */
   useEffect(() => {
-    setSelected(answersRef.current[STEPS[step].name] ?? null)
+    setSelected(answersRef.current[STEPS[step]?.name] ?? null)
   }, [step])
 
   /* ── Partial lead capture ──
@@ -187,7 +206,7 @@ export default function ApplyModal({ onClose }) {
       fd.append('access_key', W3F_KEY)
       fd.append('from_name', 'BlackWater Website Application')
       fd.append('subject', '⚠️ PARTIAL APPLICATION — not finished')
-      fd.append('Status', 'PARTIAL — left at step ' + (stepRef.current + 1) + ' of ' + TOTAL)
+      fd.append('Status', 'PARTIAL — left at step ' + (stepRef.current + 1))
       keys.forEach(k => fd.append(k, data[k]))
       if (data.Email) fd.append('replyto', data.Email)
       try { navigator.sendBeacon('https://api.web3forms.com/submit', fd) } catch (err) { /* best effort */ }
@@ -232,10 +251,13 @@ export default function ApplyModal({ onClose }) {
 
   const pick = (val) => {
     setSelected(val)
-    setAnswers(a => ({ ...a, [current.name]: val }))
+    const nextAnswers = { ...answers, [current.name]: val }
+    setAnswers(nextAnswers)
     setError('')
+    // The path can change on this answer, so count steps on the new one.
+    const total = (!answeredGate(nextAnswers) || isQualified(nextAnswers)) ? STEPS.length : STEPS.length - 1
     setTimeout(() => {
-      if (step < TOTAL - 1) setStep(step + 1)
+      if (step < total - 1) setStep(step + 1)
       else submit()
     }, 220)
   }
@@ -246,8 +268,14 @@ export default function ApplyModal({ onClose }) {
     const fd = new FormData()
     fd.append('access_key', W3F_KEY)
     fd.append('from_name', 'BlackWater Website Application')
-    fd.append('subject', 'New BlackWater application — website')
-    STEPS.forEach(s => {
+    const qualified = isQualified(answersRef.current)
+    fd.append('subject', qualified
+      ? 'New BlackWater application — website'
+      : 'Course lead (not qualified) — website')
+    fd.append('Qualified', qualified
+      ? 'YES: $10k+/mo revenue and $1k+/mo ad budget'
+      : `NO: sent to Brand Command System (${COURSE_PRICE})`)
+    FLOW.forEach(s => {
       const v = answersRef.current[s.name] || ''
       /* Phone goes out as +1 712 328 4410: readable, and dial-ready from
          any country without guessing what the digits meant. */
@@ -264,7 +292,12 @@ export default function ApplyModal({ onClose }) {
       })
       const json = await r.json()
       if (!json.success) throw new Error('rejected')
-      if (window.fbq) window.fbq('track', 'Lead')
+      // Only qualified applications count as a Lead, so Meta optimises for
+      // people who can actually hire BlackWater. Course leads get their own event.
+      if (window.fbq) {
+        if (qualified) window.fbq('track', 'Lead')
+        else window.fbq('trackCustom', 'CourseLead')
+      }
       setPhase('done')
     } catch (err) {
       completed.current = false
@@ -442,8 +475,48 @@ export default function ApplyModal({ onClose }) {
           </div>
         )}
 
-        {phase === 'done' && <ThankYou />}
+        {phase === 'done' && (isQualified(answers) ? <ThankYou /> : <CourseOffer name={answers.Name} />)}
       </div>
+    </div>
+  )
+}
+
+/* ── Not-a-fit screen: the course offer ───────────────────────────────── */
+function CourseOffer({ name }) {
+  const first = String(name || '').trim().split(/\s+/)[0]
+  return (
+    <div className="bwa-step" style={{ textAlign: 'center' }}>
+      <div style={{ fontSize: '13px', fontWeight: 500, letterSpacing: '.14em', textTransform: 'uppercase', color: '#141414', marginBottom: '12px' }}>
+        Thanks{first ? `, ${first}` : ''}
+      </div>
+      <h2 style={{ fontSize: 'clamp(24px,6.5vw,32px)', fontWeight: 700, lineHeight: 1.12, letterSpacing: '-.015em', marginBottom: '12px' }}>
+        You’re a little early for us. Here’s where to start.
+      </h2>
+      <p style={{ fontSize: '16px', color: '#6b6b6b', margin: '0 auto 22px', maxWidth: '40ch', lineHeight: 1.55 }}>
+        We take on brands doing $10k a month or more, with at least $1k a month for ads. Below that, our fee
+        would eat most of your profit. So instead, learn the same system we run on client accounts and run it yourself.
+      </p>
+      <div style={{ border: '1.5px solid rgba(20,20,20,.14)', borderRadius: '16px', padding: '22px 20px', textAlign: 'left', marginBottom: '20px' }}>
+        <div style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: '#6b6b6b' }}>Brand Command System</div>
+        <div style={{ fontSize: '22px', fontWeight: 700, margin: '6px 0 10px' }}>{COURSE_PRICE}</div>
+        <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '15px', color: '#3a3a3a', lineHeight: 1.7 }}>
+          <li>The full course, step by step</li>
+          <li>The community, to ask questions and post your numbers</li>
+          <li>Cancel any time</li>
+        </ul>
+      </div>
+      {COURSE_URL ? (
+        <a className="bwa-next" href={COURSE_URL} target="_blank" rel="noopener noreferrer"
+           style={{ display: 'inline-block', textDecoration: 'none' }}
+           onClick={() => { if (window.fbq) window.fbq('trackCustom', 'CourseClick') }}>
+          Start learning
+        </a>
+      ) : (
+        <p style={{ fontSize: '14px', color: '#6b6b6b' }}>Jack will email you the link to join.</p>
+      )}
+      <p style={{ fontSize: '13px', color: '#6b6b6b', marginTop: '18px' }}>
+        Once you’re past $10k a month, apply again and we’ll talk.
+      </p>
     </div>
   )
 }
