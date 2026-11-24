@@ -21,6 +21,9 @@ const T = { in: 150, open: 1400, reveal: 2250, fly: 2350, done: 3350 }
    go), with Black and Water either side. WebGL 2 only; the spin above stays
    as the fallback when it is missing, slow to get ready, or motion is
    reduced. The glass code loads only here, on the homepage. */
+// Read once, as the page loads: the hero removes the #hero from the address
+// as soon as it has used it, so a later read (React re-running effects) misses it.
+const FROM_LOGO = typeof window !== 'undefined' && window.location.hash === '#hero'
 const GLASS_WAIT = 900     // ms to get the glass ready before falling back
 const G = { open: 450, swap: 80, fly: 120, done: 1100 }
 
@@ -37,8 +40,10 @@ export function Preloader() {
     const splash = document.getElementById('boot-splash')
     if (splash) splash.remove()
 
-    // Someone who asked for less motion is not made to wait behind a curtain.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Someone who asked for less motion is not made to wait behind a curtain,
+    // and nor is someone coming back through the logo (/#hero): they have
+    // seen the intro and want the finished hero.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || FROM_LOGO) {
       html.classList.add('site-ready')
       setGone(true)
       return

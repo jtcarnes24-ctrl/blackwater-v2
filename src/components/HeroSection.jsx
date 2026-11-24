@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useApply } from './ui/ApplyModal'
+import { RESULTS } from '../lib/results'
 
 /* The orb was retired Aug 2026 when the hero became a photograph; the
    photograph gave way to a scroll-driven rock, then to the coast
@@ -26,6 +27,9 @@ import { useApply } from './ui/ApplyModal'
      p 0.86 to 0.97   the final hero, laid out after the Sonder House
                       reference, slides up into place piece by piece
    The clip runs over the first 88% of the pin and holds its last frame. */
+// The two result screenshots on the final hero (Jack's pick, Nov 24 2026).
+const HERO_PROOF = ['12.97x ROAS', '$8,236/day'].map((m) => RESULTS.find((r) => r.metric === m)).filter(Boolean)
+
 const FRAMES = 180
 const CLIP_SECONDS = 15
 const CLIP_END = 0.88
@@ -49,20 +53,11 @@ const BEATS = [
 // Frame load order: first frame, then coarse to fine, so an early scroll
 // already has frames spread across the whole clip.
 function loadOrder(n) {
-  const seen = new Set([0]), order = [0]
+  // The last frame early too: it is the resting hero, and the logo jumps there.
+  const seen = new Set([0, n - 1]), order = [0, n - 1]
   for (let step = 32; step >= 1; step = step >> 1)
     for (let i = 0; i < n; i += step) if (!seen.has(i)) { seen.add(i); order.push(i) }
   return order
-}
-
-/* Thin eight-point sparkle, as in the reference's top-right corner. */
-function Sparkle() {
-  return (
-    <svg className="sd-spark" viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"
-         fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
-      <path d="M20 2v36M2 20h36M7.3 7.3l25.4 25.4M32.7 7.3L7.3 32.7" />
-    </svg>
-  )
 }
 
 export function HeroSection() {
@@ -75,6 +70,7 @@ export function HeroSection() {
   const skipRef = useRef(null)
   const cueRef = useRef(null)
   const fadeRef = useRef(null)
+  const fgRef = useRef(null)
 
   useEffect(() => {
     const section = ref.current, canvas = canvasRef.current
@@ -103,6 +99,20 @@ export function HeroSection() {
     // all the way down the page, long after it had scrolled out of view.
     let lastKey = -1, drawnExact = false, dirty = true
 
+    /* "BLACKWATER" sits between the sky and the hills, like the Sonar
+       reference Jack sent (Nov 24 2026): the land of the clip's last frame is
+       cut out as its own image (fg-d / fg-m, alpha above the ridge) and laid
+       over the word. Its foot is placed from where the ridge falls on screen
+       under object-fit: cover, so the hills cover the same share of the
+       letters at any window size. */
+    const FG = set === 'm' ? { w: 540, h: 816, foot: 0.372 } : { w: 1600, h: 906, foot: 0.405 }
+    if (fgRef.current) fgRef.current.src = `/hero/shore/fg-${set}.webp`
+    const placeWord = () => {
+      const vw = canvas.clientWidth, vh = canvas.clientHeight
+      const sc = Math.max(vw / FG.w, vh / FG.h)
+      const top = (vh - FG.h * sc) / 2
+      if (revealRef.current) revealRef.current.style.setProperty('--sn-foot', `${Math.round(top + FG.foot * FG.h * sc)}px`)
+    }
     const size = () => {
       // Never wider than the frames themselves (540px on phones): extra canvas
       // pixels only add fill work with nothing in them.
@@ -112,6 +122,7 @@ export function HeroSection() {
       // Phones fire resize as the address bar slides during a scroll. Setting
       // a canvas's size, even to the same numbers, wipes and reallocates it,
       // so only touch it when the size really changed.
+      placeWord()
       if (w === cw && h === ch) return
       cw = canvas.width = w
       ch = canvas.height = h
@@ -214,6 +225,11 @@ export function HeroSection() {
       // sent): every layer drifts down a share of its own height, so the deep
       // layers fall behind the scroll and the copy stays closest to it.
       put(canvas, 'transform', out > 0 ? `translate3d(0,${out * 70}%,0)` : '')
+      if (fgRef.current) {
+        // The cut-out land only matches the clip once it rests on its last frame.
+        put(fgRef.current, 'opacity', `${smooth(0.875, 0.885, p)}`)
+        put(fgRef.current, 'transform', out > 0 ? `translate3d(0,${out * 70}%,0)` : '')
+      }
       // Phones stack the copy in one column, so full-strength layers slide over
       // each other; there the text layers move at about a third.
       const k = lite ? 0.35 : 1
@@ -280,6 +296,22 @@ export function HeroSection() {
     }, 400)
 
     size(); apply()
+
+    /* The header logo (Nav.jsx) brings people straight to the finished hero
+       instead of the intro: /#hero from another page, or the 'bw:hero' event
+       when they are already here. The jump is instant, not a scroll back
+       through the clip. Lenis is created after this effect, so wait a frame. */
+    const toFinal = () => {
+      const run = section.offsetHeight - window.innerHeight
+      const y = section.getBoundingClientRect().top + window.scrollY + run * 0.97
+      if (window.__lenis) window.__lenis.scrollTo(y, { immediate: true, force: true })
+      else window.scrollTo(0, y)
+    }
+    if (window.location.hash === '#hero') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+      requestAnimationFrame(() => requestAnimationFrame(toFinal))
+    }
+    window.addEventListener('bw:hero', toFinal)
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
     return () => {
@@ -290,6 +322,7 @@ export function HeroSection() {
       if (raf) cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('bw:hero', toFinal)
     }
   }, [])
 
@@ -346,49 +379,69 @@ export function HeroSection() {
         .hx-skip:hover, .hx-skip:focus-visible { color:#fff; }
         .hx-skip:focus-visible { outline:1px solid #fff; outline-offset:4px; }
 
-        /* ---- Final hero, laid out after the Sonder House reference ---- */
+        /* ---- Final hero, laid out after the Sonar reference (Nov 24 2026) ---- */
         .hl { position:absolute; inset:0; visibility:hidden; }
-        .sd { color:#fff; font-family:'Inter',system-ui,sans-serif; --pad:clamp(1rem,2.6vw,2rem); }
+        .sd { color:#fff; font-family:'Inter',system-ui,sans-serif; --pad:clamp(1.25rem,3.6vw,3.5rem); }
         .sd [data-rise] { opacity:0; will-change:transform, opacity; }
-        .sd-layer { position:absolute; inset:0; will-change:transform; }
-        .sd-layer .sd-tr, .sd-layer .sd-card, .sd-layer .sd-btn { pointer-events:auto; }
+        .sd-layer { position:absolute; inset:0; will-change:transform; pointer-events:none; }
+        .sd-layer a, .sd-layer button { pointer-events:auto; }
         .hx-fade { position:absolute; left:0; right:0; bottom:0; height:35%; pointer-events:none; opacity:0;
           background:linear-gradient(to bottom, rgba(8,8,8,0) 0%, #080808 100%); }
         .sd p { margin:0; }
-        .sd-w1, .sd-w2 { position:absolute; font-weight:500; text-transform:uppercase; line-height:.8;
-          font-size:min(15.5vw, 30vh); letter-spacing:-.055em; white-space:nowrap; }
-        .sd-w1 { left:calc(var(--pad) - .04em); top:calc(clamp(64px,6vw,84px) + 4vh); }
-        .sd-w2 { right:calc(var(--pad) - .02em); top:calc(clamp(64px,6vw,84px) + 4vh + min(15.5vw, 30vh) * .78); }
-        .sd-c { font-size:.2em; letter-spacing:0; vertical-align:top; margin-left:.25em; position:relative; top:.15em; font-weight:300; }
-        .sd-tag { position:absolute; left:18vw; top:calc(clamp(64px,6vw,84px) + 4vh + min(15.5vw, 30vh) * .86);
-          font-size:.62rem; letter-spacing:.02em; opacity:.85; }
-        .sd-tr { position:absolute; right:var(--pad); top:calc(clamp(64px,6vw,84px) + 4.5vh); display:flex; align-items:center; gap:clamp(1rem,3vw,3rem); }
-        .sd-tr p { font-size:.66rem; font-weight:500; text-transform:uppercase; line-height:1.25; text-align:right; letter-spacing:.01em; }
-        .sd-spark { width:clamp(26px,2.4vw,38px); height:auto; opacity:.9; }
-        .sd-mid { position:absolute; left:var(--pad); top:56%; display:flex; flex-direction:column; align-items:flex-start; }
-        .sd-idx { font-size:.6rem; letter-spacing:.04em; opacity:.8; margin-bottom:.5rem !important; }
-        .sd-h1 { display:inline-flex; flex-direction:column; margin:0; font-family:'Inter',system-ui,sans-serif; font-weight:500; text-transform:uppercase;
-          font-size:clamp(1.3rem,2.45vw,2.6rem); line-height:.92; letter-spacing:-.035em; }
-        .sd-h1 .sd-l1 { align-self:flex-end; padding-right:12%; }
-        .sd-btn { margin-top:clamp(1.5rem,5vh,3rem); display:inline-flex; align-items:center; gap:.75rem;
-          height:clamp(40px,3.4vw,50px); padding:0 clamp(1.4rem,2.4vw,2.2rem); border-radius:999px; border:0;
-          background:#fff; color:#0b0b0b; font:inherit; font-size:.72rem; font-weight:500; text-transform:uppercase;
-          letter-spacing:.01em; cursor:pointer; transition:transform .3s cubic-bezier(.22,1,.36,1); }
-        .sd-btn:hover { transform:translateY(-2px); }
-        .sd-btn:focus-visible { outline:2px solid #fff; outline-offset:3px; }
-        .sd-dot { width:5px; height:5px; border-radius:50%; background:currentColor; }
-        .sd-note { position:absolute; left:18vw; bottom:clamp(1.25rem,3vh,2rem); font-size:.62rem; font-weight:500;
-          text-transform:uppercase; line-height:1.2; letter-spacing:.01em; }
-        .sd-card { position:absolute; right:var(--pad); bottom:clamp(1.25rem,3vh,2rem); width:clamp(190px,15vw,250px);
-          background:#fff; color:#0b0b0b; border-radius:clamp(14px,1.4vw,20px); padding:clamp(.9rem,1.3vw,1.25rem); }
-        .sd-num { font-size:clamp(1.6rem,2.3vw,2.4rem); font-weight:400; letter-spacing:-.04em; line-height:1; }
-        .sd-lab { font-size:.62rem; line-height:1.3; color:rgba(11,11,11,.62); margin-top:.45rem !important; }
-        .sd-faces { display:flex; margin-top:clamp(.8rem,1.6vw,1.4rem); }
-        .sd-faces span { width:26px; height:26px; border-radius:50%; background:#0b0b0b; border:2px solid #fff;
-          display:grid; place-items:center; overflow:hidden; margin-left:-7px; }
-        .sd-faces span:first-child { margin-left:0; }
-        .sd-faces img { width:70%; height:70%; object-fit:contain; filter:brightness(0) invert(1); }
+        .hx-fg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; opacity:0;
+          will-change:transform, opacity; }
 
+        /* The word behind the hills: its foot sits at --sn-foot (set from the ridge). */
+        .sn-word { position:absolute; left:0; right:0; top:calc(var(--sn-foot, 44vh) - .74em); text-align:center;
+          font-weight:400; text-transform:uppercase; white-space:nowrap; line-height:1;
+          font-size:min(13.4vw, 30vh); letter-spacing:-.02em;
+          background:linear-gradient(180deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.42) 75%);
+          -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .sn-word span { display:inline; }
+
+        .sn-scrim { position:absolute; inset:0; pointer-events:none;
+          background:radial-gradient(ellipse 55% 50% at 18% 82%, rgba(4,5,8,.62), rgba(4,5,8,0) 70%),
+                     radial-gradient(ellipse 30% 40% at 88% 82%, rgba(4,5,8,.5), rgba(4,5,8,0) 70%); }
+        .sn-left { position:absolute; left:var(--pad); bottom:clamp(1.75rem,6vh,3.5rem); max-width:62vw; }
+        .sn-proof { display:inline-flex; align-items:center; gap:.7rem; padding:6px 14px 6px 6px; border-radius:999px;
+          background:rgba(20,22,26,.55); border:1px solid rgba(255,255,255,.14);
+          -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); margin-bottom:clamp(1rem,2.4vh,1.6rem); }
+        .sn-faces { display:flex; }
+        .sn-faces span { width:30px; height:30px; border-radius:50%; background:#0b0b0b; border:2px solid rgba(255,255,255,.9);
+          display:grid; place-items:center; overflow:hidden; margin-left:-9px; }
+        .sn-faces span:first-child { margin-left:0; }
+        .sn-faces img { width:70%; height:70%; object-fit:contain; filter:brightness(0) invert(1); }
+        .sn-proof b { display:block; font-size:.8rem; font-weight:600; line-height:1.1; }
+        .sn-proof small { display:block; font-size:.66rem; opacity:.72; line-height:1.2; }
+        .sn-h1 { font-family:'Inter',system-ui,sans-serif; font-weight:500; font-size:clamp(2rem,3.9vw,4.2rem); white-space:nowrap;
+          line-height:1; letter-spacing:-.035em; margin:0; }
+        .sn-h1 em { font-family:'Playfair Display',serif; font-style:italic; font-weight:500; letter-spacing:-.01em; }
+        .sn-sub { font-size:clamp(.92rem,1.05vw,1.05rem); line-height:1.55; color:rgba(255,255,255,.78);
+          max-width:44ch; margin-top:clamp(.9rem,2vh,1.3rem) !important; }
+        .sn-btn { margin-top:clamp(1.2rem,3vh,1.8rem); display:inline-flex; align-items:center; gap:.7rem;
+          height:clamp(44px,3.6vw,52px); padding:0 6px 0 clamp(1.2rem,1.8vw,1.6rem); border-radius:14px; border:0;
+          background:#fff; color:#0b0b0b; font:inherit; font-size:.9rem; font-weight:500; cursor:pointer;
+          transition:transform .3s cubic-bezier(.22,1,.36,1); }
+        .sn-btn i { display:grid; place-items:center; width:clamp(32px,2.6vw,40px); height:clamp(32px,2.6vw,40px);
+          border-radius:10px; background:#0b0b0b; color:#fff; }
+        .sn-btn:hover { transform:translateY(-2px); }
+        .sn-btn:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+
+        .sn-right { position:absolute; right:var(--pad); bottom:clamp(1.75rem,6vh,3.5rem); display:flex; flex-direction:column;
+          align-items:flex-end; gap:clamp(1rem,3vh,1.75rem); }
+        .sn-cards { display:flex; gap:12px; }
+        .sn-card { margin:0; width:clamp(190px,15vw,250px); border-radius:18px; padding:8px; overflow:hidden;
+          background:rgba(16,18,22,.38); border:1px solid rgba(255,255,255,.18);
+          -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+        .sn-card img { display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; border-radius:11px; background:#fff; }
+        .sn-card figcaption { padding:.7rem .4rem .35rem; }
+        .sn-card b { display:block; font-size:clamp(1.15rem,1.5vw,1.45rem); font-weight:500; letter-spacing:-.03em; line-height:1.1; }
+        .sn-card span { display:block; font-size:.72rem; line-height:1.35; color:rgba(255,255,255,.75); margin-top:.25rem; }
+        .sn-all { font-size:.78rem; color:rgba(255,255,255,.85); text-decoration:none; padding:.3rem .2rem;
+          text-shadow:0 1px 12px rgba(0,0,0,.8); transition:color .2s ease; }
+        .sn-all:hover, .sn-all:focus-visible { color:#fff; }
+        .sn-all span { display:inline-block; transition:transform .25s ease; }
+        .sn-all:hover span { transform:translateX(3px); }
 
         .hero-marquee { overflow:hidden; width:100%;
           -webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%);
@@ -404,20 +457,21 @@ export function HeroSection() {
           /* Centred, it collides with Skip intro on a narrow screen. */
           .hx-cue { left:clamp(1rem,2.4vw,2rem); right:auto; text-align:left; }
           .hx-cue { display:none; }
-          .sd-w1, .sd-w2 { font-size:21vw; }
-          .sd-w1 { top:calc(clamp(64px,6vw,84px) + 3vh); }
-          .sd-w2 { top:calc(clamp(64px,6vw,84px) + 3vh + 21vw * .8); }
-          .sd-tag { left:var(--pad); top:calc(clamp(64px,6vw,84px) + 3vh + 21vw * 1.72); }
-          .sd-tr { top:auto; bottom:calc(clamp(1.25rem,3vh,2rem) + 9.5rem); }
-          .sd-tr p { font-size:.6rem; }
-          .sd-mid { top:calc(clamp(64px,6vw,84px) + 3vh + 21vw * 2.05); }
-          .sd-h1 { font-size:6.6vw; }
-          .sd-note { left:var(--pad); bottom:calc(clamp(1.25rem,3vh,2rem) + 9.5rem); font-size:.58rem; }
-          .sd-card { left:var(--pad); right:var(--pad); width:auto; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:.9rem; }
-          .sd-lab { margin-top:0 !important; }
-          .sd-faces { margin-top:0; }
-          /* Phones drop the service list, (BW) index and note for a cleaner stack. */
-          .sd-tag, .sd-idx, .sd-note { display:none !important; }
+          /* Phones: BLACK over WATER, the second line's foot behind the hills. */
+          .sn-word { font-size:23vw; line-height:.86; top:calc(var(--sn-foot, 40vh) - 1.6em); }
+          .sn-word span { display:block; }
+          .sn-left { right:var(--pad); max-width:none; bottom:calc(clamp(1.25rem,3vh,2rem) + 232px); }
+          .sn-h1 { font-size:7.4vw; white-space:normal; }
+          .sn-sub { font-size:.88rem; }
+          .sn-right { left:var(--pad); right:var(--pad); bottom:clamp(1.25rem,3vh,2rem); align-items:stretch; }
+          .sn-cards { gap:10px; }
+          .sn-card { flex:1; width:auto; border-radius:14px; padding:6px;
+            -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(20,22,26,.72); }
+          .sn-card figcaption { padding:.5rem .3rem .2rem; }
+          .sn-card b { font-size:1.05rem; }
+          .sn-card span { font-size:.66rem; }
+          .sn-all { align-self:flex-end; }
+          .sn-proof { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(20,22,26,.7); }
         }
         @media (prefers-reduced-motion: reduce) {
           .hero-marquee-track { animation:none; }
@@ -444,45 +498,50 @@ export function HeroSection() {
         <p ref={cueRef} className="hx-cue" aria-hidden="true">Scroll to explore</p>
         <button ref={skipRef} type="button" className="hx-skip" onClick={skip}>Skip intro ↓</button>
 
-        {/* Final hero, laid out after the Sonder House reference Jack sent
-            (Oct 24 2026). Every [data-rise] piece slides up on its own beat. */}
+        {/* Final hero, laid out after the Sonar reference Jack sent (Nov 24
+            2026). Every [data-rise] piece slides up on its own beat; the land
+            image (.hx-fg) sits over the big word so the hills hide its foot. */}
         <div ref={revealRef} className="hl sd">
-          {/* Parallax layers for the scroll-out: each moves down a share of
-              its own height as the hero leaves, the canvas most, the copy least. */}
           <div className="sd-layer" data-layer="2">
-            <p className="sd-w1" data-rise>Black<span className="sd-c" aria-hidden="true">©</span></p>
-            <p className="sd-tag" data-rise>Paid Ads · Creative · Funnels · Retention</p>
-            <div className="sd-tr" data-rise>
-              <Sparkle />
-              <p>Full-stack<br />e-commerce<br />partner</p>
-            </div>
+            <p className="sn-word" data-rise aria-hidden="true"><span>Black</span><span>Water</span></p>
           </div>
-          <div className="sd-layer" data-layer="3">
-            <p className="sd-w2" data-rise>Water</p>
-          </div>
+          <img ref={fgRef} className="hx-fg" alt="" aria-hidden="true" decoding="async" />
           <div className="sd-layer" data-layer="4">
-            <div className="sd-mid">
-              <p className="sd-idx" data-rise>(BW)</p>
-              <h1 className="sd-h1" data-rise>
-                <span className="sd-l1">Scaling</span>
-                <span><span style={{ whiteSpace: 'nowrap' }}>E-commerce</span> brands</span>
-                <span>with data, not guesswork</span>
+            {/* Soft dark pools behind the copy, so it reads over the lit shoreline. */}
+            <div className="sn-scrim" aria-hidden="true" />
+            <div className="sn-left">
+              <div className="sn-proof" data-rise>
+                <div className="sn-faces" aria-hidden="true">
+                  {['/client-logos/logo-beloved.png', '/client-logos/logo-rpr.png', '/client-logos/logo-dabv.svg'].map((src) => (
+                    <span key={src}><img src={src} alt="" decoding="async" /></span>
+                  ))}
+                </div>
+                <div><b>35+ brands</b><small>worked with on paid growth</small></div>
+              </div>
+              <h1 className="sn-h1" data-rise>
+                Scaling E-commerce Brands<br />With Data, Not <em>Guesswork</em>
               </h1>
-              <button type="button" className="sd-btn" data-rise onClick={openApply}>
-                Apply now <span className="sd-dot" aria-hidden="true" />
+              <p className="sn-sub" data-rise>
+                Paid ads, creative, funnels and retention run as one system, by the person actually on your account.
+              </p>
+              <button type="button" className="sn-btn" data-rise onClick={openApply}>
+                Apply now
+                <i aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10L10 4M5 4h5v5" /></svg>
+                </i>
               </button>
             </div>
 
-            <p className="sd-note" data-rise>We scale e-commerce brands<br />the way they should be scaled,<br />with data behind every decision</p>
-
-            <div className="sd-card" data-rise>
-              <p className="sd-num">35+</p>
-              <p className="sd-lab">brands we&rsquo;ve worked with<br />on paid growth</p>
-              <div className="sd-faces" aria-hidden="true">
-                {['/client-logos/logo-beloved.png', '/client-logos/logo-rpr.png', '/client-logos/logo-dabv.svg'].map((src) => (
-                  <span key={src}><img src={src} alt="" decoding="async" /></span>
+            <div className="sn-right">
+              <div className="sn-cards">
+                {HERO_PROOF.map((r) => (
+                  <figure key={r.metric} className="sn-card" data-rise>
+                    <img src={r.img} alt={`${r.metric}, ${r.detail}`} width="600" height="400" decoding="async" />
+                    <figcaption><b>{r.metric}</b><span>{r.detail}</span></figcaption>
+                  </figure>
                 ))}
               </div>
+              <a className="sn-all" href="/results/" data-rise>See all results <span aria-hidden="true">→</span></a>
             </div>
           </div>
         </div>

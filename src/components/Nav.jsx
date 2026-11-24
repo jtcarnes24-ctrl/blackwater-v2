@@ -135,40 +135,60 @@ export function Nav() {
   }, [open])
 
   const apply = () => { setOpen(false); openApply() }
+  // The logo skips the intro: on the homepage it jumps to the finished hero,
+  // elsewhere /#hero opens the homepage already there (HeroSection, Preloader).
+  const toHero = (e) => {
+    if (window.location.pathname !== '/') return
+    e.preventDefault()
+    window.dispatchEvent(new Event('bw:hero'))
+  }
 
   return (
     <>
       <style>{`
-        /* Header after the Sonder House reference (Oct 24 2026): mark on the
-           left, the page links in small type beside it, and a white pill
-           with a round icon button on the right. Phones fold the links into
-           the MENU panel below. */
+        /* Header after the Sonar reference (Nov 24 2026): one floating pill,
+           centred at the top, holding the mark and name, the page links as
+           small chips, and a white Apply button. Phones keep the mark and a
+           MENU chip; the links fold into the panel below. */
         .hdr { position:fixed; top:0; left:0; right:0; z-index:100; pointer-events:none;
                height:clamp(64px,6vw,84px); padding:0 clamp(1rem,2.6vw,2rem);
-               display:flex; align-items:center; gap:1rem;
+               display:flex; align-items:center; justify-content:center;
                font-family:'Inter',system-ui,sans-serif; font-size:.8rem; font-weight:400; letter-spacing:-.01em;
                color:#fff; transition:color .35s ease; }
         .hdr[data-tone='on-light'] { color:#141414; }
-        .hdr a, .hdr button { pointer-events:auto; color:inherit; text-decoration:none; background:none;
-               border:0; padding:.35rem 0; font:inherit; letter-spacing:inherit; cursor:pointer; }
-        .hdr-brand { display:inline-flex; align-items:center; }
-        .hdr-mark { width:26px; }
-        .hdr-links { display:flex; gap:clamp(1rem,1.9vw,1.75rem); margin-left:clamp(3rem,12vw,12rem); list-style:none; padding:0; }
-        .hdr-links a { opacity:.86; transition:opacity .2s ease; }
-        .hdr-links a:hover { opacity:1; }
-        .hdr-spacer { flex:1; }
-        .hdr .hdr-pill { display:inline-flex; align-items:center; gap:.75rem; padding:4px 4px 4px 1rem;
-               border-radius:999px; background:#fff; color:#0b0b0b; font-size:.75rem; font-weight:500;
+        .hdr-bar { pointer-events:auto; display:flex; align-items:center; gap:4px; padding:5px;
+               border-radius:14px; background:rgba(22,24,28,.72); border:1px solid rgba(255,255,255,.12);
+               transition:background .35s ease, border-color .35s ease, opacity .5s ease .15s; }
+        @media (hover:hover) {
+          .hdr-bar { background:rgba(22,24,28,.42); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+        }
+        .hdr[data-tone='on-light'] .hdr-bar { background:rgba(255,255,255,.78); border-color:rgba(0,0,0,.08); }
+        .hdr a, .hdr button { color:inherit; text-decoration:none; background:none;
+               border:0; font:inherit; letter-spacing:inherit; cursor:pointer; }
+        .hdr-brand { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .9rem .35rem .45rem;
+               border-radius:10px; font-weight:500; font-size:.85rem; }
+        .hdr-brand .hdr-word { letter-spacing:-.01em; }
+        .hdr-mark { width:24px; }
+        .hdr-links { display:flex; gap:4px; list-style:none; margin:0; padding:0; }
+        .hdr-links a { display:block; padding:.5rem .85rem; border-radius:10px; background:rgba(255,255,255,.07);
+               transition:background .2s ease; }
+        .hdr-links a:hover { background:rgba(255,255,255,.16); }
+        .hdr[data-tone='on-light'] .hdr-links a { background:rgba(0,0,0,.05); }
+        .hdr[data-tone='on-light'] .hdr-links a:hover { background:rgba(0,0,0,.1); }
+        .hdr .hdr-pill { display:inline-flex; align-items:center; gap:.5rem; margin-left:clamp(.5rem,2vw,1.75rem);
+               padding:.5rem .55rem .5rem 1rem; border-radius:10px; background:#fff; color:#0b0b0b; font-weight:500;
                transition:background .3s ease, color .3s ease; }
-        .hdr-pill i { display:grid; place-items:center; width:30px; height:30px; border-radius:50%;
+        .hdr-pill i { display:grid; place-items:center; width:22px; height:22px; border-radius:6px;
                background:#0b0b0b; color:#fff; transition:transform .3s cubic-bezier(.22,1,.36,1); }
         .hdr .hdr-pill:hover i { transform:rotate(45deg); }
         .hdr[data-tone='on-light'] .hdr-pill { background:#0b0b0b; color:#fff; }
         .hdr[data-tone='on-light'] .hdr-pill i { background:#fff; color:#0b0b0b; }
-        .hdr-menu { display:none; text-transform:uppercase; letter-spacing:.06em; font-size:.85rem; font-weight:500; }
+        .hdr-menu { display:none; text-transform:uppercase; letter-spacing:.06em; font-size:.75rem; font-weight:500;
+               padding:.5rem .9rem; border-radius:10px; background:rgba(255,255,255,.1); }
+        .hdr[data-tone='on-light'] .hdr-menu { background:rgba(0,0,0,.06); }
         .hdr a:focus-visible, .hdr button:focus-visible { outline:1px solid currentColor; outline-offset:4px; }
         /* The flying preloader mark lands here, so the real one waits for it. */
-        html.bw-preloading .hdr-mark, html.bw-preloading .hdr-links,
+        html.bw-preloading .hdr-mark, html.bw-preloading .hdr-links, html.bw-preloading .hdr-bar,
         html.bw-preloading .hdr-menu, html.bw-preloading .hdr-pill { opacity:0; }
         .hdr-links, .hdr-menu, .hdr-pill { transition:opacity .5s ease .15s; }
 
@@ -215,6 +235,9 @@ export function Nav() {
         @media (max-width:899px) {
           .hdr-links, .hdr .hdr-pill { display:none; }
           .hdr-menu { display:inline-block; }
+          .hdr { justify-content:stretch; }
+          .hdr-bar { width:100%; justify-content:space-between; }
+          .hdr-brand .hdr-word { display:none; }
         }
         @media (max-width:767px) {
           .mnu { width:100vw; min-width:0; }
@@ -225,20 +248,22 @@ export function Nav() {
       `}</style>
 
       <header className="hdr" data-tone={tone}>
-        <a href="/" className="hdr-brand" aria-label="BlackWater Marketing, home">
-          <BrandMark className="hdr-mark" />
-        </a>
-        <ul className="hdr-links">
-          {PRIMARY.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
-        </ul>
-        <span className="hdr-spacer" />
-        <button type="button" className="hdr-pill" onClick={openApply}>
-          Apply now <i><Arrow diagonal /></i>
-        </button>
-        <button ref={menuBtn} type="button" className="hdr-menu" aria-expanded={open} aria-controls="site-menu"
-                onClick={() => setOpen(true)}>
-          Menu
-        </button>
+        <div className="hdr-bar">
+          <a href="/#hero" className="hdr-brand" aria-label="BlackWater Marketing, home" onClick={toHero}>
+            <BrandMark className="hdr-mark" />
+            <span className="hdr-word" aria-hidden="true">BlackWater</span>
+          </a>
+          <ul className="hdr-links">
+            {PRIMARY.map((l) => <li key={l.href}><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+          <button type="button" className="hdr-pill" onClick={openApply}>
+            Apply now <i><Arrow diagonal /></i>
+          </button>
+          <button ref={menuBtn} type="button" className="hdr-menu" aria-expanded={open} aria-controls="site-menu"
+                  onClick={() => setOpen(true)}>
+            Menu
+          </button>
+        </div>
       </header>
 
       <div className={`mnu-scrim${open ? ' is-open' : ''}`} onClick={() => setOpen(false)} aria-hidden="true" />
