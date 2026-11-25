@@ -20,38 +20,38 @@ import { useApply } from '../ui/ApplyModal'
 const SERVICES = [
   {
     label: 'Paid Ads', orb: 'iridescent', href: '/services/paid-ads/',
-    h1: 'Turn Attention Into', h2: 'Paying Customers.',
-    p: 'Meta, TikTok and Google campaigns built, managed and scaled. Structure first, creative second, and scaling only once cost per result earns it.',
+    h1: 'Turn Scrollers Into', h2: 'Paying Customers.',
+    p: 'We set up, run and grow your ads on Meta, TikTok and Google. We only spend more once the ads are paying off.',
   },
   {
-    label: 'Funnel Creation & Optimization', orb: 'ribbon', href: '/services/funnels/',
-    h1: 'A Path From Click', h2: 'To Customer.',
-    p: 'The steps between the ad and the purchase, designed deliberately rather than assembled by accident. Most brands lose more money here than in the ad account.',
+    label: 'Funnels', orb: 'ribbon', href: '/services/funnels/',
+    h1: 'A Clear Path From', h2: 'Ad To Checkout.',
+    p: 'Every step between seeing your ad and buying, planned on purpose. Most brands lose more money here than in their ads.',
   },
   {
-    label: 'Ad Creative Generation', orb: 'prism', href: '/services/creative-strategy/',
-    h1: 'Creative Is The', h2: 'Targeting Now.',
-    p: 'Angles, hooks, scripts and concepts. Broad targeting plus a strong signal beats interest stacks, which makes the ad itself the thing deciding who sees it.',
+    label: 'Ad Creative', orb: 'prism', href: '/services/creative-strategy/',
+    h1: 'Better Ads Find', h2: 'Better Buyers.',
+    p: 'We write the ideas, hooks and scripts for your ads. Today the ad itself decides who sees it, so the ad matters most.',
   },
   {
     label: 'Email & SMS Marketing', orb: 'pearl', href: '/services/email-sms/',
-    h1: 'Own The Audience', h2: 'You Already Paid For.',
-    p: 'Flows and campaigns that earn revenue from people who already know you. The cheapest customer you will ever get is the one you have bought once already.',
+    h1: 'Sell Again To', h2: 'Past Customers.',
+    p: 'Emails and texts that bring people back to buy again. Someone who already bought once is the cheapest sale you will ever get.',
   },
   {
     label: 'B2B Marketing', orb: 'chrome', href: '/services/b2b-marketing/',
-    h1: 'Reach The Accounts', h2: 'That Actually Buy.',
-    p: 'Longer cycles, smaller lists, bigger contracts. B2B rewards precision and patience, not the volume tactics that work for consumer brands.',
+    h1: 'Reach The Companies', h2: 'That Buy.',
+    p: 'Fewer buyers, bigger deals, longer waits. Selling to businesses takes careful targeting, not the mass tactics used for shoppers.',
   },
   {
-    label: 'CRM & Conversion Optimization', orb: 'gold', href: '/services/crm-cro/',
-    h1: 'Fix The Leaks', h2: 'Before You Scale.',
-    p: 'Pipeline hygiene, lead routing and conversion rate. Pouring more traffic into a funnel that leaks just makes the leak more expensive.',
+    label: 'CRM & Conversion', orb: 'gold', href: '/services/crm-cro/',
+    h1: 'Fix The Leaks', h2: 'Before You Spend More.',
+    p: 'We make sure every lead gets followed up and more visitors buy. Sending more traffic to a leaky site just wastes more money.',
   },
   {
     label: 'Web Design & Landing Pages', orb: 'rock', href: '/services/landing-pages/',
-    h1: 'Stop Leaking The', h2: 'Traffic You Buy.',
-    p: 'Conversion-focused pages built for paid traffic. Halving cost per acquisition is often a page problem rather than a campaign problem.',
+    h1: 'Pages That Turn', h2: 'Clicks Into Sales.',
+    p: 'Fast, simple pages built for people coming from your ads. When sales cost too much, the page is often the problem, not the ad.',
   },
 ]
 
@@ -60,9 +60,9 @@ const SERVICES = [
    reproduces the services page as it was, so that layout is untouched. */
 export function ServicesGrid({
   headingLevel = 'h1',
-  title = 'What We Do',
-  emph = 'relentlessly',
-  lede = 'Platforms change, creative fatigues, costs move. We build the system underneath so performance survives all three, and every account runs on the same tested framework rather than whatever worked last month.',
+  title = 'Our Marketing',
+  emph = 'services',
+  lede = 'Everything an online store needs to get more sales, done by one team. Every account follows the same tested playbook.',
   limit,
   footer = null,
 }) {

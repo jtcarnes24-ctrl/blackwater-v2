@@ -14,18 +14,18 @@ gsap.registerPlugin(ScrollTrigger)
    so it carries no dates, client names or results. */
 
 const STEPS = [
-  { when: 'Week 1',  title: 'Audit and tracking',
-    line: 'We check your pixel, events and account structure, so every number after this can be trusted.' },
-  { when: 'Week 2',  title: 'Strategy',
-    line: 'We lock in your offer, the angles to test, who we are talking to, and the one action we want people to take.' },
-  { when: 'Week 3',  title: 'First creative batch',
-    line: 'The first round of ads gets made. Hooks written, UGC creators briefed.' },
-  { when: 'Week 4',  title: 'Launch',
-    line: 'Your testing campaign goes live, with budgets set from day one.' },
+  { when: 'Week 1',  title: 'Check your setup',
+    line: 'We check your tracking and your ad account, so every number after this is right.' },
+  { when: 'Week 2',  title: 'Make the plan',
+    line: 'We pick your offer, the ad ideas to test, who we are talking to, and the one thing we want them to do.' },
+  { when: 'Week 3',  title: 'Make the first ads',
+    line: 'We write the hooks and brief the creators who film your first round of ads.' },
+  { when: 'Week 4',  title: 'Go live',
+    line: 'Your first test ads go live, with budgets set from day one.' },
   { when: 'Month 2', title: 'Test every week',
-    line: 'New ads go live weekly. Winners get more budget, and what stops working comes off.' },
-  { when: 'Month 3', title: 'Scale',
-    line: 'Proven ads get pushed harder, and the funnel and retention get tightened around them.' },
+    line: 'New ads go live every week. Winners get more money. Ads that stop working get turned off.' },
+  { when: 'Month 3', title: 'Grow what works',
+    line: 'We put more money behind the best ads and tighten up your site and emails around them.' },
 ]
 
 export function AboutTimeline() {
@@ -159,9 +159,8 @@ export function AboutTimeline() {
       <div className="tl-stage">
         <div className="tl-track" ref={trackRef}>
           <div className="tl-intro">
-            <p className="tl-kicker">Working together</p>
             <h2 id="tl-title" className="tl-title">Your first <span className="emph">90 days.</span></h2>
-            <p className="tl-sub">What happens after you sign, week by week. No handoffs, no guessing what comes next.</p>
+            <p className="tl-sub">What happens after you sign, week by week. No handoffs and no guessing.</p>
           </div>
 
           <div className="tl-rail">
@@ -184,7 +183,6 @@ export function AboutTimeline() {
             </ol>
           </div>
         </div>
-        <p className="tl-period" aria-hidden="true">Week 1 to month 3</p>
       </div>
     </section>
   )

@@ -94,11 +94,7 @@ export function ResultsSection({ dark = false, heading = true }) {
   return (
     <section id="results" style={{ background: t.bg, padding: 'clamp(5rem, 12vw, 10rem) clamp(1.5rem, 8vw, 7rem)', borderTop: dark ? 'none' : `1px solid ${t.a(0.08)}` }}>
       <motion.div variants={staggerContainer(0.08)} initial="hidden" whileInView="show" viewport={viewport}>
-        <motion.p variants={fadeUp} transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: t.a(0.62), marginBottom: '1.25rem', fontWeight: 600 }}>
-          The Numbers
-        </motion.p>
-        {/* /results/ already says it in its hero, so it only keeps the eyebrow. */}
+        {/* /results/ already says it in its hero, so it drops the heading. */}
         {heading && ['RESULTS THAT', <span className="emph">speak</span>].map((line, i) => (
           <div key={i} style={{ overflow: 'hidden' }}>
             <motion.h2

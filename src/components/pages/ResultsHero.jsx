@@ -271,7 +271,6 @@ export function ResultsHero({ title, emph, sub }) {
       <canvas ref={canvasRef} aria-hidden="true" />
 
       <div className="rh-copy">
-        <p className="rh-kicker">Client results</p>
         <h1 className="rh-title">{title} <span className="emph">{emph}</span></h1>
         {sub && <p className="rh-sub">{sub}</p>}
       </div>

@@ -7,39 +7,39 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'The gap between the click and the purchase',
+    h: 'What happens after the click',
     p: [
-      'Brands spend months optimising ads and almost no time on what happens after the click. That is backwards. The ad buys attention; everything after it decides whether that attention turns into money.',
-      'A funnel is not a landing page with an upsell bolted on. It is the whole sequence: what the ad promised, what the page delivers, what the checkout asks for, and what happens in the days after someone does or does not buy.',
+      'Brands spend months tuning ads and almost no time on what happens after the click. That\'s backwards. The ad buys attention. Everything after it decides if that attention turns into money.',
+      'A funnel isn\'t a landing page (the page people reach after clicking your ad) with an upsell added. It\'s the whole path: what the ad promised, what the page delivers, what checkout asks for, and what happens in the days after.',
     ],
     list: [
-      'Mapping the current path and finding where people actually drop',
-      'Message match between ad, page and offer so nobody has to start again',
-      'Checkout and form friction removed rather than redesigned for its own sake',
-      'Follow-up for the people who did not convert the first time',
-      'Post-purchase sequence, because the second order is cheaper than the first',
+      'Mapping the path today and finding where people drop off',
+      'Matching the ad, page and offer so nobody has to start over',
+      'Less friction in checkout and forms, without redesigning just to redesign',
+      'Follow-up for people who didn\'t buy the first time',
+      'A post-purchase sequence, because the second order costs less than the first',
     ],
   },
   {
-    h: 'Where the money usually leaks',
+    h: 'Where the money leaks',
     p: [
-      'In most accounts we audit, the biggest single loss is not in the ad account at all. It is a mismatch between what the ad said and what the page shows, or a checkout that asks for more than it needs.',
-      'These are unglamorous fixes. They are also the ones that change the numbers fastest, because they improve every campaign at once rather than one ad at a time.',
+      'In most accounts we audit, the biggest loss isn\'t in the ad account. It\'s a gap between what the ad said and what the page shows. Or a checkout that asks for more than it needs.',
+      'These fixes aren\'t exciting. But they move the numbers fastest, because they help every campaign at once.',
     ],
   },
   {
-    h: 'How we approach it',
+    h: 'How we work',
     p: [
-      'We measure before we change anything, so improvements can be attributed rather than assumed. Changes go in one at a time where traffic allows.',
-      'If the funnel is already sound and the problem is upstream in the creative or the offer, we will tell you that instead of rebuilding something that works.',
+      'We measure before we change anything, so we know what caused each improvement. Where traffic allows, we change one thing at a time.',
+      'If your funnel is solid and the real problem is the creative or the offer, we\'ll tell you. We won\'t rebuild something that works.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Is this different from landing page work?', a: 'It overlaps. A landing page is one step; the funnel is every step from ad to repeat purchase. We often start with the page because it is the fastest win, then widen out.' },
-  { q: 'Do I need new software for this?', a: 'Rarely. Most brands already have the tools and are using a fraction of them.' },
-  { q: 'How long does it take?', a: 'The mapping and the obvious fixes are quick. Proving a change worked takes as long as your traffic needs to produce a real result rather than noise.' },
+  { q: 'Is this different from landing page work?', a: 'It overlaps. A landing page is one step. The funnel is every step from ad to repeat purchase. We often start with the page because it\'s the fastest win, then widen out.' },
+  { q: 'Do I need new software?', a: 'Rarely. Most brands already own the tools and use only a small part of them.' },
+  { q: 'How long does it take?', a: 'Mapping and the obvious fixes are quick. Proving a change worked takes as long as your traffic needs to give a real result instead of noise.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -47,9 +47,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Funnel Creation & Optimization"
-        title="A Path From Click"
-        emph="to customer."
-        intro="The steps between the ad and the purchase, designed deliberately rather than assembled by accident. Most brands lose more money here than in the ad account."
+        title="Funnels That Turn"
+        emph="clicks into customers."
+        intro="Funnels are the steps between the ad and the purchase. We design them on purpose so you stop losing sales after the click."
         sections={sections}
         faqs={faqs}
       />

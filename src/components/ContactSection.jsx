@@ -26,13 +26,6 @@ export function ContactSection() {
         viewport={viewport}
         style={{ marginBottom: 'clamp(4rem, 10vw, 8rem)', paddingBottom: 'clamp(3rem, 8vw, 6rem)', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
       >
-        <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.5, ease: easeOut }}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '1.25rem', fontWeight: 600 }}
-        >
-          Ready When You Are
-        </motion.p>
 
         {/* The closing line is now the headline itself. It used to sit small
             under "STOP GUESSING. START scaling.", which was a second slogan
@@ -49,7 +42,7 @@ export function ContactSection() {
               color: '#ffffff', margin: 0,
             }}
           >
-            Learn to read the <span className="emph">water</span>.
+            Let's grow your <span className="emph">brand</span>.
           </motion.h2>
         </div>
 
@@ -58,7 +51,7 @@ export function ContactSection() {
           transition={{ duration: 0.5, ease: easeOut, delay: 0.1 }}
           style={{ fontSize: '0.95rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginTop: '1.75rem', maxWidth: '48ch' }}
         >
-          "I don't take on clients I can't actually help." — Jack Carnes
+          Jack Carnes: "I don't take on clients I can't actually help."
         </motion.p>
 
         <motion.div
@@ -75,9 +68,8 @@ export function ContactSection() {
       <div style={{ paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>© 2026 BlackWater Marketing. All rights reserved.</p>
         <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-          <p style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>Powered by Performance</p>
           <a href="https://www.instagram.com/blackwatermrkting/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @blackwatermrkting</a>
-          <a href="https://www.instagram.com/jackcrns/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @jackcrns</a>
+          <a href="https://www.instagram.com/thejackcarnes/" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>IG: @thejackcarnes</a>
           <a href="/privacy.html" style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em', textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.22)', paddingBottom: '1px' }}>Privacy Policy</a>
         </div>
       </div>

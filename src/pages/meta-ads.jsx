@@ -7,40 +7,40 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'What we actually do',
+    h: 'What we do',
     p: [
-      'Most brands do not have a Meta problem. They have a structure problem that shows up inside Meta. Budget is spread across too many ad sets, creative is judged before it has enough data to be judged, and the account gets rebuilt every time a week goes badly.',
-      'We take the account apart and rebuild it around a structure that can be read. Campaigns are consolidated so the algorithm gets enough events to learn from, testing is separated from scaling so a new creative never destabilises what is already working, and every change is made one at a time so you can tell what caused what.',
+      'Most brands don\'t have a Meta problem. They have a structure problem. Budget is spread across too many ad sets. Ads get judged before they have enough data. The account gets rebuilt every time one week goes badly.',
+      'We rebuild the account so you can read it. We combine campaigns so Meta has enough data to learn from. We keep testing apart from scaling, so new ads never mess up what works. And we change one thing at a time, so you know what caused what.',
     ],
     list: [
-      'Account, pixel and conversions API setup, including event configuration and deduplication',
-      'Campaign architecture built for the spend level you are actually at, not the one you want to be at',
-      'Structured creative testing with a defined win condition before the test runs',
-      'Scaling only on the campaigns that have earned it, at increments that do not reset learning',
-      'Weekly reporting on cost per result, click-through rate and return on ad spend',
+      'Account, pixel (code that tracks what visitors do) and conversions API (a backup that sends sales data straight to Meta) setup, with duplicate events cleaned up',
+      'Campaign structure built for the spend you have now',
+      'Creative tests with a clear rule for what counts as a win, set before the test starts',
+      'Scaling only what has earned it, in steps small enough to keep Meta\'s learning',
+      'Weekly reports on cost per result, click-through rate and return on ad spend',
     ],
   },
   {
     h: 'How we judge a campaign',
     p: [
-      'We do not optimise for the metrics that look good in a screenshot. Reach, impressions and engagement rate tell you almost nothing about whether the account is making money.',
-      'The three numbers that decide whether a campaign lives are cost per result, click-through rate and return on ad spend. Cost per result tells you what you are paying for the outcome you actually want. Click-through rate tells you whether the creative is earning attention. Return on ad spend tells you whether the whole thing is worth continuing.',
-      'A campaign that is failing on all three gets killed. A campaign failing on one gets diagnosed, because the fix for weak click-through is a creative problem and the fix for a high cost per result is usually a structure or an offer problem. Treating them as the same thing is how accounts get rebuilt in circles.',
+      'Reach, impressions and engagement tell you almost nothing about whether you\'re making money. Three numbers decide if a campaign lives.',
+      'Cost per result is what you pay for the outcome you want. Click-through rate is the share of people who click, so it shows if the ad earns attention. Return on ad spend is how much you make back for every $1 you spend on ads.',
+      'A campaign that fails all three gets cut. One that fails a single number gets diagnosed. Weak click-through is a creative problem. A high cost per result is usually a structure or offer problem. Mixing them up is how accounts get rebuilt in circles.',
     ],
   },
   {
     h: 'Who this is for',
     p: [
-      'This works best for e-commerce and direct-to-consumer brands that already have product-market fit and want paid social to become a predictable channel rather than a monthly gamble.',
-      'It works badly for brands hoping ads will fix a product nobody wants, or expecting a profitable account in week one. Meta needs conversion volume before it can optimise, and buying that data takes time. We would rather say that up front than discover it together in month two.',
+      'This works best for e-commerce and direct-to-consumer brands that already have a product people want. They want paid social to be steady, not a monthly gamble.',
+      'It works badly if you hope ads will fix a product nobody wants. It also fails if you expect profit in week one. Meta needs sales data before it can optimize, and that takes time. We\'d rather tell you now than find out in month two.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Do I keep ownership of my ad account?', a: 'Yes, always. We request partner access to your Business Manager, which means you own the account, the pixel, the audiences and the payment method. You can remove our access at any time without asking us.' },
-  { q: 'How long before we see results?', a: 'Meta needs conversion volume before it optimises properly. Expect the first few weeks to be about gathering data and finding which creative angles hold attention, not about hitting a target return.' },
-  { q: 'Do you write the ad creative too?', a: 'Yes. Creative is the largest lever in a modern Meta account, so it is not treated as a separate service. Hooks, concepts and angles are part of the work.' },
+  { q: 'Do I keep ownership of my ad account?', a: 'Yes, always. We ask for partner access to your Business Manager. You own the account, pixel, audiences and payment method. You can remove our access any time.' },
+  { q: 'How long before we see results?', a: 'Meta needs sales data before it optimizes well. The first few weeks are about gathering data and finding which angles hold attention, not hitting a target return.' },
+  { q: 'Do you write the ad creative too?', a: 'Yes. The ad itself is the biggest thing you control in a Meta account, so it\'s part of the work. That includes hooks, concepts and angles.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -48,9 +48,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Meta Ads Management"
-        title="Meta Ads That Scale"
-        emph="profitably."
-        intro="Facebook and Instagram campaigns built, managed and scaled for e-commerce and DTC brands. Structure first, creative second, scaling only once the numbers earn it."
+        title="Meta Ads For"
+        emph="online brands."
+        intro="Facebook and Instagram ads for e-commerce and direct-to-consumer brands. We set them up, run them and scale them once the numbers say it's time."
         sections={sections}
         faqs={faqs}
       />

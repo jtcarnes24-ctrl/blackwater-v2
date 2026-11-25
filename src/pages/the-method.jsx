@@ -5,29 +5,29 @@ import { Layout } from '../Layout'
 import { MethodSystems } from '../components/pages/MethodSystems'
 import { ContactSection } from '../components/ContactSection'
 
-/* Lead copy is Jack's existing four pillars, taken verbatim from FlowGroup1.
+/* Lead copy matches the four pillars in FlowGroup1 (simplified Nov 24 2026).
    The closing lines describe how the work is run; they deliberately contain
    no performance numbers or client claims. */
 const systems = [
   {
-    label: 'Pillar One', num: '01', title: 'A Method, Not a Template',
-    lead: 'Built by studying the top-performing strategies across the industry and keeping only what actually produces results. Every campaign runs on the same foundation, so performance is repeatable instead of lucky.',
-    close: 'The point of a method is that it survives a bad month. When results move you can tell what moved them, because only one thing changed.',
+    num: '01', title: 'One Tested Playbook',
+    lead: 'We studied what the best brands do and kept only what works. Every account runs on the same proven steps, so good results can be repeated, not lucky.',
+    close: 'A good method holds up in a bad month. When results change, you can tell why, because we only change one thing at a time.',
   },
   {
-    label: 'Pillar Two', num: '02', title: 'Audiences Built on Real Intent',
-    lead: 'Most agencies pick interests and hope. We work from intent data drawn from a co-operative of more than 500,000 sites worldwide, tracking over 22,000 intent topics, so we can target people already in the market for what you sell and feed that into lookalikes. Very few agencies work this way.',
-    close: 'Targeting matters less than it used to, but starting from real intent still beats starting from a list of interests someone picked by feel.',
+    num: '02', title: 'Ads For People Ready To Buy',
+    lead: 'Most agencies guess at interests and hope. We use buying data from more than 500,000 websites, covering over 22,000 topics. It shows us who is already shopping for what you sell, and we reach more people like them. Very few agencies work this way.',
+    close: 'Targeting matters less than it used to. But starting with real buyers still beats guessing.',
   },
   {
-    label: 'Pillar Three', num: '03', title: 'Creators On Demand',
-    lead: 'Winning ads take volume, and volume takes people on camera. We pull from a network of UGC creators to get brands real content at the pace testing actually requires. No casting, no filming on your end.',
-    close: 'An account fed two ads a month has stopped learning. The supply of creative is what keeps testing alive.',
+    num: '03', title: 'Creators Film Your Ads',
+    lead: 'Winning takes a lot of ads, and that takes real people on camera. Our network of creators makes new videos as fast as we need them. You never have to film.',
+    close: 'An account that gets two new ads a month stops learning. A steady supply of new ads keeps testing going.',
   },
   {
-    label: 'Pillar Four', num: '04', title: 'Testing On A Schedule',
-    lead: 'New creative goes live every week, winners get more budget, and anything that stops working comes off. You get the numbers twice a week, so you always know what changed and why.',
-    close: 'Reporting twice a week is not about the volume of updates. It is so nothing drifts for a fortnight before anyone notices.',
+    num: '04', title: 'New Ads Every Week',
+    lead: 'We test new ads every week. Winners get more money and ads that stop working get turned off. You get your numbers twice a week, so you always know what changed.',
+    close: 'Twice-a-week reports are not about more updates. They make sure nothing goes wrong for two weeks before anyone notices.',
   },
 ]
 
@@ -35,10 +35,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <MethodSystems
-        eyebrow="The Method"
-        heading="How We Scale"
+        heading="How We Grow"
         emph="brands."
-        standfirst="Four pillars, operated as one system. Every account we take on runs through the same framework."
+        standfirst="Four steps, run as one system. Every account we take on follows them."
         systems={systems}
       />
       <ContactSection />

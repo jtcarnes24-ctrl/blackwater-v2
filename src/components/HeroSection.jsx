@@ -40,14 +40,14 @@ const smooth = (a, b, v) => { const t = clamp01((v - a) / (b - a)); return t * t
 
 // The Method, as on /the-method, trimmed to one line each.
 const BEATS = [
-  { from: 3,  to: 6,    num: '01', title: 'A method, not a template',
-    line: 'Every campaign runs on the same foundation, so performance is repeatable instead of lucky.' },
-  { from: 6,  to: 9,    num: '02', title: 'Audiences built on real intent',
-    line: 'We target people already in the market for what you sell, then feed them into lookalikes.' },
-  { from: 9,  to: 12,   num: '03', title: 'Creators on demand',
-    line: 'A network of UGC creators gets you real content at the pace testing requires. No filming on your end.' },
-  { from: 12, to: 14,   num: '04', title: 'Testing on a schedule',
-    line: 'New creative goes live every week, winners get more budget, and anything that stops working comes off.' },
+  { from: 3,  to: 6,    num: '01', title: 'One tested playbook',
+    line: 'Every account runs on the same proven steps, so good results can be repeated, not lucky.' },
+  { from: 6,  to: 9,    num: '02', title: 'Ads for people ready to buy',
+    line: 'We find people already shopping for what you sell, then reach more people like them.' },
+  { from: 9,  to: 12,   num: '03', title: 'Creators film your ads',
+    line: 'Real creators make new video ads for you as fast as we need them. You never have to film.' },
+  { from: 12, to: 14,   num: '04', title: 'New ads every week',
+    line: 'We test new ads every week. Winners get more money. Ads that stop working get turned off.' },
 ]
 
 // Frame load order: first frame, then coarse to fine, so an early scroll
@@ -489,7 +489,7 @@ export function HeroSection() {
 
         {BEATS.map((b, k) => (
           <div key={b.num} ref={(el) => { beatRefs.current[k] = el }} className="hx-beat">
-            <p className="hx-num">{b.num} / The Method</p>
+            <p className="hx-num">{b.num}</p>
             <h2>{b.title}</h2>
             <p>{b.line}</p>
           </div>
@@ -516,13 +516,13 @@ export function HeroSection() {
                     <span key={src}><img src={src} alt="" decoding="async" /></span>
                   ))}
                 </div>
-                <div><b>35+ brands</b><small>worked with on paid growth</small></div>
+                <div><b>Brands we grow</b><small>ads, websites and more</small></div>
               </div>
               <h1 className="sn-h1" data-rise>
                 Scaling E-commerce Brands<br />With Data, Not <em>Guesswork</em>
               </h1>
               <p className="sn-sub" data-rise>
-                Paid ads, creative, funnels and retention run as one system, by the person actually on your account.
+                We run your ads, make the videos, fix the pages, and emails behind them. One team, start to finish.
               </p>
               <button type="button" className="sn-btn" data-rise onClick={openApply}>
                 Apply now

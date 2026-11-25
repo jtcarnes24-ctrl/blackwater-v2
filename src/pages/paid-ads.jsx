@@ -7,40 +7,40 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'What we actually do',
+    h: 'What we do',
     p: [
-      'Most brands do not have a Meta problem or a TikTok problem. They have a structure problem that shows up inside the platform. Budget is spread across too many ad sets, creative is judged before it has the data to be judged, and the account gets rebuilt every time a week goes badly.',
-      'We take the account apart and rebuild it around a structure that can be read. Campaigns are consolidated so the algorithm gets enough events to learn from, testing is separated from scaling so a new ad never destabilises what already works, and changes are made one at a time so you can tell what caused what.',
+      'Most brands don\'t have a Meta problem or a TikTok problem. They have a structure problem. Budget is spread across too many ad sets. Ads get judged before they have enough data. The account gets rebuilt every time one week goes badly.',
+      'We rebuild the account so you can read it. We combine campaigns so the platform has enough data to learn from. We keep testing apart from scaling, so new ads never mess up what works. And we change one thing at a time, so you know what caused what.',
     ],
     list: [
-      'Meta, TikTok and Google campaigns under one strategy rather than three disconnected accounts',
-      'Account, pixel and conversion tracking verified before spend starts',
-      'Campaign architecture built for the spend level you are actually at',
-      'Structured creative testing with a win condition defined before the test runs',
-      'Scaling in increments that do not reset learning',
-      'Reporting twice a week on cost per result, click-through rate and return on ad spend',
+      'Meta, TikTok and Google campaigns under one plan, not three separate accounts',
+      'Account, pixel (code that tracks what visitors do) and conversion tracking checked before spend starts',
+      'Campaign structure built for the spend you have now',
+      'Creative tests with a win condition set before the test starts',
+      'Scaling in steps small enough to keep the platform\'s learning',
+      'Reports twice a week on cost per result, click-through rate and return on ad spend',
     ],
   },
   {
     h: 'How we judge a campaign',
     p: [
-      'Reach, impressions and engagement rate tell you almost nothing about whether an account is making money. Three numbers decide whether a campaign lives: cost per result, click-through rate, and return on ad spend.',
-      'Failing all three means it gets cut. Failing one means it gets diagnosed, because weak click-through is a creative problem while a high cost per result is usually a structure or an offer problem. Treating them as the same thing is how accounts get rebuilt in circles.',
+      'Reach, impressions and engagement tell you almost nothing about whether you\'re making money. Three numbers decide if a campaign lives: cost per result (what you pay for the outcome you want), click-through rate (the share of people who click), and return on ad spend (how much you make back for every $1 spent on ads).',
+      'A campaign that fails all three gets cut. One that fails a single number gets diagnosed. Weak click-through is a creative problem. A high cost per result is usually a structure or offer problem. Mixing them up is how accounts get rebuilt in circles.',
     ],
   },
   {
     h: 'Who this is for',
     p: [
-      'Brands that already have product-market fit and want paid to become a predictable channel rather than a monthly gamble.',
-      'It works badly for anyone hoping ads will fix a product nobody wants, or expecting profit in week one. Platforms need conversion volume before they optimise, and buying that data takes time. We would rather say so up front than discover it together in month two.',
+      'Brands that already have a product people want, and want paid ads to be steady instead of a monthly gamble.',
+      'It works badly if you hope ads will fix a product nobody wants, or expect profit in week one. Platforms need sales data before they can optimize, and that takes time. We\'d rather say so now than find out in month two.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Do I keep ownership of my ad account?', a: 'Yes, always. We request partner access to your Business Manager, so you own the account, the pixel, the audiences and the payment method, and you can remove our access at any time without asking us.' },
-  { q: 'Which platform should we start on?', a: 'Usually the one where your customers already are, and usually one at a time. Getting a single channel stable beats running three badly.' },
-  { q: 'How long before we see results?', a: 'Expect the first few weeks to be about gathering data and finding which angles hold attention, not about hitting a target return.' },
+  { q: 'Do I keep ownership of my ad account?', a: 'Yes, always. We ask for partner access to your Business Manager. You own the account, pixel, audiences and payment method. You can remove our access any time.' },
+  { q: 'Which platform should we start on?', a: 'Usually the one where your customers already are, and usually one at a time. One steady channel beats three run badly.' },
+  { q: 'How long before we see results?', a: 'The first few weeks are about gathering data and finding which angles hold attention, not hitting a target return.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -48,9 +48,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Paid Ads"
-        title="Paid Ads That Scale"
-        emph="profitably."
-        intro="Meta, TikTok and Google campaigns built, managed and scaled for brands that want paid traffic to be a system rather than a monthly gamble."
+        title="Paid Ads On"
+        emph="every platform."
+        intro="Meta, TikTok and Google ads for brands that want paid traffic to be a steady system, not a monthly gamble. We build, manage and scale them."
         sections={sections}
         faqs={faqs}
       />

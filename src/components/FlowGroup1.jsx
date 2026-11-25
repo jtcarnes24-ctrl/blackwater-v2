@@ -5,12 +5,12 @@ import { StaggeredText } from './ui/StaggeredText'
 import ScrollStack, { ScrollStackItem } from './ui/ScrollStack/ScrollStack'
 
 const pillars = [
-  { num: '01', title: 'A Method, Not a Template', desc: 'Built by studying the top-performing strategies across the industry and keeping only what actually produces results. Every campaign runs on the same foundation, so performance is repeatable instead of lucky.' },
-  { num: '02', title: 'Audiences Built on Real Intent', desc: 'Most agencies pick interests and hope. We use intent data to build and target audiences already in the market for what you sell, then feed it into lookalikes. Very few agencies work this way.' },
-  { num: '03', title: 'Creators On Demand', desc: 'Winning ads take volume, and volume takes people on camera. We pull from a network of UGC creators to get brands real content at the pace testing actually requires. No casting, no filming on your end.' },
+  { num: '01', title: 'One Tested Playbook', desc: 'We studied what the best brands do and kept only what works. Every account runs on the same proven steps, so good results can be repeated, not lucky.' },
+  { num: '02', title: 'Ads For People Ready To Buy', desc: 'Most agencies guess at interests and hope. We use real buying data to find people already shopping for what you sell, then reach more people like them.' },
+  { num: '03', title: 'Creators Film Your Ads', desc: 'Winning takes a lot of ads, and that takes real people on camera. Our network of creators makes new videos as fast as we need them. You never have to film.' },
   /* Fourth pillar written to complete the 2x2 grid. Describes the testing
      cadence Jack already runs; confirm the wording before it stays. */
-  { num: '04', title: 'Testing On A Schedule', desc: 'New creative goes live every week, winners get more budget, and anything that stops working comes off. You get the numbers twice a week, so you always know what changed and why.' },
+  { num: '04', title: 'New Ads Every Week', desc: 'We test new ads every week. Winners get more money and ads that stop working get turned off. You get your numbers twice a week, so you always know what changed.' },
 ]
 
 export function FlowGroup1() {
@@ -30,19 +30,12 @@ export function FlowGroup1() {
           display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
           gap: '1.5rem', flex: 1, width: '100%',
         }}>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-            style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', fontWeight: 600 }}
-          >
-            About Us
-          </motion.p>
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             {[
-              { text: 'REDEFINING', delay: 0 },
-              { text: 'MARKETING FOR', delay: 0.26 },
-              { text: 'THE DIGITAL AGE', delay: 0.52, emph: 'digital' },
+              { text: 'WE HELP', delay: 0 },
+              { text: 'ONLINE BRANDS', delay: 0.26 },
+              { text: 'SELL MORE', delay: 0.52, emph: 'more' },
             ].map((line) => (
               <StaggeredText
                 key={line.text}
@@ -69,7 +62,7 @@ export function FlowGroup1() {
               lineHeight: 1.7, maxWidth: '55ch',
             }}
           >
-            BlackWater Marketing is a full-stack partner for e-commerce brands. Most agencies take one channel, run it, and hand everything around it back to you. We take on the whole growth side, so the ads, the funnel they point at, the creative that fills them, and the site that converts all get decided together. One partner accountable for the outcome instead of six vendors pointing at each other.
+            BlackWater Marketing is a growth partner for e-commerce brands. Most agencies run one thing, like your ads, and leave the rest to you. We handle all of it: the ads, the videos in them, the pages they send people to, and the emails after. One team owns the results, instead of six companies blaming each other.
           </motion.p>
         </div>
       </FlowSection>
@@ -83,21 +76,6 @@ export function FlowGroup1() {
         style={{ background: '#080808', color: '#ffffff', padding: 0 }}
       >
         <div style={{ padding: 'clamp(4rem, 9vw, 7rem) 0 0' }}>
-          {/* The orange tile mark was removed Aug 27 2026. Jack is reworking
-              the brand kit; until an accent colour is chosen the site is
-              black, white and greys only, and that mark was the single
-              saturated element left on the page. */}
-          <div style={{
-            padding: '0 clamp(1.25rem, 5vw, 4rem)', marginBottom: '1.5rem',
-          }}>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-              style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', fontWeight: 600, margin: 0 }}
-            >
-              How We Work
-            </motion.p>
-          </div>
 
           <ScrollStack
             useWindowScroll

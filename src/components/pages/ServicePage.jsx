@@ -66,7 +66,6 @@ export function ServicePage({ eyebrow, title, emph, intro, sections, faqs, work 
       `}</style>
 
       <div className="svc-wrap">
-        <p className="svc-eyebrow">{eyebrow}</p>
         <h1 className="svc-h1">
           {title} <span className="emph">{emph}</span>
         </h1>
@@ -126,11 +125,10 @@ export function ServicePage({ eyebrow, title, emph, intro, sections, faqs, work 
           )}
 
           <div className="svc-cta">
-            <h2>Want this run on your account?</h2>
+            <h2>Want us to run this for you?</h2>
             <p style={{ marginBottom: '1.75rem' }}>
-              Every account runs through the same tested framework, so performance is
-              repeatable instead of lucky. Apply and we will tell you honestly whether
-              we are the right fit.
+              Apply and we'll tell you honestly if we're the right fit, and what
+              we'd do first.
             </p>
             <LiquidButton onClick={openApply} variant="light">Apply Now →</LiquidButton>
           </div>

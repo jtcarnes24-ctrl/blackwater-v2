@@ -5,15 +5,15 @@ import { fadeUp, staggerContainer, easeOut, easeInOut, viewport } from '../lib/a
 const faqs = [
   {
     q: 'What does it cost?',
-    a: "It depends on what you need. We scope to your goals, not a fixed package. Most partners are on a monthly retainer, and we'll give you exact numbers on the call. No hidden fees, and your ad spend always goes straight to the platforms, never through us.",
+    a: "It depends on what you need. We price it around your goals, not a set package. Most brands pay a monthly fee, and we'll give you exact numbers on the call. No hidden fees. Your ad money always goes straight to the ad platforms, like Meta or Google, never through us.",
   },
   {
     q: 'What kind of businesses do you work with?',
-    a: "Mostly e-commerce and DTC brands ready to actually scale, plus a few local businesses we believe in. If you've got a product people want and a budget to grow, that's who we're built for.",
+    a: "Mostly e-commerce brands that are ready to grow, plus a few local businesses we believe in. If people want your product and you have a budget to grow, you're who we built this for.",
   },
   {
     q: 'How do I get started?',
-    a: "Book a quick call. We'll look at the whole business, not just the ad account, and tell you exactly what we'd do differently, and if it's a fit, we get to work. No pressure, no hard pitch.",
+    a: "Fill out the short application and book a call. We'll look at your whole business, not just your ads, and tell you what we'd change. If it's a fit, we get to work. No pressure, no hard sell.",
   },
 ]
 
@@ -116,19 +116,6 @@ export function FAQSection({ dark = false }) {
         style={{ maxWidth: '60rem', margin: '0 auto' }}
       >
         {/* Eyebrow */}
-        <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.5, ease: easeOut }}
-          style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            gap: '0.6rem', fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: t.a(0.55), fontWeight: 600, marginBottom: '1.5rem',
-          }}
-        >
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#85929d', display: 'inline-block' }} />
-          FAQs
-        </motion.p>
 
         {/* Heading */}
         <motion.h2
@@ -155,7 +142,7 @@ export function FAQSection({ dark = false }) {
             maxWidth: '48ch', margin: '1.5rem auto 0',
           }}
         >
-          Everything you need to know before we talk. Still have a question? Book a call and ask us directly.
+          Still have a question? Ask us on a call.
         </motion.p>
 
         {/* Accordion */}

@@ -14,16 +14,16 @@ import { ContactSection } from '../components/ContactSection'
    The verified numbers live in ResultsSection, which renders below. */
 const beats = [
   {
-    h: 'We were not built to blend in.',
-    p: 'Most agencies sell you a retainer and a monthly report. We would rather be judged on whether the account is making money, because that is the only number that decides if you stay.',
+    h: 'Judged on results, not reports.',
+    p: 'Most agencies sell you a monthly fee and a report. We would rather be judged on one thing: is your account making money? That is what decides if you stay.',
   },
   {
-    h: 'What drives us is not hype.',
-    p: 'It is cost per result, click-through rate and return on ad spend. Everything else is a vanity metric wearing a suit. If a campaign cannot justify itself on those three, it gets cut.',
+    h: 'Three numbers that matter.',
+    p: 'Cost per result, click-through rate and return on ad spend. In plain words: what each sale costs, how many people click, and how much you make back. Everything else is just for show. If a campaign cannot win on those three, it gets cut.',
   },
   {
-    h: 'One operator, on your account.',
-    p: 'You are not handed to a junior after the pitch. The person who builds the strategy is the person inside the ad account every day, which is why the framework stays consistent across every client we take on.',
+    h: 'The person you meet runs your account.',
+    p: 'You will not get handed to a junior after the first call. The person who builds your plan is the one inside your ad account every day.',
   },
 ]
 
@@ -35,7 +35,7 @@ createRoot(document.getElementById('root')).render(
       <WordWaveHero />
       <AboutTimeline />
       <AboutManifesto
-        statement="We strip out the noise, the fluff and the ego, and replace it with numbers you can act on."
+        statement="No fluff and no ego. Just clear numbers you can act on."
         beats={beats}
       />
       <ResultsSection />

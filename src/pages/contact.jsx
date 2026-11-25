@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')).render(
       <PageHeader
         title="Tell Us About Your"
         emph="brand."
-        sub="Apply below. We will tell you honestly whether we are the right fit, and what we would do first."
+        sub="Apply below. We'll tell you honestly if we're the right fit, and what we'd do first."
       />
       <ContactSection />
       <FAQSection />

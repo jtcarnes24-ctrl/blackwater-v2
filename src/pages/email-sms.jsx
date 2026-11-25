@@ -9,38 +9,38 @@ const sections = [
   {
     h: 'You already paid for these people',
     p: [
-      'Acquisition gets the attention because it is where the spend is. But the list you have built is the one audience you do not pay a platform to reach again, and in most accounts it is badly underused.',
-      'The work splits into two halves. Flows run automatically off behaviour and quietly earn revenue every day. Campaigns are the sends you decide on. Most brands do a bit of the second and almost none of the first.',
+      'New customers get the attention because that\'s where the spend is. But your email and text list is the one audience you don\'t pay a platform to reach again. In most accounts, it\'s badly underused.',
+      'The work has two halves. Flows are automatic messages triggered by what someone does, and they quietly earn revenue every day. Campaigns are one-off sends you choose to make. Most brands do some campaigns and almost no flows.',
     ],
     list: [
-      'Welcome sequence for people who joined but have not bought',
-      'Abandoned cart and abandoned checkout, separated because they are different problems',
-      'Browse abandonment for intent that never reached the cart',
-      'Post-purchase, review requests and replenishment timing',
-      'Win-back for lapsed customers before they are gone for good',
-      'Campaign calendar that does not rely on discounting every time',
+      'A welcome sequence for people who joined but haven\'t bought',
+      'Abandoned cart and abandoned checkout, kept separate because they are different problems',
+      'Browse abandonment, for shoppers who looked but never added to cart',
+      'Post-purchase emails, review requests and reorder timing',
+      'Win-back messages for past customers before they\'re gone for good',
+      'A campaign calendar that doesn\'t need a discount every time',
     ],
   },
   {
-    h: 'SMS is a different instrument',
+    h: 'SMS works differently',
     p: [
-      'Email tolerates volume. SMS does not. It arrives on a device people treat as personal, so the bar for sending is much higher and the penalty for over-sending is that they leave permanently.',
-      'We use it for the moments that genuinely warrant interrupting someone: an order update, a restock they asked about, a deadline that is real. Not a fourth reminder about a sale.',
+      'Email can handle volume. SMS can\'t. It lands on a device people treat as personal, so the bar for sending is much higher. Send too much and people leave for good.',
+      'We use SMS for moments worth interrupting someone: an order update, a restock they asked about, or a real deadline. Not a fourth reminder about a sale.',
     ],
   },
   {
-    h: 'Deliverability is part of the job',
+    h: 'Getting into the inbox',
     p: [
-      'A perfect flow that lands in spam earns nothing. Authentication, list hygiene and sending reputation are not separate concerns from the copy; they decide whether the copy is ever read.',
-      'We also keep consent clean. Buying or scraping lists damages the sending domain you depend on, and it is not something we will do.',
+      'A perfect flow that lands in spam earns nothing. Email authentication, a clean list and a good sending reputation decide whether your copy gets read at all.',
+      'We also keep consent clean. Buying or scraping lists damages the sending domain you depend on. We won\'t do it.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Which platform do you work in?', a: 'Whichever you already use, in most cases. Switching platforms is a real cost and rarely the actual problem.' },
-  { q: 'How often should we send?', a: 'Enough to stay present, not so much that unsubscribes outpace signups. The right number depends on your category and your list, and it is something we watch rather than assume.' },
-  { q: 'Do flows really matter that much?', a: 'They are the part that runs whether or not anyone remembers to send something that week, which is exactly why they are worth building properly once.' },
+  { q: 'Which platform do you work in?', a: 'In most cases, the one you already use. Switching costs real time and money, and it\'s rarely the actual problem.' },
+  { q: 'How often should we send?', a: 'Often enough to stay in front of people, but not so often that unsubscribes beat signups. The right number depends on your category and list. We watch it instead of guessing.' },
+  { q: 'Do flows really matter that much?', a: 'Flows run whether or not anyone remembers to send something that week. That\'s why they\'re worth building well, once.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -48,9 +48,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Email & SMS Marketing"
-        title="Own The Audience"
-        emph="you already paid for."
-        intro="Flows and campaigns that earn revenue from people who already know you. The cheapest customer you will ever get is the one you have bought once already."
+        title="Email & SMS That"
+        emph="brings them back."
+        intro="Email and SMS flows and campaigns that bring in revenue from people who already know you. Your cheapest customer is one who has already bought once."
         sections={sections}
         faqs={faqs}
       />

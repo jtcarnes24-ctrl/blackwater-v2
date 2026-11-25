@@ -294,9 +294,8 @@ export function ProofSection() {
 
         {/* Arch content, fades in once the arch has formed */}
         <motion.div className="pm-content" style={{ opacity: contentOpacity, y: contentY }}>
-          <p className="pm-eyebrow">Client results</p>
           <h2 id="pm-title" className="pm-title">Real accounts.<br />Real numbers.</h2>
-          <p className="pm-sub">Straight from client dashboards. <span className="pm-hover">Hover</span><span className="pm-tap">Tap</span> a result to see the figures.</p>
+          <p className="pm-sub">Screenshots from real client accounts. <span className="pm-hover">Hover</span><span className="pm-tap">Tap</span> one to see the numbers.</p>
           <div className="pm-cta">
             <LiquidButton onClick={openApply}>Apply Now →</LiquidButton>
           </div>

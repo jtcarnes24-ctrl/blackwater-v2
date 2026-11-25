@@ -7,40 +7,40 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'TikTok is not Meta with different dimensions',
+    h: 'Why your Meta ads won\'t work on TikTok',
     p: [
-      'The most common way brands waste money on TikTok is running their Meta creative on it. The placement is the same shape, so it feels like it should work. It does not, because the two platforms reward completely different behaviour.',
-      'Meta rewards a clear offer put in front of a well-defined audience. TikTok rewards content that earns attention on its own merit before it ever asks for anything. An ad that opens with a logo and a discount code gets scrolled past in under a second. An ad that opens mid-sentence with a real person holding the product gets watched.',
-      'We build TikTok creative natively for the platform, then let performance decide which angles deserve budget.',
+      'Brands waste money on TikTok by running their Meta ads there. The ad is the same shape, so it feels like it should work. It doesn\'t, because the two apps reward different things.',
+      'Meta rewards a clear offer shown to the right audience. TikTok rewards content that earns attention before it asks for anything. An ad that opens with a logo and a discount code gets scrolled past in under a second. An ad that opens mid-sentence with a real person holding the product gets watched.',
+      'We build ads made for TikTok. Then results decide which angles get budget.',
     ],
   },
   {
     h: 'What the work looks like',
     p: [
-      'Setup comes first: the TikTok pixel, event configuration and a campaign structure that gives the algorithm enough conversion signal to optimise against.',
-      'Then volume. TikTok burns through creative faster than Meta does, so a campaign that is fed two ads a month will stall regardless of how good those two ads are. The account needs a steady supply of new angles, and the testing framework needs to identify a winner quickly enough to matter.',
+      'Setup comes first: the TikTok pixel (code that tracks what visitors do), event setup, and a campaign structure that gives TikTok enough sales data to learn from.',
+      'Then volume. TikTok burns through ads faster than Meta. A campaign fed two ads a month will stall, however good they are. You need a steady supply of new angles and a test that finds a winner fast.',
     ],
     list: [
-      'TikTok pixel and events setup, with conversion tracking verified before spend starts',
-      'Native-first creative concepts written for the platform rather than adapted from Meta',
-      'Hook testing, because the first second decides whether the rest of the ad is seen',
-      'Structured scaling once an angle proves it holds cost per result at higher spend',
-      'Honest reporting on which angles worked and which did not',
+      'Pixel and event setup, with tracking checked before spend starts',
+      'Ad concepts written for TikTok, not copied from Meta',
+      'Hook testing, because the first second decides if anyone sees the rest',
+      'Scaling once an angle keeps its cost per result (what you pay for each sale or lead) at higher spend',
+      'Honest reports on what worked and what didn\'t',
     ],
   },
   {
     h: 'When TikTok is the wrong channel',
     p: [
-      'TikTok suits visual, demonstrable, impulse-friendly products with a broad audience. If your product is genuinely better shown than explained, it is a strong fit.',
-      'It is a poor fit for high-consideration purchases with long sales cycles, tightly regulated categories, or brands with no capacity to produce a steady stream of new creative. If we think Meta alone would serve you better, we will say so rather than sell you a second channel you do not need.',
+      'TikTok suits products that look good on video, are easy to demo, and are easy to buy on impulse. If your product is better shown than explained, it\'s a strong fit.',
+      'It\'s a poor fit for things people think about for a long time before buying. It\'s also poor for tightly regulated categories, or brands that can\'t make a steady stream of new videos. If Meta alone would serve you better, we\'ll say so.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Do I need to appear on camera?', a: 'No, though founder-led content often performs well. Product-led demonstrations, voiceover formats and creator content all work. What matters is that it feels native to the platform rather than like a repurposed television spot.' },
-  { q: 'Can you run Meta and TikTok together?', a: 'Yes, and it is usually the better setup once Meta is stable. Meta tends to be the reliable base and TikTok the upside, so we would rather get one performing before adding the other.' },
-  { q: 'How much creative does TikTok need?', a: 'More than Meta. Creative fatigues faster, so the account needs a consistent supply of new angles rather than a single batch at the start.' },
+  { q: 'Do I need to be on camera?', a: 'No, though ads led by the founder often do well. Product demos, voiceovers and creator videos all work. The ad just needs to feel like TikTok, not a TV spot.' },
+  { q: 'Can you run Meta and TikTok together?', a: 'Yes, and it\'s usually better once Meta is stable. Meta is the steady base and TikTok the upside. We\'d rather get one working first.' },
+  { q: 'How many new ads does TikTok need?', a: 'More than Meta. Ads wear out faster, so you need a steady supply of new angles, not one batch at the start.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -48,9 +48,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="TikTok Ads Management"
-        title="TikTok Ads Built"
-        emph="natively."
-        intro="TikTok campaigns for e-commerce brands, built around creative made for the platform rather than repurposed from Meta. Setup, tracking, creative volume and scaling."
+        title="TikTok Ads Made"
+        emph="for TikTok."
+        intro="TikTok ads for e-commerce brands, built for the platform instead of copied from Meta. We handle setup, tracking, new ads and scaling."
         sections={sections}
         faqs={faqs}
       />

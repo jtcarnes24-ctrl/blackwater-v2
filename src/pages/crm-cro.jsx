@@ -7,39 +7,38 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'More traffic into a leaking funnel is just a more expensive leak',
+    h: 'More traffic into a leaky funnel costs more',
     p: [
-      'The instinct when results dip is to buy more traffic. Often the traffic is fine and the loss is happening after it arrives: leads sitting unactioned, records duplicated, a form asking for information nobody wants to give yet.',
-      'Fixing conversion improves every campaign at once. A page that converts twice as well halves your cost per acquisition without touching a single ad.',
+      'When results dip, the instinct is to buy more traffic. Often the loss comes after people arrive. Leads sit untouched, records get duplicated, and forms ask for too much too soon.',
+      'Fixing conversion helps every campaign at once. A page that converts twice as well cuts your cost per acquisition (what you pay to win a customer) in half, with no ad changes.',
     ],
     list: [
-      'Pipeline stages that reflect how buying actually happens',
-      'Lead routing and follow-up timing, since speed of response moves close rates more than almost anything else',
-      'Deduplication and data hygiene so reporting can be trusted',
-      'Form and checkout friction reduced to what is genuinely needed',
-      'Conversion tracking wired to the CRM so marketing and sales see the same numbers',
+      'Pipeline stages (the steps a lead moves through) that match how people buy',
+      'Lead routing (who gets each lead) and fast follow-up, since speed moves close rates',
+      'Clean data with no duplicates, so reports can be trusted',
+      'Forms and checkout cut down to what is needed',
+      'Conversion tracking tied to the CRM, so marketing and sales see the same numbers',
     ],
   },
   {
-    h: 'Marketing and sales looking at different numbers',
+    h: 'Marketing and sales see different numbers',
     p: [
-      'A common and expensive problem: the ad platform reports one figure, the CRM reports another, and nobody can say which is real. Decisions then get made on whichever number supports the argument.',
-      'Connecting the two is unglamorous work that pays for itself, because it ends the argument. Once both sides are looking at the same pipeline, the conversation moves from whose number is right to what to do next.',
+      'The ad platform shows one figure and the CRM shows another. Nobody knows which is real, so decisions follow whichever number backs the argument.',
+      'Connecting the two is unglamorous work, but it ends the argument. Then you can talk about what to do next.',
     ],
   },
   {
     h: 'Test properly or not at all',
     p: [
-      'Conversion work invites guessing. We change one thing at a time where traffic allows, and we say up front roughly how long a test needs to run before the result means anything.',
-      'Where volume is too low for a meaningful test, we will say so rather than declare a winner from noise.',
+      'We change one thing at a time when traffic allows. We say up front how long a test needs to run before the result means anything. If traffic is too low, we will say so instead of calling a winner from noise.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Which CRM do you work with?', a: 'Whichever you have. The principles do not change much between platforms, and migrating is rarely the actual fix.' },
-  { q: 'Is this the same as landing page work?', a: 'Related but wider. Landing pages are the front door; this covers what happens to a lead or an order after it comes through.' },
-  { q: 'How do you know a change worked?', a: 'By measuring before and after with enough volume for the difference to be real. If we cannot measure it honestly, we will tell you it is a judgement call rather than a proven gain.' },
+  { q: 'Which CRM do you work with?', a: 'Whichever you have. The basics are much the same across platforms, and switching is rarely the real fix.' },
+  { q: 'Is this the same as landing page work?', a: 'Related, but wider. Landing pages are the front door. This covers what happens to a lead or order after it comes in.' },
+  { q: 'How do you know a change worked?', a: 'We measure before and after with enough volume to be sure. If we cannot, we will call it a judgment call, not a proven gain.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -47,9 +46,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="CRM & Conversion Optimization"
-        title="Fix The Leaks"
+        title="Fix Your CRM"
         emph="before you scale."
-        intro="Pipeline hygiene, lead routing and conversion rate. Pouring more traffic into a funnel that leaks just makes the leak more expensive."
+        intro="We fix your CRM (the tool that tracks leads and customers) and your conversion rate (the share of people who buy). More traffic into a leaky funnel just makes the leak cost more."
         sections={sections}
         faqs={faqs}
       />

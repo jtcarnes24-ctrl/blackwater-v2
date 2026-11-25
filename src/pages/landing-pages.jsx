@@ -7,40 +7,39 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'The cheapest performance gain is usually the page',
+    h: 'The page is often the cheapest fix',
     p: [
-      'Most brands try to fix a weak return by changing the ads. Sometimes that is right. Often the ads are doing their job, the click is being paid for, and the page is where the money leaks out.',
-      'Doubling the conversion rate of a page halves your cost per acquisition without touching the campaign. That is a much cheaper win than finding a creative that performs twice as well.',
+      'Most brands try to fix weak returns by changing the ads. Often the ads work fine. You pay for the click, and the page is where the money leaks out.',
+      'Doubling a page\'s conversion rate (the share of visitors who buy) cuts your cost per acquisition in half, with no campaign changes.',
     ],
     list: [
-      'Above-the-fold clarity: what it is, who it is for, what it costs',
-      'One primary action per screen instead of five competing buttons',
-      'Social proof positioned where the doubt actually occurs',
-      'Objections answered on the page rather than in a FAQ nobody opens',
-      'Mobile-first layout, because that is where the traffic lands',
-      'Page speed, since a slow page loses people before it can convince them',
+      'Clarity at the top: what it is, who it is for, what it costs',
+      'One main action per screen, not five competing buttons',
+      'Proof and answers to objections placed where doubt shows up',
+      'Mobile-first layout, because that is where traffic lands',
+      'Fast load times, since a slow page loses people early',
     ],
   },
   {
-    h: 'Message match is most of it',
+    h: 'The page must match the ad',
     p: [
-      'The single most common problem is a mismatch between the ad and the page. Someone clicks an ad about a specific product for a specific reason and lands on a generic homepage that makes them start again.',
-      'Every campaign should land somewhere that continues the sentence the ad started. That alone often moves conversion rate more than a redesign.',
+      'The most common problem is an ad and page that do not match. Someone clicks an ad about one product, then lands on a generic homepage and has to start over.',
+      'Each campaign should land on a page that continues what the ad started. That alone often beats a redesign.',
     ],
   },
   {
     h: 'How we work on it',
     p: [
-      'We start by reading the page as a stranger would, then check it against how the traffic actually behaves. Changes are made one at a time where possible, so improvements can be attributed rather than guessed at.',
-      'We will tell you when a page is fine and the problem is elsewhere. Rebuilding a page that already converts is a way to spend money and lose ground.',
+      'We read the page like a stranger would, then check it against how your traffic behaves. We change one thing at a time when possible, so we know what worked.',
+      'We will tell you when a page is fine and the problem is elsewhere.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Do you build the page or just advise?', a: 'Both are possible. We can hand you a prioritised list of changes, or design and build the page ourselves.' },
-  { q: 'Will this work on Shopify?', a: 'Yes. Most of the work is layout, messaging and flow, which applies regardless of platform.' },
-  { q: 'How long before we know if it worked?', a: 'It depends on traffic volume. A page needs enough visitors for a difference to be real rather than noise, and we will say up front roughly how long that will take at your spend.' },
+  { q: 'Do you build the page or just advise?', a: 'Either. We can give you a ranked list of changes, or design and build the page ourselves.' },
+  { q: 'Will this work on Shopify?', a: 'Yes. Most of the work is layout, messaging, and flow, which applies on any platform.' },
+  { q: 'How long before we know if it worked?', a: 'It depends on traffic. A page needs enough visitors for the difference to be real, not noise. We will tell you up front how long that takes at your spend.' },
 ]
 
 /* Sites BlackWater designed and built. RPR and XL Athlete point at the
@@ -49,7 +48,7 @@ const faqs = [
    work. Swap each href to the custom domain once the rebuild is live on it. */
 const work = {
   heading: 'Recent work',
-  intro: 'A few of the sites we have designed and built. Each one opens in a new tab.',
+  intro: 'A few sites we designed and built. Each one opens in a new tab.',
   items: [
     {
       name: 'DABV Water Systems',
@@ -94,9 +93,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Landing Pages & CRO"
-        title="Stop Leaking The"
-        emph="traffic you buy."
-        intro="Conversion-focused layouts, sharper messaging and cleaner flow. Halving the cost per acquisition is often a page problem, not a campaign problem."
+        title="Landing Pages"
+        emph="that convert."
+        intro="We build landing pages (the page people see after clicking your ad) with clearer messaging and a simpler flow. A high cost per acquisition (what you pay to win a customer) is often a page problem, not an ad problem."
         sections={sections}
         work={work}
         faqs={faqs}

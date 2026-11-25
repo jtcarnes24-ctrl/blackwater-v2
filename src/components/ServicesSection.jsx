@@ -15,7 +15,7 @@ export function ServicesSection() {
       limit={6}
       title="Our"
       emph="services"
-      lede="Paid media, funnels, creative, retention and the pages underneath them. One system rather than six vendors, so nothing falls through the gaps between them."
+      lede="Ads, websites, emails and texts. One team does it all, so nothing gets missed between six different companies."
       footer={
         <a className="sg-viewall" href="/services/">
           View all services <span className="sg-arrow" aria-hidden="true">→</span>

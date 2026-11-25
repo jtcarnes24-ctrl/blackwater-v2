@@ -23,16 +23,13 @@ const SHARP_SET =
   '/founder-sharp-1100.jpg 1100w, /founder-sharp-1800.jpg 1800w, /founder-sharp-2880.jpg 2880w'
 
 const PARAS = [
-  `I started running ads for my own brand and learned the hard way that the
-   product is rarely the problem. Getting it in front of the right people is.
-   Every account I take on runs through the same method, and I am the one on
-   it, watching the numbers and moving when something needs to move.`,
-  `I don't take on clients I can't actually help. That sounds obvious, but
-   it's rarer than you'd think in this industry. When we work together,
-   you're not getting handed off to an account manager two weeks in. You get
-   me, on the account, watching the numbers, adjusting when something needs
-   to move. The brands I work with tend to stay because the results keep
-   coming.`,
+  `I started running ads for my own brand. I learned fast that the product
+   is rarely the problem. Getting it in front of the right people is. Every
+   account I take on runs on the same method, and I'm the one running it.`,
+  `I don't take on clients I can't actually help. You won't get handed off
+   to someone new two weeks in. You get me, on your account, watching the
+   numbers and making changes when they're needed. That's why the brands I
+   work with tend to stay.`,
 ]
 
 const CSS = `
@@ -102,12 +99,11 @@ export function FounderSection() {
 
   const copy = (
     <div className="fdr-copy">
-      <p className="fdr-eyebrow">The Founder</p>
-      <h2 className="fdr-h">Built on real <em>accounts.</em></h2>
+      <h2 className="fdr-h">Meet the <em>founder.</em></h2>
       {PARAS.map((p, i) => (
         <p key={i} className="fdr-p">{p.replace(/\s+/g, ' ').trim()}</p>
       ))}
-      <p className="fdr-sig">Jack Carnes — Founder, BlackWater Marketing</p>
+      <p className="fdr-sig">Jack Carnes, Founder, BlackWater Marketing</p>
     </div>
   )
 

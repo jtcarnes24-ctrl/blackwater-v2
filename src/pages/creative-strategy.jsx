@@ -7,39 +7,39 @@ import { ContactSection } from '../components/ContactSection'
 
 const sections = [
   {
-    h: 'Creative is the targeting now',
+    h: 'Your ad decides who sees it',
     p: [
-      'Audience targeting used to be where campaigns were won. That era is largely over. Broad targeting plus a strong conversion signal now outperforms the layered interest stacks that used to be standard practice, which means the creative itself has become the thing deciding who sees your ad.',
-      'A hook that speaks to one specific person will find that person, because the platform reads engagement and serves accordingly. That shifts the work: the leverage is no longer in the settings, it is in what the ad says in its first second.',
+      'Audience targeting used to win campaigns. That era is mostly over. Broad targeting plus a strong sales signal now beats stacks of interests. So the ad itself decides who sees it.',
+      'A hook that speaks to one specific person will find that person. The platform sees who engages and shows the ad to more people like them. The settings matter less now. It\'s in what the ad says in its first second.',
     ],
   },
   {
     h: 'How we build creative',
     p: [
-      'We start with angles rather than executions. An angle is the argument the ad is making — the specific reason a specific person should care. Most accounts fail because they have one angle produced ten ways, then conclude the product does not work on paid social.',
-      'Once angles are defined, each gets a hook written against it. Hooks are tested first, because the opening decides whether anything after it is seen. Only the hooks that hold attention get built into full ads.',
+      'We start with angles, not finished ads. An angle is the reason a specific person should care. Most accounts have one angle made ten ways. Then they decide the product doesn\'t work on paid social.',
+      'Next we write hooks for each angle and test them first, because the opening decides if anyone sees the rest. Only hooks that hold attention become full ads.',
     ],
     list: [
-      'Angle development based on real customer language, objections and reviews',
-      'Hook writing, with several variations per angle so the test is meaningful',
-      'Scripts and concepts for video, plus static and carousel concepts',
-      'Structured testing that isolates one variable so results can be read',
-      'Iteration on winners rather than starting from scratch each round',
+      'Angles built from real customer words, objections and reviews',
+      'Several hook versions per angle, so the test means something',
+      'Scripts and concepts for video, static and carousel ads',
+      'Tests that change one thing at a time, so results can be read',
+      'Building on winners instead of starting over',
     ],
   },
   {
-    h: 'What we will not do',
+    h: 'What we won\'t do',
     p: [
-      'We will not invent claims, results or testimonials to make an ad land harder. Beyond being a fast route to a restricted ad account, it produces customers who arrive expecting something you did not promise.',
-      'Every campaign is also checked against Meta advertising policy before it ships. Categories like health, finance and anything touching personal attributes have rules that are easy to break by accident, and a restricted account costs far more than the review took.',
+      'We won\'t invent claims, results or testimonials to make an ad hit harder. It\'s a fast way to get your ad account restricted. It also brings in customers who expect something you never promised.',
+      'We also check every campaign against Meta\'s ad rules before it goes live. Health, finance and anything about personal traits are easy to get wrong by accident. A restricted account costs far more than the check.',
     ],
   },
 ]
 
 const faqs = [
-  { q: 'Do you produce the video, or just the concept?', a: 'We handle concepts, angles, hooks and scripts, and direct what needs filming. Where footage is required we will tell you exactly what to capture rather than leaving you to guess.' },
-  { q: 'How many creatives does an account need?', a: 'Enough that testing never stalls. The exact number depends on spend, but an account running a single batch of ads for months is an account that has stopped learning.' },
-  { q: 'Can you work with our existing creative?', a: 'Yes. We would rather start by finding what is already working and building on it than replace everything for the sake of it.' },
+  { q: 'Do you make the videos, or just the concepts?', a: 'We handle concepts, angles, hooks and scripts, and we direct what needs filming. If footage is needed, we tell you exactly what to capture.' },
+  { q: 'How many ads does an account need?', a: 'Enough that testing never stalls. The number depends on your spend. An account running one batch for months has stopped learning.' },
+  { q: 'Can you work with the ads we already have?', a: 'Yes. We\'d rather find what already works and build on it than replace everything for no reason.' },
 ]
 
 createRoot(document.getElementById('root')).render(
@@ -47,9 +47,9 @@ createRoot(document.getElementById('root')).render(
     <Layout>
       <ServicePage
         eyebrow="Creative Strategy & Production"
-        title="Ad Creative That Earns"
-        emph="attention."
-        intro="Angles, hooks, scripts and concepts built for paid social. Creative is the largest remaining lever in a modern ad account, so it is treated as strategy rather than decoration."
+        title="Ad Creative That"
+        emph="gets watched."
+        intro="Angles, hooks, scripts and concepts for paid social ads. Today the ad itself is the biggest thing you control, so we treat it as strategy, not decoration."
         sections={sections}
         faqs={faqs}
       />

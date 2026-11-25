@@ -11,16 +11,13 @@ import { useEffect, useRef, useState } from 'react'
    The /about page keeps the older scroll-reveal FounderSection. */
 
 const PARAS = [
-  `I started running ads for my own brand and learned the hard way that the
-   product is rarely the problem. Getting it in front of the right people is.
-   Every account I take on runs through the same method, and I am the one on
-   it, watching the numbers and moving when something needs to move.`,
-  `I don't take on clients I can't actually help. That sounds obvious, but
-   it's rarer than you'd think in this industry. When we work together,
-   you're not getting handed off to an account manager two weeks in. You get
-   me, on the account, watching the numbers, adjusting when something needs
-   to move. The brands I work with tend to stay because the results keep
-   coming.`,
+  `I started running ads for my own brand. I learned fast that the product
+   is rarely the problem. Getting it in front of the right people is. Every
+   account I take on runs on the same method, and I'm the one running it.`,
+  `I don't take on clients I can't actually help. You won't get handed off
+   to someone new two weeks in. You get me, on your account, watching the
+   numbers and making changes when they're needed. That's why the brands I
+   work with tend to stay.`,
 ]
 
 // Face size matches the lanyard's portrait card (1.6 x 2.25) at its 1024px texture width.
@@ -204,8 +201,7 @@ export function FounderLanyard() {
       `}</style>
 
       <div className="fl-copy">
-        <p className="fl-eyebrow">The Founder</p>
-        <h2 id="fl-title" className="fl-h">Built on real <em>accounts.</em></h2>
+        <h2 id="fl-title" className="fl-h">Meet the <em>founder.</em></h2>
         {PARAS.map((p, i) => <p key={i} className="fl-p">{p.replace(/\s+/g, ' ').trim()}</p>)}
         <p className="fl-sig">Jack Carnes, Founder, BlackWater Marketing</p>
       </div>

@@ -27,13 +27,6 @@ export function FlowGroup2() {
         aria-label="Client testimonials"
         style={{ background: '#ffffff', color: '#141414' }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: easeOut }} viewport={viewport}
-          style={{ fontSize: '0.72rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,20,20,0.4)', fontWeight: 600 }}
-        >
-          Client Feedback
-        </motion.p>
 
         {['WHAT OUR', 'CLIENTS SAY'].map((line, i) => (
           <div key={line} style={{ overflow: 'hidden' }}>

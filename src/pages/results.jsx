@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
       <ResultsHero
         title="Results That"
         emph="speak."
-        sub="Real accounts and real outcomes. Every figure below comes from work we actually ran."
+        sub="Real numbers from real client accounts. We ran every one of them."
       />
       <ResultsSection heading={false} dark />
       <ProofSection />

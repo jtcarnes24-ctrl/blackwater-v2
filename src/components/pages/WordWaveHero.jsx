@@ -141,7 +141,6 @@ export function WordWaveHero() {
           </p>
         </div>
         <div ref={chromeRef} className="wwh-chrome" aria-hidden="true">
-          <p className="wwh-kicker">About BlackWater</p>
           <p className="wwh-cue">Scroll to dive in</p>
         </div>
         <div ref={fadeRef} className="wwh-fade" aria-hidden="true" />
