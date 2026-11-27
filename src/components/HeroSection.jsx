@@ -441,6 +441,8 @@ export function HeroSection() {
           text-shadow:0 1px 12px rgba(0,0,0,.8); transition:color .2s ease; }
         .sn-all:hover, .sn-all:focus-visible { color:#fff; }
         .sn-all span { display:inline-block; transition:transform .25s ease; }
+        .sn-all-m { display:none; }
+        .sn-sub-short { display:none; }
         .sn-all:hover span { transform:translateX(3px); }
 
         .hero-marquee { overflow:hidden; width:100%;
@@ -460,18 +462,33 @@ export function HeroSection() {
           /* Phones: BLACK over WATER, the second line's foot behind the hills. */
           .sn-word { font-size:23vw; line-height:.86; top:calc(var(--sn-foot, 40vh) - 1.6em); }
           .sn-word span { display:block; }
-          .sn-left { right:var(--pad); max-width:none; bottom:calc(clamp(1.25rem,3vh,2rem) + 232px); }
-          .sn-h1 { font-size:7.4vw; white-space:normal; }
-          .sn-sub { font-size:.88rem; }
-          .sn-right { left:var(--pad); right:var(--pad); bottom:clamp(1.25rem,3vh,2rem); align-items:stretch; }
-          .sn-cards { gap:10px; }
-          .sn-card { flex:1; width:auto; border-radius:14px; padding:6px;
-            -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(20,22,26,.72); }
-          .sn-card figcaption { padding:.5rem .3rem .2rem; }
-          .sn-card b { font-size:1.05rem; }
-          .sn-card span { font-size:.66rem; }
-          .sn-all { align-self:flex-end; }
+          /* One column pinned to the bottom edge. The old layout parked the
+             copy a fixed 232px above the cards, so on most phones it rode up
+             into the big word (Jack's iPhone, Nov 25 2026). */
+          .sd-layer[data-layer="4"] { display:flex; flex-direction:column; justify-content:flex-end;
+            gap:clamp(1rem,2.6vh,1.4rem); padding:0 var(--pad) clamp(1rem,2.6vh,1.75rem); }
+          .sn-left, .sn-right { position:static; max-width:none; }
+          .sn-proof { display:none; }
+          /* Darken the lower half evenly so the copy reads over the lit shoreline. */
+          .sn-scrim { background:linear-gradient(180deg, rgba(4,5,8,0) 38%, rgba(4,5,8,.5) 58%, rgba(4,5,8,.62) 100%); }
+          .sn-h1 { font-size:min(6.7vw, 2.2rem); white-space:normal; line-height:1.08; }
+          .sn-sub { font-size:.92rem; margin-top:.7rem !important; }
+          /* Phones get the one-line version of the subhead (Jack, Nov 26 2026: less text). */
+          .sn-sub-long { display:none; }
+          .sn-sub-short { display:inline; }
+          .sn-cta { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:1.1rem; }
+          .sn-cta .sn-btn { margin-top:0; }
+          /* No result cards on phones (Jack, Nov 26 2026): headline, one line, button. */
+          .sn-right { display:none; }
+          .sn-all-m { display:inline-block; }
           .sn-proof { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(20,22,26,.7); }
+        }
+        /* Short phones (iPhone SE with the browser bars showing): drop the
+           card detail line and tighten the gaps so nothing touches the word. */
+        @media (max-width:767px) and (max-height:620px) {
+          .sd-layer[data-layer="4"] { gap:.75rem; }
+          .sn-cta { margin-top:.85rem; }
+          .sn-btn { height:42px; }
         }
         @media (prefers-reduced-motion: reduce) {
           .hero-marquee-track { animation:none; }
@@ -522,14 +539,19 @@ export function HeroSection() {
                 Scaling E-commerce Brands<br />With Data, Not <em>Guesswork</em>
               </h1>
               <p className="sn-sub" data-rise>
-                We run your ads, make the videos, fix the pages, and emails behind them. One team, start to finish.
+                <span className="sn-sub-long">We run your ads, make the videos, fix the pages, and emails behind them. One team, start to finish.</span>
+                <span className="sn-sub-short">Ads, videos, pages and emails. One team.</span>
               </p>
-              <button type="button" className="sn-btn" data-rise onClick={openApply}>
-                Apply now
-                <i aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10L10 4M5 4h5v5" /></svg>
-                </i>
-              </button>
+              <div className="sn-cta">
+                <button type="button" className="sn-btn" data-rise onClick={openApply}>
+                  Apply now
+                  <i aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M4 10L10 4M5 4h5v5" /></svg>
+                  </i>
+                </button>
+                {/* Phones only: sits beside the button to save a row. */}
+                <a className="sn-all sn-all-m" href="/results/" data-rise>See all results <span aria-hidden="true">→</span></a>
+              </div>
             </div>
 
             <div className="sn-right">
