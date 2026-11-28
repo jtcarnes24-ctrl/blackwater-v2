@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Layout } from '../Layout'
 import { ServicePage } from '../components/pages/ServicePage'
+import { PAGE_HEROES } from '../lib/pageHeroes'
 import { ContactSection } from '../components/ContactSection'
 
 const sections = [
@@ -47,6 +48,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <ServicePage
+        hero={PAGE_HEROES['meta-ads']}
         eyebrow="Meta Ads Management"
         title="Meta Ads For"
         emph="online brands."

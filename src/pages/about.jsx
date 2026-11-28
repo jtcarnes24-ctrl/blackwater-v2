@@ -2,7 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Layout } from '../Layout'
-import { WordWaveHero } from '../components/pages/WordWaveHero'
+import { PageHero } from '../components/pages/PageHero'
+import { PAGE_HEROES } from '../lib/pageHeroes'
 import { AboutTimeline } from '../components/pages/AboutTimeline'
 import { AboutManifesto } from '../components/pages/AboutManifesto'
 import { ResultsSection } from '../components/ResultsSection'
@@ -32,7 +33,7 @@ createRoot(document.getElementById('root')).render(
     {/* Dark shell: the light sections below paint their own white, and a
         white page showed through as a hairline under the hero. */}
     <Layout dark>
-      <WordWaveHero />
+      <PageHero {...PAGE_HEROES.about} />
       <AboutTimeline />
       <AboutManifesto
         statement="No fluff and no ego. Just clear numbers you can act on."

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Layout } from '../Layout'
 import { ServicePage } from '../components/pages/ServicePage'
+import { PAGE_HEROES } from '../lib/pageHeroes'
 import { ContactSection } from '../components/ContactSection'
 
 const sections = [
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
       <ServicePage
+        hero={PAGE_HEROES['creative-strategy']}
         eyebrow="Creative Strategy & Production"
         title="Ad Creative That"
         emph="gets watched."

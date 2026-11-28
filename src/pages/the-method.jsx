@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import '../index.css'
 import { Layout } from '../Layout'
 import { MethodSystems } from '../components/pages/MethodSystems'
+import { PageHero } from '../components/pages/PageHero'
+import { PAGE_HEROES } from '../lib/pageHeroes'
 import { ContactSection } from '../components/ContactSection'
 
 /* Lead copy matches the four pillars in FlowGroup1 (simplified Nov 24 2026).
@@ -34,7 +36,9 @@ const systems = [
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Layout>
+      <PageHero {...PAGE_HEROES.method} />
       <MethodSystems
+        hideOpen
         heading="How We Grow"
         emph="brands."
         standfirst="Four steps, run as one system. Every account we take on follows them."

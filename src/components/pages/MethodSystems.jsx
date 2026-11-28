@@ -6,7 +6,7 @@ import { StatementBeats } from './StatementBeats'
  * pillar as a statement row: label and big heading on the left, the lead and
  * closing lines as plain paragraphs on the right (StatementBeats).
  */
-export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
+export function MethodSystems({ eyebrow, heading, emph, standfirst, systems, hideOpen = false }) {
   const beats = systems.map((s) => ({
     kicker: s.label,
     h: s.title,
@@ -33,13 +33,16 @@ export function MethodSystems({ eyebrow, heading, emph, standfirst, systems }) {
         @media (prefers-reduced-motion: reduce) { .ms-open > * { animation:none; } }
       `}</style>
 
-      <header className="ms-open">
-        {eyebrow && <p className="ms-eyebrow">{eyebrow}</p>}
-        <h1 className="ms-h1">
-          {heading} <span className="emph">{emph}</span>
-        </h1>
-        <p className="ms-standfirst">{standfirst}</p>
-      </header>
+      {/* Pages with a PageHero above skip this opening (the hero carries the h1). */}
+      {!hideOpen && (
+        <header className="ms-open">
+          {eyebrow && <p className="ms-eyebrow">{eyebrow}</p>}
+          <h1 className="ms-h1">
+            {heading} <span className="emph">{emph}</span>
+          </h1>
+          <p className="ms-standfirst">{standfirst}</p>
+        </header>
+      )}
 
       <StatementBeats beats={beats} />
     </section>

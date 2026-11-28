@@ -1,3 +1,4 @@
+import { PageHero } from './PageHero'
 import { LiquidButton } from '../ui/LiquidButton'
 import { useApply } from '../ui/ApplyModal'
 
@@ -6,13 +7,15 @@ import { useApply } from '../ui/ApplyModal'
  * copy — the SEO value is in those pages being genuinely different, not in
  * there being more of them.
  */
-export function ServicePage({ eyebrow, title, emph, intro, sections, faqs, work }) {
+export function ServicePage({ eyebrow, title, emph, intro, sections, faqs, work, hero }) {
   const { openApply } = useApply()
 
   return (
     <>
+      {hero && <PageHero {...hero} />}
       <style>{`
         .svc-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(7rem,12vw,10rem) clamp(1.5rem,5vw,4rem) clamp(4rem,8vw,6rem); }
+        .svc-wrap.has-hero { padding-top: clamp(3.5rem,7vw,5.5rem); }
         .svc-eyebrow { font-family:'Space Grotesk',sans-serif; font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:#5b6675; font-weight:600; margin:0 0 1rem; }
         .svc-h1 { font-family:'Syne',sans-serif; font-size:clamp(2.4rem,6vw,4.6rem); font-weight:800; line-height:1.02; letter-spacing:-.03em; color:#080808; text-transform:uppercase; margin:0 0 1.5rem; }
         .svc-intro { font-family:'Space Grotesk',sans-serif; font-size:clamp(1.05rem,1.7vw,1.3rem); line-height:1.6; color:rgba(8,8,8,.72); max-width:62ch; margin:0 0 2.5rem; }
@@ -65,11 +68,16 @@ export function ServicePage({ eyebrow, title, emph, intro, sections, faqs, work 
         }
       `}</style>
 
-      <div className="svc-wrap">
-        <h1 className="svc-h1">
-          {title} <span className="emph">{emph}</span>
-        </h1>
-        <p className="svc-intro">{intro}</p>
+      <div className={`svc-wrap${hero ? ' has-hero' : ''}`}>
+        {/* With a PageHero on top, the hero carries the h1 and the intro. */}
+        {!hero && (
+          <>
+            <h1 className="svc-h1">
+              {title} <span className="emph">{emph}</span>
+            </h1>
+            <p className="svc-intro">{intro}</p>
+          </>
+        )}
 
         <div className="svc-body">
           {sections.map((s) => (
